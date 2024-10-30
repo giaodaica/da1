@@ -65,15 +65,16 @@ class Controller_User{
             $this->showErrorLogin($error);
             return;
         }
-        
-        if(password_verify($password,$users['password'])){
-          
+
+        $passwordDatabase = $users['password'];
+       
+        if(password_verify($_POST['password'],$passwordDatabase)){
         
         }
-        else if($password == $users['password']){
+        elseif($password == $users['password']){
           
         }else{
-            $error = "Tài Khoản Hoặc Mạt Khẩu Không Chính Xác Vui Lòng Kiểm Tra Lại";
+            $error = "Tài Khoản Hoặc Mật Khẩu Không Chính Xác Vui Lòng Kiểm Tra Lại";
             $this->showErrorLogin($error);
             return;
         }
@@ -85,6 +86,7 @@ class Controller_User{
                 header("location:".BASE_URL);
                 break;
                 case 1:
+                    session_start();
                     $_SESSION['user'] = $users['username'];
                     $_SESSION['role_epl'] = $users['role'];
                     header("location:".BASE_URL);
@@ -98,7 +100,7 @@ class Controller_User{
 
         }
     }
-
+    
     public function post_Register(){
         $error = "";
         $username = $_POST['username'];
@@ -153,10 +155,10 @@ class Controller_User{
             return;
         }
         // Nếu không có lỗi nào xảy ra, tạo người dùng
-        $password_sha = password_hash($password,PASSWORD_DEFAULT);
+        $password_sha = password_hash(strtolower($password),PASSWORD_DEFAULT);
         // echo $password_sha;
         // die;
-        $this->models_users->create_User(strtolower(trim($username)), strtolower(trim($password_sha)));
+        $this->models_users->create_User(strtolower(trim($username)),(trim($password_sha)));
        echo "<script>";
        echo "alert('Đăng ký thành công')";
        echo  "</script>";

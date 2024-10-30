@@ -1,6 +1,8 @@
 <?php
 session_start();
-echo $_SESSION['user'];
+// if(isset($_SESSION['user'])){
+//     echo $_SESSION['user'];
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,11 +46,19 @@ echo $_SESSION['user'];
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
                   <?php
-                  if(isset($_SESSION['user'])) {?>
+                  if(isset($_SESSION['user'])){?>
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"><?php if(isset($_SESSION['user'])){echo $_SESSION['user'];} ?></button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button"><a href="?act=info_customer"><?php if(isset($_SESSION['role_customers']) && !empty($_SESSION['role_customers'])){echo "Thông Tin Cá Nhân";} ?></a></button>
+                        <?php if(isset($_SESSION['role_customers'])){ ?>
+                                <button class="dropdown-item" type="button"><a href="?act=info_customers">Thông Tin Cá Nhân</a></button>
+                         <?php  } ?>
+                            <?php if(isset($_SESSION['role_admin'])){ ?>
+                                <button class="dropdown-item" type="button"><a href="?act=admin">Admin</a></button>
+                         <?php  } ?>
+                         <?php if(isset($_SESSION['role_epl']) && !empty($_SESSION['role_epl'])){ ?>
+                                <button class="dropdown-item" type="button"><a href="?act=admin">Nhân Viên</a></button>
+                         <?php  } ?>
                             <button class="dropdown-item" type="button"><a href="?act=logout">Đăng Xuất</a></button>
                         </div>
                     </div>
