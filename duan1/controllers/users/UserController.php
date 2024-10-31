@@ -162,6 +162,8 @@ class Controller_User{
        echo "<script>";
        echo "alert('Đăng ký thành công')";
        echo  "</script>";
+       $this->login();
+
     }
     public function logout(){
         session_start();

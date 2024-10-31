@@ -1,6 +1,6 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>MultiShop - Online Shop Website Template</title>
@@ -339,7 +339,7 @@
                             <h5>Total</h5>
                             <h5>$160</h5>
                         </div>
-                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
+                        <a style="text-decoration: none;" class="shopPay-link" href="?act=shopPay"><button class="btn btn-block btn-danger font-weight-bold my-3 py-3">Thanh Toán</button></a>
                     </div>
                 </div>
             </div>

@@ -145,14 +145,14 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="shop.html" class="nav-item nav-link active">Shop</a>
-                            <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                            <a href="<?= BASE_URL ?>" class="nav-item nav-link">Trang Chủ</a>
+                            <a href="?act=shop" class="nav-item nav-link active">Shop</a>
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages<i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    <a href="?act=shoping-Cart" class="dropdown-item">Giỏ Hàng</a>
+                                    <a href="?act=shop-Bill" class="dropdown-item">Hóa Đơn</a>
+                                    <a href="shop-History" class="dropdown-item">Lịch Sử Mua Hàng</a>
                                 </div>
                             </div>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
@@ -180,8 +180,8 @@
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                    <a class="breadcrumb-item text-dark" href="<?= BASE_URL?>">Home</a>
+                    <a class="breadcrumb-item text-dark" href="?act=shop">Shop</a>
                     <span class="breadcrumb-item active">Shop List</span>
                 </nav>
             </div>

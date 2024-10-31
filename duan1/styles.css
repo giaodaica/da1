@@ -1,0 +1,22 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#welcome-message {
+    position: absolute;
+    top: -100px; /* Bắt đầu ở vị trí trên cùng */
+    background-color: #4caf50;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    opacity: 1; /* Bắt đầu với độ trong suốt 100% */
+    transition: top 1s, opacity 2s; /* Thời gian chuyển tiếp cho hiệu ứng */
+}
+
+.hidden {
+    display: none; /* Ẩn thông điệp khi chưa đăng nhập */
+}

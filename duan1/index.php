@@ -14,5 +14,12 @@ match($act){
     'post_register' => $users->post_Register(),
     'check_login' => $users->login(),
     'logout' => $users->logout(),
+    'admin'=> $app->admin(),
+    // Giao diện shop
+    'shop' => $shop->renderShop(),
+    'shoping-Cart' => $shop->renderCart(),
+    'shop-Pay' => $shop->handerPay(),
+    'shop-Contact' => $shop->handerContact(),
+    default => "Vui Lòng Kiểm Tra lại"
 };
 

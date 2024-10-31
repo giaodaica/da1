@@ -3,6 +3,12 @@ session_start();
 // if(isset($_SESSION['user'])){
 //     echo $_SESSION['user'];
 // }
+// Check if the user is logged in
+if (isset($_SESSION['user'])) {
+    $username = $_SESSION['user'];
+} else {
+    $username = '';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,9 +36,37 @@ session_start();
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+#welcome-message {
+    position: fixed; /* Thay đổi thành fixed để luôn nằm ở góc phải */
+    top: -100px; /* Bắt đầu ở vị trí trên cùng */
+    right: 20px; /* Đặt ở góc phải */
+    background-color: #4caf50;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    opacity: 1; /* Bắt đầu với độ trong suốt 100% */
+    transition: top 1s, opacity 2s; /* Thời gian chuyển tiếp cho hiệu ứng */
+    z-index: 9999; /* Đặt z-index cao để thông điệp nổi bật */
+}
+
+
+    </style>
 </head>
 
 <body>
+<div id="welcome-message" class="<?php echo $username ? '' : 'hidden'; ?>">
+    <?php if(isset($_SESSION['role_admin'])){?>
+        Chào admin, <?php echo htmlspecialchars($username); ?>!
+   <?php } ?>
+   <?php if(isset($_SESSION['role_epl'])){?>
+        Chào nhân viên, <?php echo htmlspecialchars($username); ?>!
+   <?php } ?>
+   <?php if(isset($_SESSION['role_customers'])){?>
+        Chào mừng bạn, <?php echo htmlspecialchars($username); ?>!
+   <?php } ?>
+</div>
+
     <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row bg-secondary py-1 px-xl-5">
@@ -140,32 +174,29 @@ session_start();
             </div>
             <div class="col-lg-9">
                 <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-                    <a href="" class="text-decoration-none d-block d-lg-none">
-                        <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-                        <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
-                    </a>
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="" class="nav-item nav-link active">Trang Chủ</a>
-                            <a href="" class="nav-item nav-link">Shop</a>
+                            <a href="<?= BASE_URL ?>" class="nav-item nav-link active">Trang Chủ</a>
+                            <a href="?act=shop" class="nav-item nav-link">Shop</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                    <a href="" class="dropdown-item">Giỏ Hàng</a>
-                                    <a href="" class="dropdown-item">Chi Tiết Giỏ Hàng</a>
+                                    <a href="?act=shoping-Cart" class="dropdown-item">Giỏ Hàng</a>
+                                    <a href="" class="dropdown-item">Hóa Đơn</a>
+                                    <a href="" class="dropdown-item">Lịch Sử Mua Hàng</a>
                                 </div>
                             </div>
-                            <a href="" class="nav-item nav-link">Contact</a>
+                            <a href="?act=shop-Contact" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                             <a href="" class="btn px-0">
                                 <i class="fas fa-heart text-primary"></i>
                                 <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
                             </a>
-                            <a href="" class="btn px-0 ml-3">
+                            <a href="?act=shoping-Cart" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
                                 <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
                             </a>
@@ -1035,6 +1066,29 @@ session_start();
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script>
+        window.onload = function() {
+    const welcomeMessage = document.getElementById('welcome-message');
+
+    // Hiện thông điệp nếu có tên người dùng
+    if (welcomeMessage.classList.contains('hidden') === false) {
+        welcomeMessage.style.top = '20px'; // Di chuyển xuống màn hình
+        welcomeMessage.style.opacity = '1'; // Đặt độ trong suốt về 100%
+
+        // Đợi một lúc trước khi làm mờ và ẩn đi
+        setTimeout(() => {
+            welcomeMessage.style.opacity = '0'; // Làm mờ thông điệp
+        }, 2000); // Thời gian chờ trước khi bắt đầu làm mờ
+
+        // Đợi cho đến khi mờ hoàn toàn để ẩn thông điệp
+        setTimeout(() => {
+            welcomeMessage.classList.add('hidden');
+            welcomeMessage.style.top = '-100px'; // Trở về vị trí ban đầu
+        }, 4000); // Thời gian chờ sau khi làm mờ hoàn toàn
+    }
+};
+
+    </script>
 </body>
 
 </html>
