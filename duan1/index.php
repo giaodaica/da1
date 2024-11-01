@@ -20,6 +20,8 @@ match($act){
     'shoping-Cart' => $shop->renderCart(),
     'shop-Pay' => $shop->handerPay(),
     'shop-Contact' => $shop->handerContact(),
+    // phần khách hàng
+    'info' => $customers->renderInfo(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

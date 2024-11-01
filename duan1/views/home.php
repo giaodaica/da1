@@ -1,9 +1,4 @@
 <?php
-session_start();
-// if(isset($_SESSION['user'])){
-//     echo $_SESSION['user'];
-// }
-// Check if the user is logged in
 if (isset($_SESSION['user'])) {
     $username = $_SESSION['user'];
 } else {
@@ -25,7 +20,7 @@ if (isset($_SESSION['user'])) {
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -37,35 +32,39 @@ if (isset($_SESSION['user'])) {
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <style>
-#welcome-message {
-    position: fixed; /* Thay đổi thành fixed để luôn nằm ở góc phải */
-    top: -100px; /* Bắt đầu ở vị trí trên cùng */
-    right: 20px; /* Đặt ở góc phải */
-    background-color: #4caf50;
-    color: white;
-    padding: 20px;
-    border-radius: 5px;
-    opacity: 1; /* Bắt đầu với độ trong suốt 100% */
-    transition: top 1s, opacity 2s; /* Thời gian chuyển tiếp cho hiệu ứng */
-    z-index: 9999; /* Đặt z-index cao để thông điệp nổi bật */
-}
-
-
+        #welcome-message {
+            position: fixed;
+            /* Thay đổi thành fixed để luôn nằm ở góc phải */
+            top: -100px;
+            /* Bắt đầu ở vị trí trên cùng */
+            right: 20px;
+            /* Đặt ở góc phải */
+            background-color: #4caf50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            opacity: 1;
+            /* Bắt đầu với độ trong suốt 100% */
+            transition: top 1s, opacity 2s;
+            /* Thời gian chuyển tiếp cho hiệu ứng */
+            z-index: 9999;
+            /* Đặt z-index cao để thông điệp nổi bật */
+        }
     </style>
 </head>
 
 <body>
-<div id="welcome-message" class="<?php echo $username ? '' : 'hidden'; ?>">
-    <?php if(isset($_SESSION['role_admin'])){?>
-        Chào admin, <?php echo htmlspecialchars($username); ?>!
-   <?php } ?>
-   <?php if(isset($_SESSION['role_epl'])){?>
-        Chào nhân viên, <?php echo htmlspecialchars($username); ?>!
-   <?php } ?>
-   <?php if(isset($_SESSION['role_customers'])){?>
-        Chào mừng bạn, <?php echo htmlspecialchars($username); ?>!
-   <?php } ?>
-</div>
+    <div id="welcome-message" class="<?php echo $username ? '' : 'hidden'; ?>">
+        <?php if (isset($_SESSION['role_admin'])) { ?>
+            Chào admin, <?php echo htmlspecialchars($username); ?>!
+        <?php } ?>
+        <?php if (isset($_SESSION['role_epl'])) { ?>
+            Chào nhân viên, <?php echo htmlspecialchars($username); ?>!
+        <?php } ?>
+        <?php if (isset($_SESSION['role_customers'])) { ?>
+            Chào mừng bạn, <?php echo htmlspecialchars($username); ?>!
+        <?php } ?>
+    </div>
 
     <!-- Topbar Start -->
     <div class="container-fluid">
@@ -78,33 +77,57 @@ if (isset($_SESSION['user'])) {
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                  <?php
-                  if(isset($_SESSION['user'])){?>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"><?php if(isset($_SESSION['user'])){echo $_SESSION['user'];} ?></button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                        <?php if(isset($_SESSION['role_customers'])){ ?>
-                                <button class="dropdown-item" type="button"><a href="?act=info_customers">Thông Tin Cá Nhân</a></button>
-                         <?php  } ?>
-                            <?php if(isset($_SESSION['role_admin'])){ ?>
-                                <button class="dropdown-item" type="button"><a href="?act=admin">Admin</a></button>
-                         <?php  } ?>
-                         <?php if(isset($_SESSION['role_epl']) && !empty($_SESSION['role_epl'])){ ?>
-                                <button class="dropdown-item" type="button"><a href="?act=admin">Nhân Viên</a></button>
-                         <?php  } ?>
-                            <button class="dropdown-item" type="button"><a href="?act=logout">Đăng Xuất</a></button>
+                <div class="d-inline-flex align-items-center" style="padding-right: 100px;">
+                    <?php
+                    if(isset($data_Gift) && !empty($data_Gift)){?>
+                        <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"> <?php echo count($data_Gift) ?></i></a>
+                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                           <?php foreach($data_Gift as $Gift){ ?>
+                            <a href="?act=shop" class="dropdown-item"><?= $Gift['code']."(-".$Gift['discount_percent']*100?>%) Mua sắm ngay!!</a> 
+                          <?php } ?>
                         </div>
                     </div>
-                 <?php }else { ?>
+                     <?php } else{ ?>
+                        <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
+                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                            <a href="?act=register" class="dropdown-item <?php if(isset($_SESSION['role_admin'])){echo "nav-link disabled";} ?>" >Đăng ký thành viên để nhận nhiều ưu đãi</a> 
+                        </div>
+                    </div>
+                       <?php  }?>
+                    <?php
+                    if (isset($_SESSION['user'])) { ?>
                         <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Tài Khoản</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button"><a href="?act=login">Đăng Nhập</a></button>
-                            <button class="dropdown-item" type="button"><a href="?act=register">Đăng Ký</a></button>
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"><?php if (isset($_SESSION['user'])) {
+                                                                                                                            echo $_SESSION['user'];
+                                                                                                                        } ?></button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <?php if (isset($_SESSION['role_customers'])) { ?>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info">Thông Tin Cá Nhân</a></button>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info_customers">Đơn hàng của tôi</a></button>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info_customers">Sổ địa chỉ nhận hàng</a></button>
+                                <?php  } ?>
+                                <?php if (isset($_SESSION['role_admin'])) { ?>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=admin">Admin</a></button>
+                                <?php  } ?>
+                                <?php if (isset($_SESSION['role_epl']) && !empty($_SESSION['role_epl'])) { ?>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=admin">Nhân Viên</a></button>
+                                <?php  } ?>
+                                <button class="dropdown-item" type="button"><a class="text-dark" href="?act=logout">Đăng Xuất</a></button>
+                            </div>
                         </div>
-                    </div>
-               <?php  } ?>
+                    <?php } else { ?>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Tài Khoản</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item" type="button"><a class="text-dark" href="?act=login">Đăng Nhập</a></button>
+                                <button class="dropdown-item" type="button"><a class="text-dark" href="?act=register">Đăng Ký</a></button>
+                            </div>
+                        </div>
+                    <?php  } ?>
                 </div>
                 <div class="d-inline-flex align-items-center d-block d-lg-none">
                     <a href="" class="btn px-0 ml-2">
@@ -152,23 +175,63 @@ if (isset($_SESSION['user'])) {
                 </a>
                 <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                     <div class="navbar-nav w-100">
+                        <!-- áo -->
                         <div class="nav-item dropdown dropright">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Áo<i class="fa fa-angle-right float-right mt-1"></i></a>
                             <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                                <a href="" class="dropdown-item">Men's Dresses</a>
-                                <a href="" class="dropdown-item">Women's Dresses</a>
-                                <a href="" class="dropdown-item">Baby's Dresses</a>
+                                <?php
+                                foreach ($d as $categories) { ?>
+                                    <?php if ($categories->only == 0) { ?>
+                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php } ?>
+                                <?php }
+                                ?>
                             </div>
                         </div>
-                        <a href="" class="nav-item nav-link">Shirts</a>
-                        <a href="" class="nav-item nav-link">Jeans</a>
-                        <a href="" class="nav-item nav-link">Swimwear</a>
-                        <a href="" class="nav-item nav-link">Sleepwear</a>
-                        <a href="" class="nav-item nav-link">Sportswear</a>
-                        <a href="" class="nav-item nav-link">Jumpsuits</a>
-                        <a href="" class="nav-item nav-link">Blazers</a>
-                        <a href="" class="nav-item nav-link">Jackets</a>
-                        <a href="" class="nav-item nav-link">Shoes</a>
+                        <!-- end áo -->
+                        <!-- quần -->
+                        <div class="nav-item dropdown dropright">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Quần<i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                                <?php
+                                foreach ($d as $categories) { ?>
+                                    <?php if ($categories->only == 1) { ?>
+                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php } ?>
+                                <?php }
+                                ?>
+                            </div>
+                        </div>
+                        <!-- end quần -->
+                        <!-- đồ ngủ -->
+                        <div class="nav-item dropdown dropright">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Bộ Đồ Ngủ<i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                                <?php
+                                foreach ($d as $categories) { ?>
+                                    <?php if ($categories->only == 2) { ?>
+                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php } ?>
+                                <?php }
+                                ?>
+                            </div>
+                        </div>
+                        <!-- end đồ ngủ -->
+                        <!-- đồ thể thao -->
+                        <div class="nav-item dropdown dropright">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Đồ Thể Thao<i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                                <?php
+                                foreach ($d as $categories) { ?>
+                                    <?php if ($categories->only == 5 || $categories->only == 4) { ?>
+                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php } ?>
+                                <?php }
+                                ?>
+                            </div>
+                        </div>
+                        <!-- end đồ thể thao -->
+
                     </div>
                 </nav>
             </div>
@@ -192,14 +255,7 @@ if (isset($_SESSION['user'])) {
                             <a href="?act=shop-Contact" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                            <a href="" class="btn px-0">
-                                <i class="fas fa-heart text-primary"></i>
-                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
-                            </a>
-                            <a href="?act=shoping-Cart" class="btn px-0 ml-3">
-                                <i class="fas fa-shopping-cart text-primary"></i>
-                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
-                            </a>
+
                         </div>
                     </div>
                 </nav>
@@ -481,7 +537,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -508,7 +565,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -535,7 +593,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -562,7 +621,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -589,7 +649,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -616,7 +677,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -643,7 +705,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -670,7 +733,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -734,7 +798,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -761,7 +826,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -788,7 +854,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -815,7 +882,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -842,7 +910,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -869,7 +938,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -896,7 +966,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -923,7 +994,8 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            <h5>$123.00</h5>
+                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -1068,26 +1140,25 @@ if (isset($_SESSION['user'])) {
     <script src="js/main.js"></script>
     <script>
         window.onload = function() {
-    const welcomeMessage = document.getElementById('welcome-message');
+            const welcomeMessage = document.getElementById('welcome-message');
 
-    // Hiện thông điệp nếu có tên người dùng
-    if (welcomeMessage.classList.contains('hidden') === false) {
-        welcomeMessage.style.top = '20px'; // Di chuyển xuống màn hình
-        welcomeMessage.style.opacity = '1'; // Đặt độ trong suốt về 100%
+            // Hiện thông điệp nếu có tên người dùng
+            if (welcomeMessage.classList.contains('hidden') === false) {
+                welcomeMessage.style.top = '20px'; // Di chuyển xuống màn hình
+                welcomeMessage.style.opacity = '1'; // Đặt độ trong suốt về 100%
 
-        // Đợi một lúc trước khi làm mờ và ẩn đi
-        setTimeout(() => {
-            welcomeMessage.style.opacity = '0'; // Làm mờ thông điệp
-        }, 2000); // Thời gian chờ trước khi bắt đầu làm mờ
+                // Đợi một lúc trước khi làm mờ và ẩn đi
+                setTimeout(() => {
+                    welcomeMessage.style.opacity = '0'; // Làm mờ thông điệp
+                }, 2000); // Thời gian chờ trước khi bắt đầu làm mờ
 
-        // Đợi cho đến khi mờ hoàn toàn để ẩn thông điệp
-        setTimeout(() => {
-            welcomeMessage.classList.add('hidden');
-            welcomeMessage.style.top = '-100px'; // Trở về vị trí ban đầu
-        }, 4000); // Thời gian chờ sau khi làm mờ hoàn toàn
-    }
-};
-
+                // Đợi cho đến khi mờ hoàn toàn để ẩn thông điệp
+                setTimeout(() => {
+                    welcomeMessage.classList.add('hidden');
+                    welcomeMessage.style.top = '-100px'; // Trở về vị trí ban đầu
+                }, 1500); // Thời gian chờ sau khi làm mờ hoàn toàn
+            }
+        };
     </script>
 </body>
 

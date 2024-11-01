@@ -1,9 +1,11 @@
 <?php
 class Controller_User{
     public $models_users;
+    public $gift;
     public function __construct()
     {
        $this->models_users = new User_model();
+       $this->gift = new Voucher_model();
     }
     public function handerViewRegister(){
         require_once "./views/register.php";
@@ -95,7 +97,13 @@ class Controller_User{
                             session_start();
                         $_SESSION['user'] = $users['username'];
                         $_SESSION['role_customers'] = $users['role'];
+                        $_SESSION['id'] = $users['user_id'];
+                        // echo $_SESSION['id'];
+                        // die;
+                        // $id = 23;
+                        // $data_Gift = $this->gift->select_Gift_byUserID($id);
                         header("location:".BASE_URL);
+                        exit;
                             break;
 
         }
@@ -159,6 +167,9 @@ class Controller_User{
         // echo $password_sha;
         // die;
         $this->models_users->create_User(strtolower(trim($username)),(trim($password_sha)));
+        $data_id = $this->models_users->select_User(strtolower(trim($username)));
+        $id = $data_id['user_id'];
+        $this->gift->gift_Voucher($id);
        echo "<script>";
        echo "alert('Đăng ký thành công')";
        echo  "</script>";
@@ -168,7 +179,7 @@ class Controller_User{
     public function logout(){
         session_start();
         session_destroy();
-        header("location:".LOGIN);
+        header("location:".BASE_URL);
     }
     // Hàm hiển thị lỗi
     public function showError($error) {
