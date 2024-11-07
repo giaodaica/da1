@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
+    <title>Trang admin</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
@@ -48,12 +49,12 @@
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
+            <a href="<?= BASE_URL?>" class="logo">
               <img
-                src="assets/img/kaiadmin/logo_light.svg"
+                src="assets/img/kaiadmin/logo.png"
                 alt="navbar brand"
                 class="navbar-brand"
-                height="20"
+                height="50"
               />
             </a>
             <div class="nav-toggle">
@@ -81,14 +82,14 @@
                   aria-expanded="false"
                 >
                   <i class="fas fa-home"></i>
-                  <p>Dashboard</p>
+                  <p>Quản Trị</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="dashboard">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../demo1/index.html">
-                        <span class="sub-item">Dashboard 1</span>
+                      <a href="<?= BASE_URL?>">
+                        <span class="sub-item">Quay về trang chủ</span>
                       </a>
                     </li>
                   </ul>
@@ -98,12 +99,12 @@
                 <span class="sidebar-mini-icon">
                   <i class="fa fa-ellipsis-h"></i>
                 </span>
-                <h4 class="text-section">Components</h4>
+                <h4 class="text-section">Công cụ</h4>
               </li>
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#base">
                   <i class="fas fa-layer-group"></i>
-                  <p>Base</p>
+                  <p>Quản lý thành viên</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="base">
@@ -178,121 +179,28 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#forms">
-                  <i class="fas fa-pen-square"></i>
-                  <p>Forms</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="forms">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="forms/forms.html">
-                        <span class="sub-item">Basic Form</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
-                  <i class="fas fa-table"></i>
-                  <p>Tables</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="tables">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="tables/tables.html">
-                        <span class="sub-item">Basic Table</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="tables/datatables.html">
-                        <span class="sub-item">Datatables</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#maps">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <p>Maps</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="maps">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="maps/googlemaps.html">
-                        <span class="sub-item">Google Maps</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="maps/jsvectormap.html">
-                        <span class="sub-item">Jsvectormap</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#charts">
-                  <i class="far fa-chart-bar"></i>
-                  <p>Charts</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="charts">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="charts/charts.html">
-                        <span class="sub-item">Chart Js</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="charts/sparkline.html">
-                        <span class="sub-item">Sparkline</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a href="widgets.html">
-                  <i class="fas fa-desktop"></i>
-                  <p>Widgets</p>
-                  <span class="badge badge-success">4</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../documentation/index.html">
-                  <i class="fas fa-file"></i>
-                  <p>Documentation</p>
-                  <span class="badge badge-secondary">1</span>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#submenu">
                   <i class="fas fa-bars"></i>
-                  <p>Menu Levels</p>
+                  <p>Quản lý hàng</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="submenu">
                   <ul class="nav nav-collapse">
                     <li>
                       <a data-bs-toggle="collapse" href="#subnav1">
-                        <span class="sub-item">Level 1</span>
+                        <span class="sub-item">Quản lý danh mục</span>
                         <span class="caret"></span>
                       </a>
                       <div class="collapse" id="subnav1">
                         <ul class="nav nav-collapse subnav">
                           <li>
                             <a href="#">
-                              <span class="sub-item">Level 2</span>
+                              <span class="sub-item">Thêm</span>
                             </a>
                           </li>
                           <li>
                             <a href="#">
-                              <span class="sub-item">Level 2</span>
+                              <span class="sub-item">Sửa</span>
                             </a>
                           </li>
                         </ul>
@@ -300,14 +208,14 @@
                     </li>
                     <li>
                       <a data-bs-toggle="collapse" href="#subnav2">
-                        <span class="sub-item">Level 1</span>
+                        <span class="sub-item">Quản lý sản phẩm</span>
                         <span class="caret"></span>
                       </a>
                       <div class="collapse" id="subnav2">
                         <ul class="nav nav-collapse subnav">
                           <li>
                             <a href="#">
-                              <span class="sub-item">Level 2</span>
+                              <span class="sub-item">Danh sách sản phẩm</span>
                             </a>
                           </li>
                         </ul>
@@ -315,7 +223,7 @@
                     </li>
                     <li>
                       <a href="#">
-                        <span class="sub-item">Level 1</span>
+                        <span class="sub-item">Quản lý</span>
                       </a>
                     </li>
                   </ul>
@@ -665,8 +573,8 @@
                       />
                     </div>
                     <span class="profile-username">
-                      <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Hizrian</span>
+                      <span class="op-7">Admin</span>
+                      <span class="fw-bold"><?php if(isset($_SESSION['user'])){echo $_SESSION['user'];} ?></span>
                     </span>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -681,7 +589,7 @@
                             />
                           </div>
                           <div class="u-text">
-                            <h4>Hizrian</h4>
+                            <h4><?php if(isset($_SESSION['user'])){echo $_SESSION['user'];} ?></h4>
                             <p class="text-muted">hello@example.com</p>
                             <a
                               href="profile.html"
@@ -699,7 +607,7 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Account Setting</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <a class="dropdown-item" href="?act=logout">Logout</a>
                       </li>
                     </div>
                   </ul>
@@ -734,7 +642,11 @@
                 </li>
               </ul>
             </div>
-            <div class="page-category">Inner page content goes here</div>
+            <div class="page-category">
+
+            Đây là khu vực để code 
+
+            </div>
           </div>
         </div>
 

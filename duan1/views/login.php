@@ -224,20 +224,21 @@ a:hover {
 			    <form class="kpx_loginForm" action="?act=check_login" autocomplete="off" method="POST">
 					<div class="input-group">
 						<span class="input-group-addon"><span class="fa fa-user"></span></span>
-						<input type="text" class="form-control" name="username" placeholder="Username" <?php if (isset($autofocus)) {
-                                                                                                            echo 'autofocus';
-                                                                                                        } ?>>
+						<input type="text" class="form-control" name="username" placeholder="Username"<?php if(isset($autofocus)){echo'autofocus';}?>>
 					</div>
+          <span style="color: red;"><?php if (isset($errorU)) {
+                                                    echo $errorU;
+                                                } ?></span>
                     <hr />
-										
+                   
 					<div class="input-group">
 						<span class="input-group-addon"><span class="fa fa-key"></span></span>
 						<input  type="password" class="form-control" name="password" placeholder="Password" <?php if (isset($autofocus)) {
                                                                                                             echo 'autofocus';
                                                                                                         } ?>>
 					</div>
-                    <span style="color: red;"><?php if (isset($error)) {
-                                                    echo $error;
+                    <span style="color: red;"><?php if (isset($errorP)) {
+                                                    echo $errorP;
                                                 } ?></span>
                     <span class="tag tag-danger"><a href="?act=register">Chưa Có Tài Khoản Đăng Ký Ngay</a></span> 
                     <hr />

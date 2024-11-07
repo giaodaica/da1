@@ -1,3 +1,14 @@
+<?php
+// print_r($data_Custm);
+//  echo $data_Custm['full_name'];
+// echo $_SESSION['id'];
+// if(empty($data_Custm)){
+//     echo "troongs";
+// }else{
+//     echo "co";
+// }
+// echo $data_Custm['full_name'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <style>
@@ -10,7 +21,8 @@
         display: flex;
         gap: 20px;
     }
-   
+
+
 </style>
 
 <head>
@@ -44,37 +56,71 @@
         <div class="row bg-secondary py-1 px-xl-5">
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center h-100">
-                    <a class="text-body mr-3" href="">About</a>
-                    <a class="text-body mr-3" href="">Contact</a>
-                    <a class="text-body mr-3" href="">Help</a>
-                    <a class="text-body mr-3" href="">FAQs</a>
+                    <a class="text-body mr-3" href="">Giới Thiệu</a>
+                    <a class="text-body mr-3" href="">Liên Hệ</a>
+                    <a class="text-body mr-3" href="">Hỗ Trợ</a>
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">Sign in</button>
-                            <button class="dropdown-item" type="button">Sign up</button>
+                <div class="d-inline-flex align-items-center" style="padding-right: 100px;">
+                    <?php
+                    if(isset($data_Gift) && !empty($data_Gift)){?>
+                        <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"> <?php echo count($data_Gift) ?></i></a>
+                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                           <?php foreach($data_Gift as $Gift){ ?>
+                            <a href="?act=shop" class="dropdown-item"><?= $Gift['code']."(-".$Gift['discount_percent']*100?>%) Mua sắm ngay!!</a> 
+                          <?php } ?>
                         </div>
                     </div>
-                    <div class="btn-group mx-2">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">EUR</button>
-                            <button class="dropdown-item" type="button">GBP</button>
-                            <button class="dropdown-item" type="button">CAD</button>
+                    <?php } elseif (isset($_SESSION['user']) && empty($data_Gift)){ ?>
+                        <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
+                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                            <a href="?act=shop" class="dropdown-item <?php echo "nav-link disabled"?>">Bạn đã sử dụng hết voucher!!</a> 
                         </div>
                     </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">EN</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">FR</button>
-                            <button class="dropdown-item" type="button">AR</button>
-                            <button class="dropdown-item" type="button">RU</button>
+                     <?php } else{ ?>
+                        <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
+                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                            <a href="?act=register" class="dropdown-item <?php if(isset($_SESSION['role_admin'])){echo "nav-link disabled";} ?>" >Đăng ký thành viên để nhận nhiều ưu đãi</a> 
                         </div>
                     </div>
+                       <?php  }?>
+                    <?php
+                    if (isset($_SESSION['user'])) { ?>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"><?php if (isset($_SESSION['user'])) {
+                                                                                                                            echo $_SESSION['user'];
+                                                                                                                        } ?></button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <?php if (isset($_SESSION['role_customers'])) { ?>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info">Truy Cập Bee member</a></button>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info_customers">Đơn hàng của tôi</a></button>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info_customers">Sổ địa chỉ nhận hàng</a></button>
+                                <?php  } ?>
+                                <?php if (isset($_SESSION['role_admin'])) { ?>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=admin">Admin</a></button>
+                                <?php  } ?>
+                                <?php if (isset($_SESSION['role_epl']) && !empty($_SESSION['role_epl'])) { ?>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=admin">Nhân Viên</a></button>
+                                <?php  } ?>
+                                <button class="dropdown-item" type="button"><a class="text-dark" href="?act=logout">Đăng Xuất</a></button>
+                            </div>
+                        </div>
+                    <?php } else { ?>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Tài Khoản</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item" type="button"><a class="text-dark" href="?act=login">Đăng Nhập</a></button>
+                                <button class="dropdown-item" type="button"><a class="text-dark" href="?act=register">Đăng Ký</a></button>
+                            </div>
+                        </div>
+                    <?php  } ?>
                 </div>
                 <div class="d-inline-flex align-items-center d-block d-lg-none">
                     <a href="" class="btn px-0 ml-2">
@@ -91,8 +137,8 @@
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
                 <a href="" class="text-decoration-none">
-                    <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                    <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+                    <span class="h1 text-uppercase text-primary bg-dark px-2">FPL</span>
+                    <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Bee</span>
                 </a>
             </div>
             <div class="col-lg-4 col-6 text-left">
@@ -107,72 +153,108 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
     <!-- Topbar End -->
-
-
     <!-- Navbar Start -->
     <div class="container-fluid bg-dark mb-30">
         <div class="row px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
-                    <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
+                    <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Danh Mục</h6>
                     <i class="fa fa-angle-down text-dark"></i>
                 </a>
                 <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                     <div class="navbar-nav w-100">
+                        <!-- áo -->
                         <div class="nav-item dropdown dropright">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Áo<i class="fa fa-angle-right float-right mt-1"></i></a>
                             <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                                <a href="" class="dropdown-item">Men's Dresses</a>
-                                <a href="" class="dropdown-item">Women's Dresses</a>
-                                <a href="" class="dropdown-item">Baby's Dresses</a>
+                                <?php
+                                foreach ($d as $categories) { ?>
+                                    <?php if ($categories->only == 0) { ?>
+                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php } ?>
+                                <?php }
+                                ?>
                             </div>
                         </div>
-                        <a href="" class="nav-item nav-link">Shirts</a>
-                        <a href="" class="nav-item nav-link">Jeans</a>
-                        <a href="" class="nav-item nav-link">Swimwear</a>
-                        <a href="" class="nav-item nav-link">Sleepwear</a>
-                        <a href="" class="nav-item nav-link">Sportswear</a>
-                        <a href="" class="nav-item nav-link">Jumpsuits</a>
-                        <a href="" class="nav-item nav-link">Blazers</a>
-                        <a href="" class="nav-item nav-link">Jackets</a>
-                        <a href="" class="nav-item nav-link">Shoes</a>
+                        <!-- end áo -->
+                        <!-- quần -->
+                        <div class="nav-item dropdown dropright">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Quần<i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                                <?php
+                                foreach ($d as $categories) { ?>
+                                    <?php if ($categories->only == 1) { ?>
+                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php } ?>
+                                <?php }
+                                ?>
+                            </div>
+                        </div>
+                        <!-- end quần -->
+                        <!-- đồ ngủ -->
+                        <div class="nav-item dropdown dropright">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Bộ Đồ Ngủ<i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                                <?php
+                                foreach ($d as $categories) { ?>
+                                    <?php if ($categories->only == 2) { ?>
+                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php } ?>
+                                <?php }
+                                ?>
+                            </div>
+                        </div>
+                        <!-- end đồ ngủ -->
+                        <!-- đồ thể thao -->
+                        <div class="nav-item dropdown dropright">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Đồ Thể Thao<i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                                <?php
+                                foreach ($d as $categories) { ?>
+                                    <?php if ($categories->only == 5 || $categories->only == 4) { ?>
+                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php } ?>
+                                <?php }
+                                ?>
+                            </div>
+                        </div>
+                        <!-- end đồ thể thao -->
+
                     </div>
                 </nav>
             </div>
             <div class="col-lg-9">
                 <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-                    <a href="" class="text-decoration-none d-block d-lg-none">
-                        <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-                        <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
-                    </a>
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="shop.html" class="nav-item nav-link">Shop</a>
-                            <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                            <a href="<?= BASE_URL ?>" class="nav-item nav-link active">Trang Chủ</a>
+                            <a href="?act=shop" class="nav-item nav-link">Shop</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    <a href="?act=shoping-Cart" class="dropdown-item">Giỏ Hàng</a>
+                                    <a href="" class="dropdown-item">Hóa Đơn</a>
+                                    <a href="" class="dropdown-item">Lịch Sử Mua Hàng</a>
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link active">Contact</a>
+                            <a href="?act=shop-Contact" class="nav-item nav-link">Contact</a>
                         </div>
+                        <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
 
+                        </div>
                     </div>
                 </nav>
             </div>
         </div>
     </div>
     <!-- Navbar End -->
+
 
 
     <!-- Breadcrumb Start -->
@@ -194,15 +276,14 @@
         <div class="row">
             <div class="col-4">
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action " aria-current="true">
+                    <a href="?act=info" class="list-group-item list-group-item-action " aria-current="true">
                         Trang Chủ
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-                    <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-                    <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+                    <a href="#" class="history_shop list-group-item list-group-item-action">Lịch sử mua hàng</a>
+                    <a href="#" class="info-ctm list-group-item list-group-item-action" id="info_ctm"<?php if(empty($data_Custm)){echo "success='true'"; }else{ echo "success='fale'"; } ?> >Tài khoản của bạn</a>
                 </div>
             </div>
-            <div class="col-8">
+            <div class="col-8" id="hero-side">
                 <div class="hero">
                     <p for="" class="">Trần Trung Hiếu</p>
                     <label for="">0293092309</label>
@@ -210,13 +291,12 @@
                 <div class="container text-center">
                     <div class="row">
                         <div class="col">
-                            First in DOM, no order applied
+                            Tổng số đơn hàng <br>
+                            0
                         </div>
                         <div class="col order-5">
-                            Second in DOM, with a larger order
-                        </div>
-                        <div class="col order-1">
-                            Third in DOM, with an order of 1
+                            Tổng tiền tích lũy <br>
+                            0
                         </div>
                     </div>
                 </div>
@@ -315,6 +395,7 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="sevice.js"></script>
 </body>
 
 </html>

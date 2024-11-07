@@ -15,6 +15,7 @@
         require_once "./views/home.php";
     }
     public function admin(){
+        session_start();
         header("location: admin");
     }
  }

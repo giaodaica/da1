@@ -89,6 +89,14 @@ if (isset($_SESSION['user'])) {
                           <?php } ?>
                         </div>
                     </div>
+                    <?php } elseif (isset($_SESSION['user']) && empty($data_Gift)){ ?>
+                        <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
+                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                            <a href="?act=shop" class="dropdown-item <?php echo "nav-link disabled"?>">Bạn đã sử dụng hết voucher!!</a> 
+                        </div>
+                    </div>
                      <?php } else{ ?>
                         <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
@@ -106,7 +114,7 @@ if (isset($_SESSION['user'])) {
                                                                                                                         } ?></button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <?php if (isset($_SESSION['role_customers'])) { ?>
-                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info">Thông Tin Cá Nhân</a></button>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info">Truy Cập Bee member</a></button>
                                     <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info_customers">Đơn hàng của tôi</a></button>
                                     <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info_customers">Sổ địa chỉ nhận hàng</a></button>
                                 <?php  } ?>
