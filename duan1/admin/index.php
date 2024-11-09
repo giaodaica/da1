@@ -6,5 +6,5 @@ $admin->check();
 $act = $_GET['act'] ?? "home";
 match($act){
     'home' => $admin->home_Admin(),
-    'logout' => $admin->logout()
+    'logout' => $admin->logout(),
 };

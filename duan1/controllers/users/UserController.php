@@ -14,57 +14,58 @@ class Controller_User{
         require_once "./views/login.php";
     }
     public function login(){
-        $error = "";
+        $errorUL = "";
+        $errorPL = "";
         $username = strtolower(trim($_POST['username']));
         $password = strtolower(trim($_POST['password']));
     
         // Kiểm tra tên đăng nhập
         if (trim($username) == "") {
-            $error = "Tên Đăng Nhập Không Được Để Trống";
-            $this->showErrorLogin($error);
+            $errorUL = "Tên Đăng Nhập Không Được Để Trống";
+            $this->showErrorUL($errorUL);
             return;
         }
         if (preg_match('/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i', $username)) {
-            $error = "Tài Khoản không được chứa ký tự có dấu.";
-            $this->showErrorLogin($error);
+            $errorUL = "Tài Khoản không được chứa ký tự có dấu.";
+            $this->showErrorUL($errorUL);
             return;
         }
         if (strlen($username) < 5) {
-            $error = "Tên Đăng Nhập Phải Chứa 5 Ký Tự Trở Lên";
-            $this->showErrorLogin($error);
+            $errorUL = "Tên Đăng Nhập Phải Chứa 5 Ký Tự Trở Lên";
+            $this->showErrorUL($errorUL);
             return;
         }
         if (preg_match('/\s/', $username)) { // Kiểm tra dấu cách trong tên đăng nhập
-            $error = "Tên Đăng Nhập Không Được Chứa Khoảng Trắng";
-            $this->showErrorLogin($error);
+            $errorUL = "Tên Đăng Nhập Không Được Chứa Khoảng Trắng";
+            $this->showErrorUL($errorUL);
             return;
         }
         // Kiểm tra mật khẩu
         if (trim($password) == "") {
-            $error = "Mật Khẩu Không Được Để Trống";
-            $this->showErrorLogin($error);
+            $errorPL = "Mật Khẩu Không Được Để Trống";
+            $this->showErrorPL($errorPL);
             return;
         }
         if (strlen($password) < 6) {
-            $error = "Mật Khẩu Phải Chứa 6 Ký Tự Trở Lên";
-            $this->showErrorLogin($error);
+            $errorPL = "Mật Khẩu Phải Chứa 6 Ký Tự Trở Lên";
+            $this->showErrorPL($errorPL);
             return;
         }
         if (preg_match('/\s/', $password)) { // Kiểm tra dấu cách trong tên đăng nhập
-            $error = "Mật Khẩu Không Được Chứa Khoảng Trắng";
-            $this->showErrorLogin($error);
+            $errorPL = "Mật Khẩu Không Được Chứa Khoảng Trắng";
+            $this->showErrorPL($errorPL);
             return;
         }
         if (preg_match('/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i', $password)) {
-            $error = "Mật khẩu không được chứa ký tự có dấu.";
-            $this->showErrorLogin($error);
+            $errorPL = "Mật khẩu không được chứa ký tự có dấu.";
+            $this->showErrorPL($errorPL);
             return;
         }
         $users = $this->models_users->select_User(strtolower(trim($username)));
         // $data = $this->models_users->select_User(strtolower(trim("11111111")));
         if(!$users){
-            $error = "Tài khoản không tồn tại!!";
-            $this->showErrorLogin($error);
+            $errorUL = "Tài khoản không tồn tại!!";
+            $this->showErrorUL($errorUL);
             return;
         }
 
@@ -76,8 +77,8 @@ class Controller_User{
         elseif($password == $users['password']){
           
         }else{
-            $error = "Tài Khoản Hoặc Mật Khẩu Không Chính Xác Vui Lòng Kiểm Tra Lại";
-            $this->showErrorLogin($error);
+            $errorUL = "Tài Khoản Hoặc Mật Khẩu Không Chính Xác Vui Lòng Kiểm Tra Lại";
+            $this->showErrorUL($errorUL);
             return;
         }
         switch($users['role']){
@@ -110,57 +111,57 @@ class Controller_User{
     }
     
     public function post_Register(){
-        $errorU = "";
-        $errorP = "";
+        $errorUR = "";
+        $errorPR = "";
         $username = $_POST['username'];
         $password = $_POST['password'];
     
         // Kiểm tra tên đăng nhập
         if (strtolower(trim($username)) == "") {
-            $error = "Tên Đăng Nhập Không Được Để Trống";
-            $this->showError($errorU);
+            $errorUR = "Tên Đăng Nhập Không Được Để Trống";
+            $this->showErrorUR($errorUR);
             return;
         }
         if (preg_match('/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i', $username)) {
-            $error = "Tài Khoản không được chứa ký tự có dấu.";
-            $this->showError($errorU);
+            $errorUR = "Tài Khoản không được chứa ký tự có dấu.";
+            $this->showErrorUR($errorUR);
             return;
         }
         if (strlen($username) < 5) {
-            $error = "Tên Đăng Nhập Phải Chứa 5 Ký Tự Trở Lên";
-            $this->showError($errorU);
+            $errorUR = "Tên Đăng Nhập Phải Chứa 5 Ký Tự Trở Lên";
+            $this->showErrorUR($errorUR);
             return;
         }
         if (preg_match('/\s/', $username)) { // Kiểm tra dấu cách trong tên đăng nhập
-            $error = "Tên Đăng Nhập Không Được Chứa Khoảng Trắng";
-            $this->showError($errorU);
+            $errorUR = "Tên Đăng Nhập Không Được Chứa Khoảng Trắng";
+            $this->showErrorUR($errorUR);
             return;
         }
         // Kiểm tra mật khẩu
         if (strtolower(trim($password)) == "") {
-            $error = "Mật Khẩu Không Được Để Trống";
-            $this->showError($errorP);
+            $errorPR = "Mật Khẩu Không Được Để Trống";
+            $this->showErrorPR($errorPR);
             return;
         }
         if (strlen($password) < 6) {
-            $error = "Mật Khẩu Phải Chứa 6 Ký Tự Trở Lên";
-            $this->showError($errorP);
+            $errorPR = "Mật Khẩu Phải Chứa 6 Ký Tự Trở Lên";
+            $this->showErrorPR($errorPR);
             return;
         }
         if (preg_match('/\s/', $password)) { // Kiểm tra dấu cách trong tên đăng nhập
-            $error = "Mật Khẩu Không Được Chứa Khoảng Trắng";
-            $this->showError($errorP);
+            $errorPR = "Mật Khẩu Không Được Chứa Khoảng Trắng";
+            $this->showErrorPR($errorPR);
             return;
         }
         if (preg_match('/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i', $password)) {
-            $error = "Mật khẩu không được chứa ký tự có dấu.";
-            $this->showError($errorP);
+            $errorPR = "Mật khẩu không được chứa ký tự có dấu.";
+            $this->showErrorPR($errorPR);
             return;
         }
         $data = $this->models_users->select_User(strtolower(trim($username)));
         if($data){
-            $errorU = "Tên Đăng Nhập Đã Tồn Tại Vui Lòng Lựa Chọn Tên Khác!!";
-            $this->showError($errorU);
+            $errorUR = "Tên Đăng Nhập Đã Tồn Tại Vui Lòng Lựa Chọn Tên Khác!!";
+            $this->showErrorUR($errorUR);
             return;
         }
         // Nếu không có lỗi nào xảy ra, tạo người dùng
@@ -183,19 +184,19 @@ class Controller_User{
         header("location:".BASE_URL);
     }
     // Hàm hiển thị lỗi
-    public function showError($errorU) {
+    public function showErrorUL($errorUL) {
+        $autofocus = true;
+        require_once "./views/login.php";
+    }
+    public function showErrorPL($errorPL){
+        require_once "./views/login.php";
+    }
+    public function showErrorUR($errorUR) {
         $autofocus = true;
         require_once "./views/register.php";
     }
-    public function showErrorLogin($error){
-        require_once "./views/login.php";
-    }
-    public function showError1($errorP) {
-        $autofocus = true;
+    public function showErrorPR($errorPR){
         require_once "./views/register.php";
-    }
-    public function showErrorLogin1($errorP){
-        require_once "./views/login.php";
     }
 }
 $users = new Controller_User;

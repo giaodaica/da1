@@ -1,0 +1,62 @@
+p {
+    font-weight: bold;
+
+}
+
+.hero {
+    display: flex;
+    gap: 20px;
+}
+.btn-custom{
+    width: 730px;
+    height: 40px;
+    display: inline-block;
+}
+.btn-custom {
+background-color: #D0F2ff;
+display: inline-flex;           /* Đảm bảo nội dung nằm cùng dòng */
+align-items: center;            /* Căn giữa nội dung theo chiều dọc */
+white-space: nowrap;            /* Ngăn không cho xuống dòng */
+border: none;                   /* Bỏ viền nút */
+padding: 10px 15px;             /* Khoảng cách bên trong nút */
+font-size: 16px;                /* Cỡ chữ */
+color: #000;                    /* Màu chữ chính */
+border-radius: 5px;
+
+}
+
+.btn-custom .hander_if {
+color: #FFA500;                 /* Màu của link "Cập Nhật" */
+margin-left: 5px;               /* Khoảng cách giữa văn bản và link */
+color: #000;
+padding: 2px 5px;
+}
+.hander_if{
+border: 1px solid;
+border-radius: 5px;
+
+}
+.total{
+    border: 1px solid black;
+    display: flex;
+    width: 499.6px;
+    height: 106px;
+    padding: 25px;
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+    white-space: nowrap;            /* Ngăn không cho xuống dòng */
+}
+.right{
+    margin-left: 250px;
+}
+.left{
+    margin-left: 20px;
+}
+.form-control{
+    width: 600px !important;
+}
+
+.input-group{
+    flex-wrap: nowrap !important;
+}
