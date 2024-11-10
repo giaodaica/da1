@@ -7,4 +7,5 @@ class products_variant extends database {
         $stmt->execute();
         return $stmt->fetch();
     }
+    
 }

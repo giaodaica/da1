@@ -2,9 +2,11 @@
 class Controller_User{
     public $models_users;
     public $gift;
+    public $shoping_Cart;
     public function __construct()
     {
        $this->models_users = new User_model();
+       $this->shoping_Cart = new shoping_cart_big();
        $this->gift = new Voucher_model();
     }
     public function handerViewRegister(){
@@ -172,6 +174,7 @@ class Controller_User{
         $data_id = $this->models_users->select_User(strtolower(trim($username)));
         $id = $data_id['user_id'];
         $this->gift->gift_Voucher($id);
+        $this->shoping_Cart->insert_cart_user($id);
        echo "<script>";
        echo "alert('Đăng ký thành công')";
        echo  "</script>";

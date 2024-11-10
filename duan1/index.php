@@ -27,6 +27,8 @@ match($act){
     'update_Info' => $customers->hander_update_info(),
     // phần sản phẩm
     'products_detail' => $shop->products_detail(),
+    'add-to-cart' => $shop->Add_to_Cart(),
+    'thanhtoan' => $shop->checkquan(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

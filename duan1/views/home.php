@@ -405,7 +405,6 @@ if (isset($_SESSION['user'])) {
                     <div class="product-img position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="<?= $data_products->image  ?>" alt="">
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
                             <a class="btn btn-outline-dark btn-square" href="?act=products_detail&product_id=<?= $data_products->product_id?>"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
@@ -532,6 +531,8 @@ if (isset($_SESSION['user'])) {
                 }, 1500); // Thời gian chờ sau khi làm mờ hoàn toàn
             }
         };
+
+
     </script>
 </body>
 

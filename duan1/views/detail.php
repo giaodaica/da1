@@ -56,6 +56,10 @@ if (isset($_SESSION['user'])) {
             z-index: 9999;
             /* Đặt z-index cao để thông điệp nổi bật */
         }
+        .error{
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -85,33 +89,35 @@ if (isset($_SESSION['user'])) {
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center" style="padding-right: 100px;">
                     <?php
-                    if(isset($data_Gift) && !empty($data_Gift)){?>
+                    if (isset($data_Gift) && !empty($data_Gift)) { ?>
                         <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"> <?php echo count($data_Gift) ?></i></a>
-                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
-                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
-                           <?php foreach($data_Gift as $Gift){ ?>
-                            <a href="?act=shop" class="dropdown-item"><?= $Gift['code']."(-".$Gift['discount_percent']*100?>%) Mua sắm ngay!!</a> 
-                          <?php } ?>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"> <?php echo count($data_Gift) ?></i></a>
+                            <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                                <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                                <?php foreach ($data_Gift as $Gift) { ?>
+                                    <a href="?act=shop" class="dropdown-item"><?= $Gift['code'] . "(-" . $Gift['discount_percent'] * 100 ?>%) Mua sắm ngay!!</a>
+                                <?php } ?>
+                            </div>
                         </div>
-                    </div>
-                    <?php } elseif (isset($_SESSION['user']) && empty($data_Gift)){ ?>
+                    <?php } elseif (isset($_SESSION['user']) && empty($data_Gift)) { ?>
                         <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
-                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
-                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
-                            <a href="?act=shop" class="dropdown-item <?php echo "nav-link disabled"?>">Bạn đã sử dụng hết voucher!!</a> 
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
+                            <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                                <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                                <a href="?act=shop" class="dropdown-item <?php echo "nav-link disabled" ?>">Bạn đã sử dụng hết voucher!!</a>
+                            </div>
                         </div>
-                    </div>
-                     <?php } else{ ?>
+                    <?php } else { ?>
                         <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
-                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
-                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
-                            <a href="?act=register" class="dropdown-item <?php if(isset($_SESSION['role_admin'])){echo "nav-link disabled";} ?>" >Đăng ký thành viên để nhận nhiều ưu đãi</a> 
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
+                            <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                                <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                                <a href="?act=register" class="dropdown-item <?php if (isset($_SESSION['role_admin'])) {
+                                                                                    echo "nav-link disabled";
+                                                                                } ?>">Đăng ký thành viên để nhận nhiều ưu đãi</a>
+                            </div>
                         </div>
-                    </div>
-                       <?php  }?>
+                    <?php  } ?>
                     <?php
                     if (isset($_SESSION['user'])) { ?>
                         <div class="btn-group">
@@ -157,7 +163,7 @@ if (isset($_SESSION['user'])) {
         </div>
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
-                <a href="<?=BASE_URL?>" class="text-decoration-none">
+                <a href="<?= BASE_URL ?>" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">FPL</span>
                     <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Bee</span>
                 </a>
@@ -293,150 +299,139 @@ if (isset($_SESSION['user'])) {
     <!-- Breadcrumb End -->
 
 
-    <?php if(empty($data_products)){ ?>
-       <?php echo "Không tìm thấy sản phẩm này"; ?>
-   <?php } else { ?>
-    <!-- Shop Detail Start -->
-    <div class="container-fluid pb-5">
-        <div class="row px-xl-5">
-            <div class="col-lg-5 mb-30">
-                <div id="product-carousel" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner bg-light">
-                        <div class="carousel-item active">
-                            <img class="w-100 h-100" src="<?= $data_products['image'] ?>" alt="Image">
+    <?php if (empty($data_products)) { ?>
+        <?php echo "Không tìm thấy sản phẩm này"; ?>
+    <?php } else { ?>
+        <!-- Shop Detail Start -->
+        <div class="container-fluid pb-5">
+            <div class="row px-xl-5">
+                <div class="col-lg-5 mb-30">
+                    <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner bg-light">
+                            <div class="carousel-item active">
+                                <img class="w-100 h-100" src="<?= $data_products['image'] ?>" alt="Image">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="w-100 h-100" src="<?= $data_variants_black['image'] ?>" alt="Image">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="w-100 h-100" src="<?= $data_variants_blue['image'] ?>" alt="Image">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="w-100 h-100" src="<?= $data_variants_red['image'] ?>" alt="Image">
+                            </div>
                         </div>
-                        <div class="carousel-item">
-                            <img class="w-100 h-100" src="<?= $data_variants_black['image'] ?>" alt="Image">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="w-100 h-100" src="<?= $data_variants_blue['image'] ?>" alt="Image">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="w-100 h-100" src="<?= $data_variants_red['image'] ?>" alt="Image">
-                        </div>
+                        <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                            <i class="fa fa-2x fa-angle-left text-dark"></i>
+                        </a>
+                        <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                            <i class="fa fa-2x fa-angle-right text-dark"></i>
+                        </a>
                     </div>
-                    <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
-                        <i class="fa fa-2x fa-angle-left text-dark"></i>
-                    </a>
-                    <a class="carousel-control-next" href="#product-carousel" data-slide="next">
-                        <i class="fa fa-2x fa-angle-right text-dark"></i>
-                    </a>
                 </div>
-            </div>
 
-            <div class="col-lg-7 h-auto mb-30">
-                <div class="h-100 bg-light p-30">
-                    <h3><?= $data_products['name'] ?></h3>
-                    <h3 class="font-weight-semi-bold mb-4"><?= $data_products['price'] ?></h3>
-                    <p class="mb-4"><?= $data_products['mota'] ?></p>
-                    <div class="d-flex mb-3">
-                        <strong class="text-dark mr-3">Sizes:</strong>
-                        <form>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-2" name="size">
-                                <label class="custom-control-label" for="size-2">S</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-3" name="size">
-                                <label class="custom-control-label" for="size-3">M</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-4" name="size">
-                                <label class="custom-control-label" for="size-4">L</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-5" name="size">
-                                <label class="custom-control-label" for="size-5">XL</label>
-                            </div>
-                        </form>
+                <div class="col-lg-7 h-auto mb-30">
+                    <div class="h-100 bg-light p-30">
+                        <h3><?= $data_products['name'] ?></h3>
+                        <h3 class="font-weight-semi-bold mb-4"><?= $data_products['price'] ?></h3>
+                        <p class="mb-4"><?= $data_products['mota'] ?></p>
+                        <div class="d-flex mb-3">
+                            <form action="?act=add-to-cart&products_id=<?= $data_products['product_id'] ?>" method="POST">
+                                <div class="size-group">
+                                    <strong class="text-dark mr-3">Sizes:</strong>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="size-2" name="size" value="S">
+                                        <label class="custom-control-label" for="size-2">S</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="size-3" name="size" value="M">
+                                        <label class="custom-control-label" for="size-3">M</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="size-4" name="size" value="L">
+                                        <label class="custom-control-label" for="size-4">L</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="size-5" name="size" value="XL">
+                                        <label class="custom-control-label" for="size-5">XL</label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="color-group">
+                                    <strong class="text-dark mr-3">Màu</strong>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="color-1" name="color" value="Đen">
+                                        <label class="custom-control-label" for="color-1">Đen</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="color-2" name="color" value="Trắng">
+                                        <label class="custom-control-label" for="color-2">Trắng</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="color-3" name="color" value="Đỏ">
+                                        <label class="custom-control-label" for="color-3">Đỏ</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" id="color-4" name="color" value="Xanh">
+                                        <label class="custom-control-label" for="color-4">Xanh</label>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-4 pt-2">
+                                    <input type="hidden" name="price_present" id="" value="<?= $data_products['price'] ?>">
+                                    <button class="btn btn-primary px-3" type="submit"><i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ</button> 
+                                    <br>
+                                    <div class="error" style="color: red;"><?php if(isset($error)){echo $error;} ?></div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="d-flex mb-4">
-                        <strong class="text-dark mr-3">Colors:</strong>
-                        <form>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-1" name="color">
-                                <label class="custom-control-label" for="color-1">Black</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-2" name="color">
-                                <label class="custom-control-label" for="color-2">White</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-3" name="color">
-                                <label class="custom-control-label" for="color-3">Red</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="color-4" name="color">
-                                <label class="custom-control-label" for="color-4">Blue</label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="d-flex align-items-center mb-4 pt-2">
-                        <div class="input-group quantity mr-3" style="width: 130px;">
-                            <div class="input-group-btn">
-                                <button class="btn btn-primary btn-minus">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
-                            <div class="input-group-btn">
-                                <button class="btn btn-primary btn-plus">
-                                    <i class="fa fa-plus"></i>
-                                </button>
+                </div>
+            </div>
+            <!-- thu day -->
+            <div class="row px-xl-5">
+                <div class="col">
+                    <div class="bg-light p-30">
+                        <div class="tab-content">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 class="mb-4">1 review for "Product Name"</h4>
+                                        <div class="media mb-4">
+                                            <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                            <div class="media-body">
+                                                <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
+                                                <div class="text-primary mb-2">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                    <i class="far fa-star"></i>
+                                                </div>
+                                                <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 class="mb-4">Nhận xét về sản phẩm</h4>
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="message">Đánh giá của bạn</label>
+                                                <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <input type="submit" value="Gửi đánh giá" class="btn btn-primary px-3">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
-                            Cart</button>
                     </div>
-                 
                 </div>
             </div>
         </div>
-        <!-- thu day -->
-        <div class="row px-xl-5">
-            <div class="col">
-                <div class="bg-light p-30">
-                <div class="tab-content">
-                      <div>
-                          <div class="row">
-                              <div class="col-md-6">
-                                  <h4 class="mb-4">1 review for "Product Name"</h4>
-                                  <div class="media mb-4">
-                                      <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                      <div class="media-body">
-                                          <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                          <div class="text-primary mb-2">
-                                              <i class="fas fa-star"></i>
-                                              <i class="fas fa-star"></i>
-                                              <i class="fas fa-star"></i>
-                                              <i class="fas fa-star-half-alt"></i>
-                                              <i class="far fa-star"></i>
-                                          </div>
-                                          <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <h4 class="mb-4">Nhận xét về sản phẩm</h4>
-                                  <form>
-                                      <div class="form-group">
-                                          <label for="message">Đánh giá của bạn</label>
-                                          <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                      </div>
-                                      <div class="form-group mb-0">
-                                          <input type="submit" value="Gửi đánh giá" class="btn btn-primary px-3">
-                                      </div>
-                                  </form>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Shop Detail End -->
-   <?php }?>
+        <!-- Shop Detail End -->
+    <?php } ?>
 
 
     <!-- Products Start -->
@@ -458,7 +453,8 @@ if (isset($_SESSION['user'])) {
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                                <h5>$123.00</h5>
+                                <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
                                 <small class="fa fa-star text-primary mr-1"></small>
@@ -483,7 +479,8 @@ if (isset($_SESSION['user'])) {
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                                <h5>$123.00</h5>
+                                <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
                                 <small class="fa fa-star text-primary mr-1"></small>
@@ -508,7 +505,8 @@ if (isset($_SESSION['user'])) {
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                                <h5>$123.00</h5>
+                                <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
                                 <small class="fa fa-star text-primary mr-1"></small>
@@ -533,7 +531,8 @@ if (isset($_SESSION['user'])) {
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                                <h5>$123.00</h5>
+                                <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
                                 <small class="fa fa-star text-primary mr-1"></small>
@@ -558,7 +557,8 @@ if (isset($_SESSION['user'])) {
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                                <h5>$123.00</h5>
+                                <h6 class="text-muted ml-2"><del>$123.00</del></h6>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
                                 <small class="fa fa-star text-primary mr-1"></small>
