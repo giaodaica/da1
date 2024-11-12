@@ -12,15 +12,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
-    p {
-        font-weight: bold;
-
-    }
-
-    .hero {
-        display: flex;
-        gap: 20px;
-    }
 
 
 </style>
@@ -34,7 +25,7 @@
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
-
+    <link rel="stylesheet" href="css/style.hieu.css">
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -64,33 +55,35 @@
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center" style="padding-right: 100px;">
                     <?php
-                    if(isset($data_Gift) && !empty($data_Gift)){?>
+                    if (isset($data_Gift) && !empty($data_Gift)) { ?>
                         <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"> <?php echo count($data_Gift) ?></i></a>
-                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
-                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
-                           <?php foreach($data_Gift as $Gift){ ?>
-                            <a href="?act=shop" class="dropdown-item"><?= $Gift['code']."(-".$Gift['discount_percent']*100?>%) Mua sắm ngay!!</a> 
-                          <?php } ?>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"> <?php echo count($data_Gift) ?></i></a>
+                            <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                                <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                                <?php foreach ($data_Gift as $Gift) { ?>
+                                    <a href="?act=shop" class="dropdown-item"><?= $Gift['code'] . "(-" . $Gift['discount_percent'] * 100 ?>%) Mua sắm ngay!!</a>
+                                <?php } ?>
+                            </div>
                         </div>
-                    </div>
-                    <?php } elseif (isset($_SESSION['user']) && empty($data_Gift)){ ?>
+                    <?php } elseif (isset($_SESSION['user']) && empty($data_Gift)) { ?>
                         <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
-                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
-                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
-                            <a href="?act=shop" class="dropdown-item <?php echo "nav-link disabled"?>">Bạn đã sử dụng hết voucher!!</a> 
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
+                            <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                                <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                                <a href="?act=shop" class="dropdown-item <?php echo "nav-link disabled" ?>">Bạn đã sử dụng hết voucher!!</a>
+                            </div>
                         </div>
-                    </div>
-                     <?php } else{ ?>
+                    <?php } else { ?>
                         <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
-                        <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
-                            <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
-                            <a href="?act=register" class="dropdown-item <?php if(isset($_SESSION['role_admin'])){echo "nav-link disabled";} ?>" >Đăng ký thành viên để nhận nhiều ưu đãi</a> 
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bell text-primary"></i></a>
+                            <div class="dropdown-menu rounded-0 border-0 m-0 custom-dropdown">
+                                <label class="dropdown-item" style="font-weight: bold;">Voucher Của Bạn</label>
+                                <a href="?act=register" class="dropdown-item <?php if (isset($_SESSION['role_admin'])) {
+                                                                                    echo "nav-link disabled";
+                                                                                } ?>">Đăng ký thành viên để nhận nhiều ưu đãi</a>
+                            </div>
                         </div>
-                    </div>
-                       <?php  }?>
+                    <?php  } ?>
                     <?php
                     if (isset($_SESSION['user'])) { ?>
                         <div class="btn-group">
@@ -136,7 +129,7 @@
         </div>
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
+                <a href="<?=BASE_URL?>" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">FPL</span>
                     <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Bee</span>
                 </a>
@@ -280,27 +273,37 @@
                         Trang Chủ
                     </a>
                     <a href="#" class="history_shop list-group-item list-group-item-action">Lịch sử mua hàng</a>
-                    <a href="#" class="info-ctm list-group-item list-group-item-action" id="info_ctm"<?php if(empty($data_Custm)){echo "success='true'"; }else{ echo "success='fale'"; } ?> >Tài khoản của bạn</a>
+                    <a href="?act=info_detail" class="info-ctm list-group-item list-group-item-action" id="info_ctm" <?php if (empty($data_Custm)) {
+                                                                                                            echo "success='true'";
+                                                                                                        } else {
+                                                                                                            echo "success='fale'";
+                                                                                                        } ?>>Tài khoản của bạn</a>
                 </div>
             </div>
-            <div class="col-8" id="hero-side">
-                <div class="hero">
-                    <p for="" class="">Trần Trung Hiếu</p>
-                    <label for="">0293092309</label>
+            <div class="Ctotal" id="">
+                <div class="info">
+                    <b><?=  empty($data_Custm['full_name']) ? "Chào bạn" : $data_Custm['full_name'] ?></b>
+                    <p><?= empty($data_Custm['phone']) ? "" : $data_Custm['phone'] ?></p>
                 </div>
-                <div class="container text-center">
-                    <div class="row">
-                        <div class="col">
-                            Tổng số đơn hàng <br>
-                            0
-                        </div>
-                        <div class="col order-5">
-                            Tổng tiền tích lũy <br>
-                            0
-                        </div>
+                <?php if (empty($data_Custm)) { ?>
+                    <button type="button" class="btn-custom" style="background-color: #D0F2ff;">Cập nhật thông tin cá nhân và địa chỉ để có trải nghiệm đặt hàng nhanh và thuận tiện hơn<a class="hander_if" href="?act=info_detail">Cập Nhật</a></button>
+                <?php } ?>
+                <div class="total">
+                    <div class="left">
+                        0
+                        <br>
+                        Đơn hàng
+                    </div>
+                    <div class="divider"></div>
+                    <div class="right">
+                        0đ
+                        <br>
+                       Tổng tiền tích lũy
                     </div>
                 </div>
+                
             </div>
+
         </div>
     </div>
 

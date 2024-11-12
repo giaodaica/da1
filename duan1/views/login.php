@@ -226,9 +226,7 @@ a:hover {
 						<span class="input-group-addon"><span class="fa fa-user"></span></span>
 						<input type="text" class="form-control" name="username" placeholder="Username"<?php if(isset($autofocus)){echo'autofocus';}?>>
 					</div>
-          <span style="color: red;"><?php if (isset($errorU)) {
-                                                    echo $errorU;
-                                                } ?></span>
+          <span style="color: red;"><?php if (isset($errorUL)) {echo $errorUL;} ?></span>
                     <hr />
                    
 					<div class="input-group">
@@ -237,8 +235,8 @@ a:hover {
                                                                                                             echo 'autofocus';
                                                                                                         } ?>>
 					</div>
-                    <span style="color: red;"><?php if (isset($errorP)) {
-                                                    echo $errorP;
+                    <span style="color: red;"><?php if (isset($errorPL)) {
+                                                    echo $errorPL;
                                                 } ?></span>
                     <span class="tag tag-danger"><a href="?act=register">Chưa Có Tài Khoản Đăng Ký Ngay</a></span> 
                     <hr />

@@ -214,7 +214,11 @@
                       <div class="collapse" id="subnav2">
                         <ul class="nav nav-collapse subnav">
                           <li>
+<<<<<<< HEAD
                             <a href="?act=list_product">
+=======
+                            <a href="?act=hienthisanpham">
+>>>>>>> 9f404fb9d90bd9af140c13eb16d9fdb68fa06322
                               <span class="sub-item">Danh sách sản phẩm</span>
                             </a>
                             

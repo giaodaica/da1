@@ -22,6 +22,13 @@ match($act){
     'shop-Contact' => $shop->handerContact(),
     // phần khách hàng
     'info' => $customers->renderInfo(),
+    'info_detail' =>$customers->render_Infodetail(),
+    'insert_Info' =>$customers->hander_insert_info(),
+    'update_Info' => $customers->hander_update_info(),
+    // phần sản phẩm
+    'products_detail' => $shop->products_detail(),
+    'add-to-cart' => $shop->Add_to_Cart(),
+    'thanhtoan' => $shop->checkquan(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 
