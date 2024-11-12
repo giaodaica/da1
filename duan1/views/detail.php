@@ -378,6 +378,7 @@ if (isset($_SESSION['user'])) {
                                 </div>
                                 <div class="d-flex align-items-center mb-4 pt-2">
                                     <input type="hidden" name="price_present" id="" value="<?= $data_products['price'] ?>">
+                                    <input type="hidden" name="name" id="" value="<?= $data_products['name'] ?>">
                                     <button class="btn btn-primary px-3" type="submit"><i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ</button> 
                                     <br>
                                     <div class="error" style="color: red;"><?php if(isset($error)){echo $error;} ?></div>

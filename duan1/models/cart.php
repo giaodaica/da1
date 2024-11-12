@@ -16,4 +16,10 @@ class shoping_cart extends database {
          VALUES ( '$cart_id', '$product_id', '$size', '$color', '1', '$image', '$price_present')";
          $this->conn->exec($sql);
     }
+    public function check_duplicate_cart($cart_id, $product_id, $size, $color){
+        $sql = "SELECT * FROM cart_items WHERE cart_id = '$cart_id' AND product_id = '$product_id' AND color = '$color' AND size = '$size';";
+        $stmt =  $this->conn->query($sql);
+        $stmt ->execute();
+        return $stmt->fetch();
+    }
 }
