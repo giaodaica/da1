@@ -214,9 +214,6 @@
                       <div class="collapse" id="subnav2">
                         <ul class="nav nav-collapse subnav">
                           <li>
-                          <a href="?act=add_product">
-                              <span class="sub-item">Thêm sản phẩm</span>
-                            </a>
                             <a href="?act=list_product">
                               <span class="sub-item">Danh sách sản phẩm</span>
                             </a>

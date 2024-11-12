@@ -655,8 +655,8 @@
                       <td><?= $data_product['status']; ?></td>
                       <td><img src="<?= "./uploads/aothun.png"; ?>" alt="" width="50"></td>
                       <td>
-                          <a href="?act=delete_product&product_id=<?= $data_product['product_id'] ?>" style="border-radius: 5px; background-color: red; color:white; padding: 10px 10px 10px"></style>Xóa</a>
-                          <a href="?act=update_product&product_id=<?= $data_product['product_id']?>" style="border-radius: 5px; background-color: gray; color:white; padding: 10px 10px 10px"></style>Sửa</a>
+                          <a href="?act=delete_product&product_id=<?= $data_product['product_id']?>" class="btn btn-danger">Xóa</a>
+                          <a href="?act=update_product&product_id=<?= $data_product['product_id']?>" class=" btn btn-secondary">Sửa</a>
                       </td>
                     </tr>
                   <?php } ?>
