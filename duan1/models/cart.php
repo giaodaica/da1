@@ -22,4 +22,26 @@ class shoping_cart extends database {
         $stmt ->execute();
         return $stmt->fetch();
     }
+    public function update_quantity($value,$cart_id){
+        $sql = "UPDATE `cart_items` SET `quantity` = '$value' WHERE `cart_items`.`cart_item_id` = '$cart_id'";
+        // echo $sql;
+        // die;
+        $this->conn->exec($sql);
+    }
+    public function sum_total($cart_id){
+        $sql = "SELECT SUM(cart_items.quantity * cart_items.price) AS tong 
+        FROM cart_items 
+        WHERE cart_id = '$cart_id';";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    public function delete_item($cart_item_id){
+        $sql = "DELETE FROM `cart_items` WHERE `cart_items`.`cart_item_id` = '$cart_item_id';";
+        $this->conn->exec($sql);
+    }
+    public function delete_cart($id){
+        $sql = "DELETE FROM cart_items WHERE cart_id = $id;";
+        $this->conn->exec($sql);
+    }
 }

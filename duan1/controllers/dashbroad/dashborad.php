@@ -7,11 +7,13 @@
         $this->categories = new Categories_models;
         $this->voucher_By_User = new Voucher_model;
         $this->prod = new products;
+        // $this->cart = new 
     }
     public function home(){
         session_start();
          $d = $this->categories->select();
          $products = $this->prod->select();
+        //  $shoping_Cart = $this->
          if(isset($_SESSION['id'])){
             $data_Gift = $this->voucher_By_User->select_Gift_byUserID($_SESSION['id']);
          }

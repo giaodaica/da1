@@ -28,7 +28,10 @@ match($act){
     // phần sản phẩm
     'products_detail' => $shop->products_detail(),
     'add-to-cart' => $shop->Add_to_Cart(),
-    'thanhtoan' => $shop->checkquan(),
+    'update_quantity' => $shop->hander_update_quantity(),
+    'apply_voucher' => $shop->apply_voucher(),
+    'dathang' => $shop->dathang(),
+    'delete_item_cart' => $shop->delete_select(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

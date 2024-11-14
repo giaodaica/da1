@@ -10,7 +10,7 @@ $act = $_GET['act'] ?? "home";
 match($act){
     'home' => $admin->home_Admin(),
     'logout' => $admin->logout(),
-    'hienthisanpham' =>$admin->hienthisanpham(),
-    'add_products' => $admin->add_products(),
-    'post_products' => $admin->post_sanpham()
+    // 'hienthisanpham' =>$admin->hienthisanpham(),
+    // 'add_products' => $admin->add_products(),
+    // 'post_products' => $admin->post_sanpham()
 };

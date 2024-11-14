@@ -9,7 +9,7 @@ class Voucher_model extends database
     }
     public function select_Gift_byUserID($id)
     {
-        $sql = "SELECT user_vouchers.user_id,
+        $sql = "SELECT user_vouchers.user_id,user_vouchers.voucher_id,
         vouchers.code,
         vouchers.discount_percent
         FROM user_vouchers
