@@ -1,13 +1,22 @@
 <?php
-// print_r($products);
-// print_r($data_cart);
+// echo "<pre>";
+// // print_r($products);
+// // print_r($data_cart);
+// print_r($_GET);
 // print_r($data_voucher);
+// print_r($_POST);
 if (isset($_SESSION['user'])) {
     $username = $_SESSION['user'];
 } else {
     $username = '';
 }
 ?>
+<style>
+    .hello_g {
+        font-size: large;
+        color: black;
+    }
+</style>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -293,7 +302,7 @@ if (isset($_SESSION['user'])) {
         </div>
     </div>
     <!-- Breadcrumb End -->
-
+    <!-- Cart Start -->
     <?php if (empty($data_cart)) { ?>
         <div class="container"><?php echo "Giỏ hàng trống" ?></div>
     <?php } else { ?>
@@ -305,189 +314,255 @@ if (isset($_SESSION['user'])) {
                     <table class="table table-light table-borderless table-hover text-center mb-0">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Sản phẩm</th>
+                                <th>Sản Phẩm</th>
                                 <th>Giá</th>
-                                <th>size</th>
                                 <th>Số lượng</th>
-                                <th>Thành tiền</th>
-                                <th>Hành động</th>
+                                <th>Tổng</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody class="align-middle">
                             <?php
-                            foreach ($data_cart as $cart) {
+                            $total = 0;
+                            foreach ($data_cart as $render_cart) {
+                                $total += $render_cart['quantity'] * $render_cart['price'];
                             ?>
                                 <tr>
+                                    <td class="align-middle"><img src="<?php echo $render_cart['image'] ?>" alt="" style="width: 50px;"><?= $render_cart['name'] . " " . $render_cart['color'] ?></td>
+                                    <td class="align-middle"><?= $render_cart['price'] ?></td>
                                     <td class="align-middle">
-                                        <img src="<?php echo $cart['image'] ?>" alt="" style="width: 50px;">
-                                        <?php echo ' ' . $cart['name'] . ' ' . $cart['color'] ?>
-                                    </td>
-                                    <td class="align-middle price" data-price="<?= $cart['price'] ?>"><?= $cart['price'] ?></td> <!-- Lớp "price" và data-price cho giá -->
-                                    <td><?= $cart['size'] ?></td>
-                                    <td class="align-middle">
-                                        <div class="input-group quantity mx-auto" style="width: 100px;">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-primary btn-minus">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
+                                        <form action="?act=update_quantity&cart_item_id=<?php if (isset($render_cart['cart_item_id'])) {
+                                                                                            echo $render_cart['cart_item_id'];
+                                                                                        } else {
+                                                                                            echo $render_cart['id'];
+                                                                                        }; ?>" method="Post">
+                                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sm btn-primary btn-minus">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="<?= $render_cart['quantity'] ?>" name="quantity">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sm btn-primary btn-plus">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center quantity-input" value="1" name="quantity">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-primary btn-plus">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </td>
-                                    <td class="align-middle total"><?= $cart['price'] ?></td> <!-- Lớp "total" cho thành tiền -->
-                                    <td class="align-middle">
-                                        <button class="btn btn-sm btn-danger"><a href="?act=delete-item-cart"><i class="fa fa-times"></i></a></button>
-                                    </td>
+                                    <td class="align-middle"><?= number_format($render_cart['quantity'] * $render_cart['price']) ?></td>
+                                    <td class="align-middle"><a href="?act=delete_item_cart&id_cart=<?= isset($render_cart['cart_item_id']) ? $render_cart['cart_item_id'] : $render_cart['id']; ?>"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></a></td>
                                 </tr>
-                            <?php } ?>
+                            <?php }
+                            ?>
                         </tbody>
                     </table>
                 </div>
-                <!-- // phần giảm giá -->
                 <div class="col-lg-4">
-                    <form class="mb-30" id="coupon-form" action="?act=add_voucher" method="post">
-
-                        <input type="text" class="form-control border-0 p-4" id="coupon-code" placeholder="Nhập Mã Giảm Giá">
-                        <button>Nhập Mã</button>
-                    </form>
-                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Tổng Thanh Toán</span></h5>
-                    <form action="?act=thanhtoan" method="post">
-                        <div class="bg-light p-30 mb-5">
+                    <?php
+                    if (isset($_SESSION['user'])) { ?>
+                        <form class="mb-30" action="" method="post">
                             <div class="input-group">
-                                <select name="discount_percent" id="voucher-select">
-                                    <option value="">Chọn Mã Giảm Giá</option>
-                                    <?php foreach ($data_voucher as $voucher) { ?>
-                                        <option value="<?php echo $voucher['discount_percent']?>" data-code="<?php echo $voucher['code']; ?>">
-                                            <?php echo $voucher['code']; ?> - Giảm <?php echo $voucher['discount_percent'] * 100; ?>%
-                                        </option>
-                                    <?php } ?>
-                                </select>
+                                <?php
+                                if (empty($data_voucher)) { ?>
+                                    <input type="text" name="" id="">
+                                <?php } else { ?>
+                                    <select name="voucher" id="">
+                                        <?php foreach ($data_voucher as $render_voucher) { ?>
+                                            <option value="<?php echo $render_voucher['discount_percent'] ?>"><?php echo $render_voucher['code'] . " Giảm " . $render_voucher['discount_percent'] * 100; ?>%</option>
+                                        <?php } ?>
+                                    </select>
+                                <?php } ?>
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" id="apply-coupon">Áp Dụng Mã</button>
+                                    <input type="hidden" name="voucher_id" value="<?php foreach($data_voucher as $data_her){
+                                        if(isset($_POST['voucher'])){
+                                            $voucher = $_POST['voucher'];
+                                        }else{
+                                            $voucher = "";
+                                        }
+                                        if($data_her['discount_percent'] == $voucher){
+                                            echo $data_her['voucher_id'];
+                                        }
+                                    }?>">
+                                    <button class="btn btn-primary">Áp dụng voucher</button>
                                 </div>
                             </div>
-                            <br>
-                            <div class="border-bottom pb-2">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h6>Tổng</h6>
-                                    <h6 id="cart-subtotal">$150</h6> <!-- Placeholder for subtotal -->
-                                </div>
+                        </form>
+                    <?php  }
+                    ?>
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Tổng</span></h5>
+                    <div class="bg-light p-30 mb-5">
+                        <div class="border-bottom pb-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6>Tổng Tiền</h6>
+                                <h6><?= number_format($total) ?></h6>
+                            </div>
+                            <?php if (isset($_SESSION['user'])) { ?>
                                 <div class="d-flex justify-content-between">
-                                    <h6 class="font-weight-medium">Giảm Giá</h6>
-                                    <h6 class="font-weight-medium" id="discount-amount">$0</h6> <!-- Placeholder for discount -->
+                                    <h6 class="font-weight-medium">Ưu đãi</h6>
+                                    <h6 class="font-weight-medium"><?php
+                                                                    if (isset($_POST['voucher'])) {
+                                                                        echo ($_POST['voucher'] * 100) . "%";
+                                                                    } else {
+                                                                        echo "0";
+                                                                    } ?></h6>
                                 </div>
-                            </div>
-
-                            <div class="pt-2">
+                            <?php } else { ?>
+                                <div class="d-flex justify-content-between">
+                                    <?php if (!isset($_SESSION['user'])) { ?>
+                                        <h6 class="font-weight-medium">Ưu đãi</h6>
+                                        <h6 class="font-weight-medium">Giảm 50% khi đăng ký tài khoản</h6>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <div class="pt-2">
+                            <form action="?act=shop-Pay" method="post">
                                 <div class="d-flex justify-content-between mt-2">
-                                    <h5>Thanh Toán</h5>
-                                    <h5 id="total-amount">$160</h5> <!-- Placeholder for total -->
+                                    <h5>Thanh toán</h5>
+                                    <h5><?php if (!isset($_SESSION['user'])) { ?>
+                                            <del><?php echo (isset($_POST['voucher'])) ? number_format(($total - $total * $_POST['voucher']), 0) . "Đ" : number_format($total) . "Đ"; ?></del>
+                                        <?php } else { ?>
+                                            <?php echo (isset($_POST['voucher'])) ? number_format(($total - $total * $_POST['voucher']), 0) . "Đ" : number_format($total) . "Đ"; ?>
+                                        <?php  } ?>
+                                    </h5>
                                 </div>
-                                <input type="hidden" name="product_quantities" id="product-quantities">
-                                <button class="btn btn-block btn-danger font-weight-bold my-3 py-3">Thanh Toán</button>
-                                </a>
-                            </div>
+                                <?php if (!isset($_SESSION['user'])) { ?>
+                                    <div class="hello_g" style="padding-left: 290px;"><b><?= number_format($total - ($total * 0.5)) . "Đ" ?></b></div>
+                                <?php } ?>
+                                    <input type="hidden" name="voucher" value="<?php if(isset($_POST['voucher'])){echo $_POST['voucher'];} ?>">
+                                    <input type="hidden" name="voucher_id" value="<?php if(isset($_POST['voucher_id'])){echo $_POST['voucher_id'];} ?>">
+                                    <input type="hidden" name="total" value="<?php if(isset($_POST['voucher'])){ echo ($total - $total * $_POST['voucher']); }else{echo $total;} ?>">
+                                <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" <?php if (!isset($_SESSION['user'])) {
+                                                                                                            echo "id='guest_submit'";
+                                                                                                        } ?>>Thanh Toán</button>
+                            </form>
                         </div>
-                    </form>
-                </div>
-                <!-- hết phần giảm giá -->
-            <?php } ?>
-
-
-            <!-- Footer Start -->
-            <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
-                <div class="row px-xl-5 pt-5">
-                    <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                        <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                        <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-                        <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-                        <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
-                    </div>
-                    <div class="col-lg-8 col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
-                                <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                    <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
-                                <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                    <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                    <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-                                <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-                                <form action="">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Your Email Address">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary">Sign Up</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                                <div class="d-flex">
-                                    <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                                    <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                                    <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                                    <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
-                    <div class="col-md-6 px-xl-0">
-                        <p class="mb-md-0 text-center text-md-left text-secondary">
-                            &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
-                            by
-                            <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
-                            <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                        </p>
-                    </div>
-                    <div class="col-md-6 px-xl-0 text-center text-md-right">
-                        <img class="img-fluid" src="img/payments.png" alt="">
                     </div>
                 </div>
             </div>
-            <!-- Footer End -->
+        </div>
+
+    <?php } ?>
+    <!-- Cart End -->
 
 
-            <!-- Back to Top -->
-            <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
+                <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
+                        <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Your Email Address">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary">Sign Up</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
+                        <div class="d-flex">
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-secondary">
+                    &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
+                    by
+                    <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
+                    <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="img/payments.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
 
 
-            <!-- JavaScript Libraries -->
-            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-            <script src="lib/easing/easing.min.js"></script>
-            <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-            <!-- Contact Javascript File -->
-            <script src="mail/jqBootstrapValidation.min.js"></script>
-            <script src="mail/contact.js"></script>
 
-            <!-- Template Javascript -->
-            <script src="js/main.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </body>
+
+<script>
+    const btn_guest = document.getElementById("guest_submit");
+
+    function confirm_hieu() {
+        btn_guest.addEventListener("click", function(event) {
+            // Hiển thị hộp thoại confirm và kiểm tra kết quả
+            const userConfirmed = confirm("Bạn đồng ý tạo tài khoản để nhận được ưu đãi?");
+
+            // Nếu người dùng chọn OK, chuyển đến trang a.php
+            if (userConfirmed) {
+                window.location.href = "?act=register";
+            } else {
+                // Nếu người dùng chọn Cancel, chuyển đến trang b.php
+                window.location.href = "?act=shop-Pay";
+            }
+
+            // Ngừng hành động mặc định (nếu có)
+            event.preventDefault();
+        });
+    }
+
+    // Gọi hàm để gắn sự kiện cho nút
+    confirm_hieu();
+    
+</script>
 
 </html>

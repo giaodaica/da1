@@ -26,7 +26,13 @@ match($act){
 
 
     'logout' => $admin->logout(),
+
     'add_products' => $admin->add_products(),
     'post_products' => $admin->post_sanpham()
+
+
+    // 'hienthisanpham' =>$admin->hienthisanpham(),
+    // 'add_products' => $admin->add_products(),
+    // 'post_products' => $admin->post_sanpham()
 
 };

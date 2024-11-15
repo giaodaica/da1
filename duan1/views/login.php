@@ -1,4 +1,6 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="css/style.hieu.css">
+
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
@@ -224,18 +226,18 @@ a:hover {
 			    <form class="kpx_loginForm" action="?act=check_login" autocomplete="off" method="POST">
 					<div class="input-group">
 						<span class="input-group-addon"><span class="fa fa-user"></span></span>
-						<input type="text" class="form-control" name="username" placeholder="Username"<?php if(isset($autofocus)){echo'autofocus';}?>>
+						<input type="text" class="form-control" name="username" placeholder="Username"<?php if(isset($autofocus)){echo'autofocus';}?> id="username">
 					</div>
-          <span style="color: red;"><?php if (isset($errorUL)) {echo $errorUL;} ?></span>
+          <span id="eU" style="color: red;"><?php if (isset($errorUL)) {echo $errorUL;} ?></span>
                     <hr />
                    
 					<div class="input-group">
 						<span class="input-group-addon"><span class="fa fa-key"></span></span>
 						<input  type="password" class="form-control" name="password" placeholder="Password" <?php if (isset($autofocus)) {
                                                                                                             echo 'autofocus';
-                                                                                                        } ?>>
+                                                                                                        } ?> id="password">
 					</div>
-                    <span style="color: red;"><?php if (isset($errorPL)) {
+                    <span id="eP" style="color: red;"><?php if (isset($errorPL)) {
                                                     echo $errorPL;
                                                 } ?></span>
                     <span class="tag tag-danger"><a href="?act=register">Chưa Có Tài Khoản Đăng Ký Ngay</a></span> 
@@ -295,4 +297,47 @@ a:hover {
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
+    const username = document.getElementById("username");
+    const eU = document.getElementById("eU");
+
+    const phone = document.getElementById("password");
+    const eP = document.getElementById("eP");
+
+
+    // Kiểm tra Họ và Tên
+    username.addEventListener("blur", () => {
+        if (username.value.trim() === "") {
+            eU.style.display = "block";
+            eU.innerHTML = "Bạn không được để trống trường này";
+        } else if (username.value.trim().length < 5) {
+            eU.style.display = "block";
+            eU.innerHTML = "Tài khoản phải từ 6 ký tự";
+        } 
+         else {
+            eU.style.display = "none";
+        }
+    });
+    username.addEventListener("focus", () => {
+        eU.style.display = "none";
+    });
+
+    password.addEventListener("blur", () => {
+        if (password.value.trim() === "") {
+            eP.style.display = "block";
+            eP.innerHTML = "Bạn không được để trống trường này";
+        } else if (Psername.valPe.trim().length < 5) {
+            eP.style.display = "block";
+            eP.innerHTML = "Mật khẩu phải từ 6 ký tự";
+        } 
+         else {
+            eP.style.display = "none";
+        }
+    });
+    password.addEventListener("focus", () => {
+        eU.style.display = "none";
+    });
+    
+
+
 </script>

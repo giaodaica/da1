@@ -396,23 +396,27 @@
                 <form class="kpx_loginForm" action="?act=post_register" autocomplete="off" method="POST">
                     <div class="input-group">
                         <span class="input-group-addon"><span class="fa fa-user"></span></span>
-                        <input type="text" class="form-control" name="username" placeholder="Username" <?php if (isset($autofocus)) {
+                        <input id="username" type="text" class="form-control" name="username" placeholder="Username" <?php if (isset($autofocus)) {
                                                                                                             echo 'autofocus';
                                                                                                         } ?>>
                     </div>
+                    <span id="eU" style="color: red;"><?php if (isset($error)) {
+                                                    echo $error;
+                                                } ?></span>    
                     <hr />
-
+                                                                                                    
                     <div class="input-group">
-                        <span class="input-group-addon"><span class="fa fa-key"></span></span>
                         <input type="password" class="form-control" name="password" placeholder="Password" <?php if (isset($autofocus)) {
                                                                                                                 echo 'autofocus';
-                                                                                                            } ?>>
+                                                                                                            } ?> id="password">
+                                                                                                            
                     </div>
-                    <!-- <span class="tag tag-danger">Password Error!</span> | <span class="tag tag-success">Login success!</span> | <span class="tag tag-warning">Some of password must not be empty!</span> -->
-                    <hr />
-                    <span style="color: red;"><?php if (isset($error)) {
+                    <span id="eP" style="color: red;"><?php if (isset($error)) {
                                                     echo $error;
                                                 } ?></span>
+                    <!-- <span class="tag tag-danger">Password Error!</span> | <span class="tag tag-success">Login success!</span> | <span class="tag tag-warning">Some of password must not be empty!</span> -->
+                    <hr />
+                    
                     <span class="tag tag-danger"><a href="?act=login">Đăng Nhập</a></span>
 
                     <button class="btn btn-lg btn-outline-primary btn-block" type="submit"><i class="fa fa-sign-in"></i> Đăng Ký</button>
@@ -468,4 +472,45 @@
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
+     const username = document.getElementById("username");
+    const eU = document.getElementById("eU");
+
+    const phone = document.getElementById("password");
+    const eP = document.getElementById("eP");
+
+
+    // Kiểm tra Họ và Tên
+    username.addEventListener("blur", () => {
+        if (username.value.trim() === "") {
+            eU.style.display = "block";
+            eU.innerHTML = "Bạn không được để trống trường này";
+        } else if (username.value.trim().length < 5) {
+            eU.style.display = "block";
+            eU.innerHTML = "Tài khoản phải từ 6 ký tự";
+        } 
+         else {
+            eU.style.display = "none";
+        }
+    });
+    username.addEventListener("focus", () => {
+        eU.style.display = "none";
+    });
+
+    password.addEventListener("blur", () => {
+        if (password.value.trim() === "") {
+            eP.style.display = "block";
+            eP.innerHTML = "Bạn không được để trống trường này";
+        } else if (Psername.valPe.trim().length < 5) {
+            eP.style.display = "block";
+            eP.innerHTML = "Mật khẩu phải từ 6 ký tự";
+        } 
+         else {
+            eP.style.display = "none";
+        }
+    });
+    password.addEventListener("focus", () => {
+        eU.style.display = "none";
+    });
+    
+
 </script>
