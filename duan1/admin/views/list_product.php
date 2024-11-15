@@ -626,6 +626,7 @@
           <div class="page-category">
             <a href="?act=add_product" style="border-radius: 5px; background-color: green; color:white; padding: 10px 10px 10px">Thêm sản phẩm</a>
             <hr>
+
             <!-- danh sách sản phẩm -->
             <div
               class="table-responsive">
@@ -649,22 +650,24 @@
                     <tr>
                       <td><?= $data_product['product_id']; ?></td>
                       <td><?= $data_product['name']; ?></td>
-                      <td><?= $data_product['category_id']; ?></td>
+                      <td><?= $data_product['category']; ?></td>
                       <td><?= $data_product['price']; ?></td>
                       <td><?= $data_product['stock_quantity']; ?></td>
                       <td><?= $data_product['status']; ?></td>
-                      <td><img src="<?= "./uploads/aothun.png"; ?>" alt="" width="50"></td>
+                      <td><img src="<?= $data_product['image']; ?>" alt="" width="70" height="90"></td>
                       <td>
-                          <a href="?act=delete_product&product_id=<?= $data_product['product_id']?>" class="btn btn-danger">Xóa</a>
-                          <a href="?act=update_product&product_id=<?= $data_product['product_id']?>" class=" btn btn-secondary">Sửa</a>
+                        <a href="?act=delete_product&product_id=<?= $data_product['product_id']; ?>"
+                          class="btn btn-danger"
+                          onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                          Xóa
+                        </a>
+                        <a href="?act=view_update_product&product_id=<?= $data_product['product_id'] ?>" class=" btn btn-primary">Sửa</a>
                       </td>
                     </tr>
                   <?php } ?>
                 </tbody>
               </table>
             </div>
-
-
           </div>
         </div>
         <!--end danh sách sản phẩm -->

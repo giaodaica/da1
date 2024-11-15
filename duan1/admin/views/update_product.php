@@ -621,33 +621,45 @@
             </ul>
           </div>
           <div class="page-category">
-            <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">THÊM MỚI SẢN PHẨM</h3>
+            <!-- <?php 
+            echo "<pre>";
+            print_r($data);
+            print_r($category);
+            ?> -->
+            <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">CẬP NHẬP SẢN PHẨM</h3>
             <hr>
-            <form action="?act=post_product" method="post" enctype="multipart/form-data">
+            <form action="?act=update_product&product_id=<?= $data['product_id'];?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="product_id" value="<?= $data['product_id'] ?>">
               <div class="mb-3">
                 <label class="form-label">Tên Sản Phẩm</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <input type="text" class="form-control" id="" name="name" value="<?= $data['name'] ?>">
               </div>
-              <div class="mb-3">
-                    <select class="form-select" id="" name="category_id">
-                      <option >Danh Mục</option>
-                      <?php foreach ($data_danhmuc as $data_cat) { ?>
-                        <option value="<?php echo $data_cat['category_id'] ?>"><?php echo $data_cat['name'] ?></option>
-                      <?php } ?>
-                    </select>
-              </div>
+             <div class="mb-3">
+              <label for="" class="form-label">Tên Danh Mục</label>
+              <input
+              value="<?= $data['category']?>"
+                type="text"
+                name=""
+                id=""
+                class="form-control"
+                placeholder=""
+                aria-describedby="helpId"
+             readonly />
+             <input type="hidden" name="category_id" id="" value="<?php echo $data['category_id'] ?>">
+             </div>
+             
               <div class="mb-3">
                 <label class="form-label">Giá Tiền</label>
-                <input type="text" class="form-control" id="price" name="price">
+                <input type="text" class="form-control" id="" name="price" value="<?= $data['price'] ?>">
               </div>
               <div class="mb-3">
                 <label class="form-label">Số Lượng Tồn Kho</label>
-                <input type="text" class="form-control" id="stock_quantity" name="stock_quantity">
+                <input type="text" class="form-control" id="" name="stock_quantity" value="<?= $data['stock_quantity'] ?>">
               </div>
               <div class="mb-3">
                 <div class="d-flex">
                   <div class="input-group mb-3">
-                    <select class="form-select" id="status" name="status">
+                    <select class="form-select" id="" name="status" value="<?= $data['status'] ?>">
                       <option selected>Trạng thái</option>
                       <option value="Available">Có sẵn</option>
                       <option value="Unavailable">Không có sẵn</option>
@@ -656,10 +668,11 @@
                 </div>
               </div>
               <div class="mb-3">
+                <img src="<?= $data['image'] ?>" alt="" width="100">
                 <label for="formFile" class="form-label">Ảnh</label>
-                <input class="form-control" type="file" id="image" name="image">
+                <input class="form-control" type="file" id="" name="image" value="<?= $data['image'] ?>">
               </div>
-              <button type="submit" class="btn btn-success">Lưu</button>
+              <button type="submit" class="btn btn-success">Cập nhập sản phẩm</button>
             </form>
           </div>
         </div>

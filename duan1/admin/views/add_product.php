@@ -623,14 +623,14 @@
           <div class="page-category">
             <h3 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">THÊM MỚI SẢN PHẨM</h3>
             <hr>
-            <form action="?act=post_product" method="post" enctype="multipart/form-data">
+            <form action="?act=post_product" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
               <div class="mb-3">
                 <label class="form-label">Tên Sản Phẩm</label>
                 <input type="text" class="form-control" id="name" name="name">
               </div>
               <div class="mb-3">
                     <select class="form-select" id="" name="category_id">
-                      <option >Danh Mục</option>
+                      <option value="">Danh Mục</option>
                       <?php foreach ($data_danhmuc as $data_cat) { ?>
                         <option value="<?php echo $data_cat['category_id'] ?>"><?php echo $data_cat['name'] ?></option>
                       <?php } ?>
@@ -649,8 +649,8 @@
                   <div class="input-group mb-3">
                     <select class="form-select" id="status" name="status">
                       <option selected>Trạng thái</option>
-                      <option value="Available">Có sẵn</option>
-                      <option value="Unavailable">Không có sẵn</option>
+                      <option value="Available">Available</option>
+                      <option value="Unavailable">Unavailable</option>
                     </select>
                   </div>
                 </div>
@@ -730,6 +730,8 @@
 
   <!-- Kaiadmin JS -->
   <script src="assets/js/kaiadmin.min.js"></script>
+
+</script>
 </body>
 
 </html>
