@@ -405,8 +405,8 @@ session_start();
                                                                                                             echo 'autofocus';
                                                                                                         } ?>>
                     </div>
-                    <span id="eU" style="color: red;"><?php if (isset($error)) {
-                                                    echo $error;
+                    <span id="eU" style="color: red;"><?php if (isset($errorUR)) {
+                                                    echo $errorUR;
                                                 } ?></span>    
                     <hr />
                                                                                                     
@@ -416,8 +416,8 @@ session_start();
                                                                                                             } ?> id="password">
                                                                                                             
                     </div>
-                    <span id="eP" style="color: red;"><?php if (isset($error)) {
-                                                    echo $error;
+                    <span id="eP" style="color: red;"><?php if (isset($errorPR)) {
+                                                    echo $errorPR;
                                                 } ?></span>
                     <!-- <span class="tag tag-danger">Password Error!</span> | <span class="tag tag-success">Login success!</span> | <span class="tag tag-warning">Some of password must not be empty!</span> -->
                     <hr />

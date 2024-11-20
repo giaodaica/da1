@@ -205,14 +205,14 @@ class Controller_User{
     }
     // Hàm hiển thị lỗi
     public function showErrorUL($errorUL) {
-        $autofocus = true;
+        
         require_once "./views/login.php";
     }
     public function showErrorPL($errorPL){
         require_once "./views/login.php";
     }
     public function showErrorUR($errorUR) {
-        $autofocus = true;
+        
         require_once "./views/register.php";
     }
     public function showErrorPR($errorPR){
