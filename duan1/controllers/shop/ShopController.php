@@ -155,9 +155,23 @@ class Shop_Control
             //  echo "<pre>";
             // print_r($_POST);
             // die;
+            
         session_start();
         $id = $_SESSION['id'] ?? 0;
         $data_customer = $this->customer->renderInfo($id);
+        if(empty($data_customer)){
+            echo "<script>";
+            echo "alert('Vui Lòng Cập Nhật Thông Tin Để Thực Hiện Chức Năng Này');";
+            echo "window.location = '?act=info';";
+            echo "</script>";
+        }
+        if($data_customer['authen'] == "Chưa Xác Thực"){
+            echo "<script>";
+            echo "alert('Vui Lòng Xác Nhận Số Điện Thoại Để Thực Hiện Chức Năng Này');";
+            echo "window.location = '?act=info_detail';";
+            echo "</script>";
+        }
+        // die;
         $data_cart_of_user = $this->cart->render_cart_where_user($id);
         require_once "./views/pay.php";
     }

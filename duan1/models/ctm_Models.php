@@ -8,8 +8,8 @@ class customers_models extends database{
         return $stmt->fetch();
     }
     public function insert_info_ctm($user_id,$full_name,$phone,$address,$gender,$date_of_birth){
-        $sql = "INSERT INTO `customer_info` ( `user_id`, `full_name`, `phone`, `address`, `gender`, `date_of_birth`)
-         VALUES ('$user_id', '$full_name', '$phone', '$address', '$gender', '$date_of_birth')";
+        $sql = "INSERT INTO `customer_info` ( `user_id`, `full_name`, `phone`, `address`, `gender`, `date_of_birth`,`authen`)
+         VALUES ('$user_id', '$full_name', '$phone', '$address', '$gender', '$date_of_birth','Chưa Xác Thực')";
          $this->conn->exec($sql);
     }
     public function update_info_ctm($user_id,$full_name,$phone,$address,$gender,$date_of_birth){
@@ -23,5 +23,9 @@ class customers_models extends database{
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetch();
+    }
+    public function authen_phone($user_id){
+        $sql = "UPDATE `customer_info` SET `authen` = 'Đã Xác Thực' WHERE `customer_info`.`user_id` = $user_id";
+        $this->conn->exec($sql);
     }
 }

@@ -28,6 +28,7 @@ match($act){
     'history_shop' => $customers->history_shop(),
     'detail' => $customers->detail_shoping_cart(),
     'cancel_shoping' => $customers->cancel_shoping(),
+    'confirm_phone' => $customers->confirm_phone(),
     // phần sản phẩm
     'products_detail' => $shop->products_detail(),
     'add-to-cart' => $shop->Add_to_Cart(),

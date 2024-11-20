@@ -102,18 +102,21 @@ class controller_Customers{
             $this->showError($error);
             return;
         }
-        if(isset($_SESSION['user'])){
-            $phone = $_POST['phone'];
-            $this->info->select_phone($phone);
-            $error = "Số Điện Thoại Đã Tồn Tại Vui Lòng Nhập Số Điện Thoại Khác";
-            $this->showError($error);
-            return;
-        }
+       
+        $phone = $_POST['phone'];
+        $checkphone =  $this->info->select_phone($phone);
+         if($checkphone){
+        $error = "Số Điện Thoại Đã Tồn Tại Vui Lòng Nhập Số Điện Thoại Khác";
+        $this->showError($error);
+        return;
+            }
+            
+      
         if(isset($_SESSION['user'])){
             $user_id = $_SESSION['id'];
             $this->info->insert_info_ctm($user_id,$full_name,$phone,$address,$gender,$date_of_birth);
             echo "<script>";
-            echo "alert('Cập nhật thành công');";
+            echo "alert('Cập nhật thành công hãy xác nhận số điện thoại để hoàn tất');";
             echo "window.location.href = '?act=info_detail';";
             echo "</script>";
         }
@@ -183,6 +186,18 @@ class controller_Customers{
         echo "window.location.href = '?act=history_shop';";
         echo "</script>";
         
+    }
+    public function confirm_phone(){
+        session_start();
+        if(isset($_POST['otp']) && !empty($_POST['otp']) && $_POST['otp'] == 5555){
+            $otp = $_POST['otp'];
+            $user_id = $_SESSION['id'];
+            $this->info->authen_phone($user_id);
+         echo "<script>";
+        echo "alert('Xác Thực thành công');";
+        echo "window.location.href = '?act=shoping-Cart';";
+        echo "</script>";
+        }
     }
         public function showError($error){
             require_once "customers/info_detail.php";
