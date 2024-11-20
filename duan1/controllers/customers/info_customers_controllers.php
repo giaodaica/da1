@@ -2,10 +2,14 @@
 class controller_Customers{
     public $gift;
     public $info;
+    public $order_item;
+    public $order_item_detail;
     public function __construct()
     {
         $this->info = new customers_models();
         $this->gift = new Voucher_model();
+        $this->order_item = new order; // bảng order
+        $this->order_item_detail = new order_detail();
     }
     public function renderInfo(){
         session_start();
@@ -98,7 +102,13 @@ class controller_Customers{
             $this->showError($error);
             return;
         }
-
+        if(isset($_SESSION['user'])){
+            $phone = $_POST['phone'];
+            $this->info->select_phone($phone);
+            $error = "Số Điện Thoại Đã Tồn Tại Vui Lòng Nhập Số Điện Thoại Khác";
+            $this->showError($error);
+            return;
+        }
         if(isset($_SESSION['user'])){
             $user_id = $_SESSION['id'];
             $this->info->insert_info_ctm($user_id,$full_name,$phone,$address,$gender,$date_of_birth);
@@ -129,10 +139,54 @@ class controller_Customers{
     }
         
         
-    
-    
+    public function history_shop(){
+        session_start();
+        if(isset($_SESSION['id'])){
+            $id = $_SESSION['id'];
+            $data_Custm = $this->info->renderInfo($id);
+        }
+        $data_cart_item_edit = $this->order_item->select_order($id);
+        require_once "./customers/history_buy_product.php";
+    }
+    public function detail_shoping_cart(){
+        session_start();
+        if(isset($_SESSION['id'])){
+            $id = $_SESSION['id'];
+            $data_Custm = $this->info->renderInfo($id);
+            $order_id = $_GET['order_id'] ?? 0;
+            $data_cart_item_edit = $this->order_item->select_order_by_order_id($order_id);
+            $data_item = $this->order_item_detail->select_items_cart($order_id);
+        }
+        
+        require_once "./customers/detail_shoping_cart.php";
+        
+    }
+    public function cancel_shoping(){
+        session_start();
+        
+        if(isset($_GET['id_order'])){
+            $order_id = $_GET['id_order'];
+        }
+        if($_SESSION['id']){
+            $id_user = $_SESSION['id'];
+        }
+        // $this->order_item->cancel($order_id);
+        $check_voucher_in_order = $this->order_item->select_order_by_order_id($order_id);
+        if($check_voucher_in_order['voucher_id']){
+        $voucher_id = $check_voucher_in_order['voucher_id'];
+        $this->gift->add_voucher_if_delete_order_true_voucher($id_user,$voucher_id);
+        }
+        $this->order_item->cancel($order_id);
+        // kiểm tra xem đơn hủy có dùng voucher k nếu có phải add lại cho nó 
+        echo "<script>";
+        echo "alert('Hủy thành công');";
+        echo "window.location.href = '?act=history_shop';";
+        echo "</script>";
+        
+    }
         public function showError($error){
             require_once "customers/info_detail.php";
         }
+
 }
 $customers = new controller_Customers;

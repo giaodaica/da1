@@ -25,6 +25,9 @@ match($act){
     'info_detail' =>$customers->render_Infodetail(),
     'insert_Info' =>$customers->hander_insert_info(),
     'update_Info' => $customers->hander_update_info(),
+    'history_shop' => $customers->history_shop(),
+    'detail' => $customers->detail_shoping_cart(),
+    'cancel_shoping' => $customers->cancel_shoping(),
     // phần sản phẩm
     'products_detail' => $shop->products_detail(),
     'add-to-cart' => $shop->Add_to_Cart(),
@@ -32,6 +35,7 @@ match($act){
     'apply_voucher' => $shop->apply_voucher(),
     'dathang' => $shop->dathang(),
     'delete_item_cart' => $shop->delete_select(),
+    
     default => "Vui Lòng Kiểm Tra lại"
 };
 

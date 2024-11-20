@@ -14,7 +14,7 @@ class Shop_Control
     public function __construct()
     {
         $this->categories = new Categories_models;
-        $this->voucher_By_User = new Voucher_model;
+        $this->voucher_By_User = new Voucher_model; // vocher của người dùng
         $this->variant = new products_variant;
         $this->products = new products();
         $this->cart = new shoping_cart(); // cart item
@@ -37,6 +37,7 @@ class Shop_Control
     public function renderCategories() {}
     public function products_detail()
     {
+       
         session_start();
         if (isset($_GET['product_id'])) {
             $id = $_GET['product_id'];
@@ -112,6 +113,7 @@ class Shop_Control
             }
             if ($flag) {
                 $cart_product = [
+                    "products_id" => $product_id,
                     "id" => $_SESSION['stt'],
                     "image" => $image,
                     "name" => $data_products['name'],
@@ -150,9 +152,9 @@ class Shop_Control
     }
     public function handerPay()
     {  
-        //  echo "<pre>";
-        // print_r($_POST);
-        // die;
+            //  echo "<pre>";
+            // print_r($_POST);
+            // die;
         session_start();
         $id = $_SESSION['id'] ?? 0;
         $data_customer = $this->customer->renderInfo($id);
@@ -205,6 +207,21 @@ class Shop_Control
         }else{
             $voucher_id = 0;
         }
+        if(trim($_POST['fullname']) == ""){
+            $error = "Tên người nhận không được để trống";
+            require_once "./views/pay.php";
+            return;
+        }
+        if(trim($_POST['address']) == ""){
+            $error = "Địa chỉ người nhận không được để trống";
+            require_once "./views/pay.php";
+            return;
+        }  if(trim($_POST['phone']) == ""){
+            $error = "Số điện thoại người nhận không được để trống";
+            require_once "./views/pay.php";
+            return;
+        }
+       
         $total = round($_POST['total'],0);
         $name = $_POST['fullname'];
         $phone = $_POST['phone'];
@@ -221,6 +238,12 @@ class Shop_Control
             $cart_id = $data_cart['cart_id'];
         $this->order_mini->insert_orders_detail($order_id,$product_id,$quantity,$price,$color,$size,$image);
         $this->cart->delete_cart($cart_id);
+        $this->voucher_By_User->deleta_Gift_after_oder_success($user_id,$voucher_id);
+        }
+        if(isset($_SESSION['cart'])){
+          unset($_SESSION['cart']);
+            echo "<script>alert('Đặt hàng thành công');</script>";
+        echo "<script>window.location.href = '" . BASE_URL . "';</script>";
         }
         echo "<script>alert('Đặt hàng thành công');</script>";
         echo "<script>window.location.href = '" . BASE_URL . "';</script>";

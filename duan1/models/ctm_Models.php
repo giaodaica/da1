@@ -18,4 +18,10 @@ class customers_models extends database{
          WHERE `customer_info`.`user_id` = '$user_id'";
          $this->conn->exec($sql);
     }
+    public function select_phone($phone){
+        $sql = "SELECT * FROM customer_info WHERE phone = $phone";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 }

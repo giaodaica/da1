@@ -1,4 +1,5 @@
 <?php
+// echo "<pre>";
 // print_r($data_Custm);
 //  echo $data_Custm['full_name'];
 // echo $_SESSION['id'];
@@ -8,6 +9,7 @@
 //     echo "co";
 // }
 // echo $data_Custm['full_name'];
+// print_r($data_cart_item);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,14 +131,14 @@
         </div>
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
+                <a href="<?= BASE_URL ?>" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">FPL</span>
                     <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Bee</span>
                 </a>
             </div>
             <div class="col-lg-4 col-6 text-left">
                 <form action="">
-                    <div class="input-group input-remake">
+                    <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search for products">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
@@ -263,6 +265,8 @@
     </div>
     <!-- Breadcrumb End -->
 
+
+
     <div class="container text-center">
         <div class="row">
             <div class="col-4">
@@ -278,125 +282,74 @@
                                                                                                                         } ?>>Tài khoản của bạn</a>
                 </div>
             </div>
-   
-
-
-            <?php if (!empty($data_Custm)) { ?>
-                <form action="?act=update_Info" method="post">
-                    <div class="form-group">
-                        <label for="">Họ và tên</label>
-                        <input type="text" name="full_name" id="full_name" class="form-control" placeholder="" aria-describedby="helpId" value="<?php if (isset($data_Custm['full_name'])) {
-                                                                                                                                                    echo $data_Custm['full_name'];
-                                                                                                                                                } ?>">
-                        <small id="eFullname" class="text-muted"></small>
+            <div class="Ctotal" id="">
+                <div class="info">
+                    <b><?= empty($data_Custm['full_name']) ? "Chào bạn" : $data_Custm['full_name'] ?></b>
+                    <p><?= empty($data_Custm['phone']) ? "" : $data_Custm['phone'] ?></p>
+                </div>
+                <?php if (empty($data_Custm)) { ?>
+                    <button type="button" class="btn-custom" style="background-color: #D0F2ff;">Cập nhật thông tin cá nhân và địa chỉ để có trải nghiệm đặt hàng nhanh và thuận tiện hơn<a class="hander_if" href="?act=info_detail">Cập Nhật</a></button>
+                <?php } ?>
+                <div class="total">
+                    <div class="left">
+                        0
+                        <br>
+                        Đơn hàng
                     </div>
-                    <div class="form-group">
-                        <label for="">Số điện thoại</label>
-                        <input type="number" name="phone" id="phone" class="form-control" placeholder="" aria-describedby="helpId" value="<?php if (isset($data_Custm['phone'])) {
-                                                                                                                                                echo $data_Custm['phone'];
-                                                                                                                                            } ?>">
-                        <small id="ePhone" class="text-muted"></small>
+                    <div class="divider"></div>
+                    <div class="right">
+                        0đ
+                        <br>
+                        Tổng tiền tích lũy
                     </div>
-                    <div class="form-group">
-                        <label for="">Địa chỉ</label>
-                        <input type="text" name="address" id="address" class="form-control" placeholder="" aria-describedby="helpId" value="<?php if (isset($data_Custm['address'])) {
-                                                                                                                                                echo $data_Custm['address'];
-                                                                                                                                            } ?>">
-                        <small id="eAddress" class="text-muted"></small>
+                </div>
+                    <div class="">
+                        <ul class="menu-list">
+                            <li ><a class="menu-links" href="">Tất cả</a></li>
+                            <li><a class="menu-links" href="">Chờ xác nhận</a></li>
+                            <li><a class="menu-links" href="">Đã xác nhận</a></li>
+                            <li><a class="menu-links" href="">Đã giao hàng</a></li>
+                            <li><a class="menu-links" href="">Đã hủy</a></li>
+                        </ul>
                     </div>
-                    <div class="form-group">
-                               <label for="">Giới Tính</label>
-                               <br>
-                                <input type="radio" name="gender" id="gender" value="1" <?php if(isset($data_Custm['gender']) == 1){echo "checked";} ?>> Nam
-                                <input type="radio" name="gender" id="gender" value="0" <?php if(isset($data_Custm['gender']) == 0){echo "checked";}?>> Nữ
-                                <small id="eGender" class="text-muted"></small>
-                            </div>
-                    <div class="form-group">
-                        <label for="">Sinh Nhật</label>
-                        <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" placeholder="" aria-describedby="helpId" value="<?php if (isset($data_Custm['date_of_birth'])) {
-                                                                                                                                                            echo $data_Custm['date_of_birth'];
-                                                                                                                                                        } ?>">
-                        <small id="eBirthday" class="text-muted"></small>
-                    </div>
-                    <!-- <div class="form-group">
-                        <label for="">Xác Nhận Số Điện Thoại</label>
-                        <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                        <label for="">Mã OTP</label>
-                        <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                        <button>Xác Nhận</button>
-                    </div> -->
-                    <button type="submit" class="btn btn-success">Sửa thông tin</button>
-                
-            <?php } else { ?>
-                <form action="?act=insert_Info" method="post">
-                    <div class="form-group">
-                        <label for="">Họ và tên</label>
-                        <input type="text" name="full_name" id="full_name" class="form-control" placeholder="" aria-describedby="helpId">
-                        <small id="eFullname" class="text-muted"></small>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Số điện thoại</label>
-                        <input type="number" name="phone" id="phone" class="form-control" placeholder="" aria-describedby="helpId">
-                        <small id="ePhone" class="text-muted"></small>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Địa chỉ</label>
-                        <input type="text" name="address" id="address" class="form-control" placeholder="" aria-describedby="helpId">
-                        <small id="eAddress" class="text-muted"></small>
+                    <?php foreach($data_cart_item_edit as $data_cart_item){ ?>
+                        <div class="total-1">
+                    
+                    <div class="time">
+                        Ngày Tạo :
+                        <?php
+                        if (!empty($data_cart_item)) {
+                            // Đảm bảo giá trị ngày giờ có định dạng phù hợp
+                            $orderDate = strtotime($data_cart_item['order_date']);
+                            echo date('d/m/Y H:i:s', $orderDate);
+                        }
+                        ?>
+                        <div class="total_cart">Tổng đơn : <?php if(!empty($data_cart_item)){
+                            echo number_format($data_cart_item['total_amount']);
+                        } ?>
+                           <div class="status">
+                            <p 
+                            <?php switch($data_cart_item['status']){
+                                case "Chờ xử lý":
+                                    echo "class='text-warning'";
+                                    break;
+                                    case "Đã hoàn tất":
+                                        echo "class='text-primary'";
+                                        break;case "Đã hủy":
+                                            echo "class='text-danger'";
+                                            break;
+                            } ?>
+                            ><?php echo $data_cart_item['status']?></p>
                         </div>
-                            <div class="form-group">
-                               <label for="">Giới Tính</label>
-                               <br>
-                                <input type="radio" name="gender" id="gender" value="1"> Nam
-                                <input type="radio" name="gender" id="gender" value="0"> Nữ
-                                <small id="eGender" class="text-muted"></small>
-                            </div>
-                    <div class="form-group">
-                        <label for="">Sinh Nhật</label>
-                        <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" placeholder="" aria-describedby="helpId">
-                        <small id="eBirthday" class="text-muted"></small>
+                        </div>
                     </div>
-                    <div style="color: red;"><?php if(isset($error)){
-                            echo $error;
-                    } ?></div>
-                    <button type="submit" class="btn btn-success">Cập Nhật</button>
-                </form>
-                </form>
-            <?php } ?>
-            
-        <!-- <div>
-        <div class="">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmPhoneModal">
-        Xác nhận số điện thoại
-    </button>
-</div>
+                   <div class="detail"><a href="?act=detail&order_id=<?= $data_cart_item['order_id'] ?>" class="text-danger">Chi tiết</a></div>
 
+                </div>
+                   <?php } ?>
 
-<div class="modal fade" id="confirmPhoneModal" tabindex="-1" role="dialog" aria-labelledby="confirmPhoneModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmPhoneModalLabel">Xác Nhận Số Điện Thoại</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
-          <form action="?act=confirm_phone" method="post" id="form_confirm">
-          <div class="modal-body">
-                <label for="">Số</label>
-                <input type="text" name="phone_confirm">
-                <label for="">otp</label>
-                <input type="text" name="otp" id="">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                <button type="submit" form="form_confirm" class="btn btn-primary" id="form_confirm" name="form_confirm">Xác Nhận</button>
-            </div>
-          </form>
-        </div>
-    </div>
-</div>
-        </div> -->
+
         </div>
     </div>
 
@@ -443,6 +396,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Your Email Address">
                                 <div class="input-group-append">
+                                    <button class="btn btn-primary">Sign Up</button>
                                 </div>
                             </div>
                         </form>
@@ -490,117 +444,7 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    <script src="script.js">
-
-    </script>
+    <script src="sevice.js"></script>
 </body>
 
 </html>
-<input type="text" id="full_name" placeholder="Nhập tên của bạn">
-<small id="eFullname" class="text-muted"></small>
-
-<script>
-    const fullname = document.getElementById("full_name");
-    const eFullname = document.getElementById("eFullname");
-
-    const phone = document.getElementById("phone");
-    const ePhone = document.getElementById("ePhone");
-
-    const address = document.getElementById("address");
-    const eAddress = document.getElementById("eAddress");
-
-    const gender = document.getElementById("gender");
-    const eGender = document.getElementById("eGender");
-
-    const date_of_birth = document.getElementById("date_of_birth");
-    const eBirthday = document.getElementById("eBirthday");
-
-    // Kiểm tra Họ và Tên
-    fullname.addEventListener("blur", () => {
-        if (fullname.value.trim() === "") {
-            eFullname.style.display = "block";
-            eFullname.innerHTML = "Bạn không được để trống trường này";
-        } else if (fullname.value.trim().length < 5) {
-            eFullname.style.display = "block";
-            eFullname.innerHTML = "Vui lòng nhập đầy đủ họ và tên";
-        } else if (/\d/.test(fullname.value.trim())) {
-            eFullname.style.display = "block";
-            eFullname.innerHTML = "Bạn đang nhập số, vui lòng kiểm tra lại";
-        } else {
-            eFullname.style.display = "none";
-        }
-    });
-    fullname.addEventListener("focus", () => {
-        eFullname.style.display = "none";
-    });
-
-    // Kiểm tra Số điện thoại
-    phone.addEventListener("blur", () => {
-        if (phone.value.trim() === "") {
-            ePhone.style.display = "block";
-            ePhone.innerHTML = "Số điện thoại không được để trống";
-        } else if ((phone.value.trim().length < 10)) { // Kiểm tra định dạng số điện thoại
-            ePhone.style.display = "block";
-            ePhone.innerHTML = "Số điện thoại phải gồm 10 chữ số";
-        } else {
-            ePhone.style.display = "none";
-        }
-    });
-    phone.addEventListener("focus", () => {
-        ePhone.style.display = "none";
-    });
-
-    // Kiểm tra Địa chỉ
-    address.addEventListener("blur", () => {
-        if (address.value.trim() === "") {
-            eAddress.style.display = "block";
-            eAddress.innerHTML = "Địa chỉ không được để trống";
-        } else if (address.value.trim().length < 10) {
-            eAddress.style.display = "block";
-            eAddress.innerHTML = "Địa chỉ quá ngắn, vui lòng nhập đầy đủ";
-        } else {
-            eAddress.style.display = "none";
-        }
-    });
-    address.addEventListener("focus", () => {
-        eAddress.style.display = "none";
-    });
-
-    // Kiểm tra Giới tính
-    gender.addEventListener("blur", () => {
-        if (gender.value === "") {
-            eGender.style.display = "block";
-            eGender.innerHTML = "Vui lòng chọn giới tính";
-        } else {
-            eGender.style.display = "none";
-        }
-    });
-    gender.addEventListener("focus", () => {
-        eGender.style.display = "none";
-    });
-
-    // Kiểm tra Ngày sinh
-    // Kiểm tra Ngày sinh
-date_of_birth.addEventListener("blur", () => {
-    const today = new Date();
-    const selectedDate = new Date(date_of_birth.value);
-
-    // Đặt thời gian của cả ngày hiện tại và ngày chọn về 00:00:00 để chỉ so sánh ngày
-    today.setHours(0, 0, 0, 0);
-    selectedDate.setHours(0, 0, 0, 0);
-
-    if (date_of_birth.value.trim() === "") {
-        eBirthday.style.display = "block";
-        eBirthday.innerHTML = "Ngày sinh không được để trống";
-    } else if (selectedDate.getTime() === today.getTime()) {  // Kiểm tra nếu ngày sinh là hôm nay
-        eBirthday.style.display = "block";
-        eBirthday.innerHTML = "Bạn có chắc ngay sinh là ngày hôm nay";
-    } else {
-        eBirthday.style.display = "none";
-    }
-});
-date_of_birth.addEventListener("focus", () => {
-    eBirthday.style.display = "none";
-});
-
-</script>

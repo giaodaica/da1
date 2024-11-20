@@ -1,5 +1,5 @@
 <?php
-// print_r($products);
+// print_r($d);
 if (isset($_SESSION['user'])) {
     $username = $_SESSION['user'];
 } else {

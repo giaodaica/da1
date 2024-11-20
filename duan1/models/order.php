@@ -11,10 +11,20 @@ class order extends database {
         return $order_id;
 
     }
+    public function select_order_by_order_id($order_id){
+        $sql = "SELECT * FROM orders WHERE order_id = $order_id;";
+        $stmt =  $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
     public function select_order($id){
         $sql = "SELECT * FROM orders WHERE user_id = $id;";
         $stmt =  $this->conn->query($sql);
         $stmt->execute();
-        return $stmt->fetch();
+        return $stmt->fetchAll();
+    }
+    public function cancel($order_id){
+        $sql = "UPDATE `orders` SET `status` = 'Đã hủy' WHERE `orders`.`order_id` = $order_id";
+        $this->conn->exec($sql);
     }
 }

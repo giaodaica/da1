@@ -1,10 +1,11 @@
 <?php
 // echo "<pre>";
-// // print_r($products);
-// // print_r($data_cart);
+// print_r($products);
+// print_r($data_cart);
 // print_r($_GET);
 // print_r($data_voucher);
 // print_r($_POST);
+// print_r($_SESSION['cart']);
 if (isset($_SESSION['user'])) {
     $username = $_SESSION['user'];
 } else {
@@ -365,13 +366,16 @@ if (isset($_SESSION['user'])) {
                         <form class="mb-30" action="" method="post">
                             <div class="input-group">
                                 <?php
+                                foreach($data_voucher as $voucher){}
                                 if (empty($data_voucher)) { ?>
                                     <input type="text" name="" id="">
                                 <?php } else { ?>
                                     <select name="voucher" id="">
                                         <?php foreach ($data_voucher as $render_voucher) { ?>
-                                            <option value="<?php echo $render_voucher['discount_percent'] ?>"><?php echo $render_voucher['code'] . " Giảm " . $render_voucher['discount_percent'] * 100; ?>%</option>
-                                        <?php } ?>
+                                            <?php if($render_voucher['is_used'] == 0){ ?>
+                                                <option value="<?php echo $render_voucher['discount_percent'] ?>"><?php echo $render_voucher['code'] . " Giảm " . $render_voucher['discount_percent'] * 100; ?>%</option>
+                                                <?php } ?>
+                                           <?php } ?>
                                     </select>
                                 <?php } ?>
                                 <div class="input-group-append">
@@ -433,7 +437,7 @@ if (isset($_SESSION['user'])) {
                                 <?php } ?>
                                     <input type="hidden" name="voucher" value="<?php if(isset($_POST['voucher'])){echo $_POST['voucher'];} ?>">
                                     <input type="hidden" name="voucher_id" value="<?php if(isset($_POST['voucher_id'])){echo $_POST['voucher_id'];} ?>">
-                                    <input type="hidden" name="total" value="<?php if(isset($_POST['voucher'])){ echo ($total - $total * $_POST['voucher']); }else{echo $total;} ?>">
+                                    <input type="hidden" name="total" value="<?php if(isset($_POST['voucher'])){ echo ($total); }else{echo $total;} ?>">
                                 <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" <?php if (!isset($_SESSION['user'])) {
                                                                                                             echo "id='guest_submit'";
                                                                                                         } ?>>Thanh Toán</button>
@@ -550,13 +554,13 @@ if (isset($_SESSION['user'])) {
             // Nếu người dùng chọn OK, chuyển đến trang a.php
             if (userConfirmed) {
                 window.location.href = "?act=register";
+            event.preventDefault();
             } else {
                 // Nếu người dùng chọn Cancel, chuyển đến trang b.php
                 window.location.href = "?act=shop-Pay";
             }
 
             // Ngừng hành động mặc định (nếu có)
-            event.preventDefault();
         });
     }
 

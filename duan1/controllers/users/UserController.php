@@ -3,11 +3,13 @@ class Controller_User{
     public $models_users;
     public $gift;
     public $shoping_Cart;
+    public $cart;
     public function __construct()
     {
        $this->models_users = new User_model();
        $this->shoping_Cart = new shoping_cart_big();
        $this->gift = new Voucher_model();
+       $this->cart = new shoping_cart();
     }
     public function handerViewRegister(){
         require_once "./views/register.php";
@@ -113,6 +115,7 @@ class Controller_User{
     }
     
     public function post_Register(){
+        
         $errorUR = "";
         $errorPR = "";
         $username = $_POST['username'];
@@ -170,11 +173,25 @@ class Controller_User{
         $password_sha = password_hash(strtolower($password),PASSWORD_DEFAULT);
         // echo $password_sha;
         // die;
+       session_start();
         $this->models_users->create_User(strtolower(trim($username)),(trim($password_sha)));
         $data_id = $this->models_users->select_User(strtolower(trim($username)));
         $id = $data_id['user_id'];
         $this->gift->gift_Voucher($id);
-        $this->shoping_Cart->insert_cart_user($id);
+       $cart_id =  $this->shoping_Cart->insert_cart_user($id);
+       if(isset($_SESSION['cart'])){
+        foreach($_SESSION['cart'] as $cart_item){
+            $image = $cart_item['image'];
+            $name = $cart_item['name'];
+            $quantity = $cart_item['quantity'];
+            $price = $cart_item['price'];
+            $size = $cart_item['size'];
+            $color = $cart_item['color'];
+            $id = $cart_id;
+            $product_id = $cart_item['products_id'];
+            $this->cart->insert_Cart_items_of_user($id, $product_id, $size, $color,$image,$price);
+        }
+       }
        echo "<script>";
        echo "alert('Đăng ký thành công')";
        echo  "</script>";

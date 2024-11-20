@@ -3,7 +3,7 @@
 // echo "<pre>";
 // print_r($data_cart_of_user);
 // print_r($data_customer);
-print_r($_POST);
+// print_r($_POST);
 // echo $_POST['product_quantities'][];
 
 
@@ -319,17 +319,25 @@ if (isset($_SESSION['user'])) {
                         <div class="row">
                             <div class="col-md-9 form-group">
                                 <label>Họ và tên</label>
-                                <input class="form-control" type="text" placeholder="" name="fullname" value="<?= $data_customer['full_name'] ?>">
+                                <input class="form-control" type="text" placeholder="" name="fullname" value="<?php if(isset($data_customer['full_name'])){echo $data_customer['full_name'];} ?>">
                             </div>
                             <div class="col-md-9 form-group">
                                 <label>Địa chỉ</label>
-                                <input class="form-control" type="text" placeholder="" name="address" value="<?= $data_customer['address'] ?>">
+                                <input class="form-control" type="text" placeholder="" name="address" value="<?php if(isset($data_customer['full_name'])){echo $data_customer['address'];} ?>">
+                                <span></span>
+
                             </div>
                             <div class="col-md-9 form-group">
                                 <label>Số điện thoại</label>
-                                <input class="form-control" type="text" placeholder="" name="phone" value="<?= $data_customer['phone'] ?>">
+                                <input class="form-control" type="text" placeholder="" name="phone" value="<?php if(isset($data_customer['full_name'])){echo $data_customer['phone'];} ?>">
+                                <span></span>
+
                             </div>
                         </div>
+                        <span><?php if(isset($error)){
+                            echo $error;
+                        } ?></span>
+
                     </div>
                     <div id="phuongthuc"></div>
                 </div>
