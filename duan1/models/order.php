@@ -17,8 +17,8 @@ class order extends database {
         $stmt->execute();
         return $stmt->fetch();
     }
-    public function select_order($id){
-        $sql = "SELECT * FROM orders WHERE user_id = $id;";
+    public function select_order($id,$limit,$offset){
+        $sql = "SELECT * FROM orders WHERE user_id = $id LIMIT $limit OFFSET $offset;";
         $stmt =  $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -26,5 +26,11 @@ class order extends database {
     public function cancel($order_id){
         $sql = "UPDATE `orders` SET `status` = 'Đã hủy' WHERE `orders`.`order_id` = $order_id";
         $this->conn->exec($sql);
+    }
+    public function action_history($action,$user_id,$limit,$offset){
+        $sql = "SELECT * FROM `orders` WHERE status = '$action' and `user_id` = $user_id LIMIT $limit OFFSET $offset";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

@@ -302,12 +302,12 @@
                     </div>
                 </div>
                 <div class="">
-                    <ul class="menu-list">
-                        <li><a class="menu-links" href="">Tất cả</a></li>
-                        <li><a class="menu-links" href="">Chờ xác nhận</a></li>
-                        <li><a class="menu-links" href="">Đã xác nhận</a></li>
-                        <li><a class="menu-links" href="">Đã giao hàng</a></li>
-                        <li><a class="menu-links" href="">Đã hủy</a></li>
+                <ul class="menu-list">
+                        <li><a class="menu-links" href="?act=history_shop">Tất cả</a></li>
+                        <li><a class="menu-links" href="?act=action_history&action=<?php echo "Chờ Xử Lý "; ?>">Chờ xác nhận</a></li>
+                        <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã Xác Nhận"; ?>">Đã xác nhận</a></li>
+                        <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã Hoàn Tất"; ?>">Đã giao hàng</a></li>
+                        <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã hủy"; ?>">Đã hủy</a></li>
                     </ul>
                 </div>
                 <div>

@@ -11,7 +11,9 @@
 // echo $data_Custm['full_name'];
 // print_r($data_cart_item);
 // print_r($_GET['act']);
-// print_r($_GET['page']);
+// print_r($_GET['act']);
+// print_r($data_cart_item_edit);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -332,18 +334,18 @@
                                 <div class="status">
                                     <p
                                         <?php switch ($data_cart_item['status']) {
-                                           case "Chờ xử lý":
-                                            echo "class='text-warning'";
-                                            break;
-                                        case "Đã hoàn tất":
-                                            echo "class='text-success'";
-                                            break;
-                                        case "Đã hủy":
-                                            echo "class='text-danger'";
-                                            break;
-                                            case "Đã Xác Nhận":
-                                                echo "class='text-info'";
+                                            case "Chờ xử lý":
+                                                echo "class='text-warning'";
                                                 break;
+                                            case "Đã hoàn tất":
+                                                echo "class='text-success'";
+                                                break;
+                                            case "Đã hủy":
+                                                echo "class='text-danger'";
+                                                break;
+                                                case "Đã Xác Nhận":
+                                                    echo "class='text-info'";
+                                                    break;
                                         } ?>><?php echo $data_cart_item['status'] ?></p>
                                 </div>
                             </div>
@@ -358,32 +360,36 @@
                     $current_page = isset($_GET['page']) && $_GET['page'] > 0 ? $_GET['page'] : 1;
                     ?>
                     <ul class="pagination">
-                      
+
                         <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="?act=history_shop&page=<?php echo max(1, $current_page - 1); ?>">Trước</a>
+                            <a class="page-link" href="?act=action_history&action=<?php echo $_GET['action']; ?>&page=<?php echo max(1, $current_page - 1); ?>">Trước</a>
                         </li>
 
-                      
+
                         <?php
-                        $start = max(1, $current_page - 2); 
-                        $end = $current_page + 2;          
+                        $start = max(1, $current_page - 2);
+                        $end = $current_page + 2;
                         for ($i = $start; $i <= $end; $i++) {
                         ?>
-                            <?php if(!empty($data_cart_item_edit)){ ?>
+                            <?php
+                            if (!empty($data_cart_item_edit)) { ?>
                                 <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
-                                <a class="page-link" href="?act=history_shop&page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                           <?php } ?>
+                                    <a class="page-link" href="?act=action_history&action=<?php echo $_GET['action']; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                </li>
+                            <?php }
+                            ?>
                         <?php } ?>
-                      <?php if(!empty($data_cart_item_edit)){ ?>
-                        <li class="page-item">
-                            <a class="page-link" href="?act=history_shop&page=<?php echo $current_page + 1; ?>">Sau</a>
+                        <?php
+                        if (!empty($data_cart_item_edit)) { ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?act=action_history&action=<?php echo $_GET['action']; ?>&page=<?php echo $current_page + 1; ?>">Sau</a>
+                            </li>
+                        <?php } else { ?>
+                            <li class="page-item disabled">
+                            <a class="page-link" href="?act=action_history&action=<?php echo $_GET['action']; ?>&page=<?php echo $current_page + 1; ?>">Sau</a>
                         </li>
-                    <?php  }else{ ?>
-                        <li class="page-item disabled">
-                            <a class="page-link" href="?act=history_shop&page=<?php echo $current_page + 1; ?>">Sau</a>
-                        </li>
-                    <?php } ?>
+                        <?php }
+                        ?>
                     </ul>
                 </nav>
 

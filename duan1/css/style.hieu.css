@@ -170,3 +170,10 @@ a.menu-links:hover{
     width: 349.99px !important;
     height: 48.8px !important;
 }
+a.page-link{
+    color: black !important;
+}
+/* .pagination{
+    padding-left: 800px !important ;
+} */
+

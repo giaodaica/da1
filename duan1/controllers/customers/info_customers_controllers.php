@@ -143,12 +143,16 @@ class controller_Customers{
         
         
     public function history_shop(){
+
         session_start();
+        $limit = 5;
+        $page = $_GET['page'] ?? 1;
+        $offset = ($page - 1 ) * 5;
         if(isset($_SESSION['id'])){
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
         }
-        $data_cart_item_edit = $this->order_item->select_order($id);
+        $data_cart_item_edit = $this->order_item->select_order($id,$limit,$offset);
         require_once "./customers/history_buy_product.php";
     }
     public function detail_shoping_cart(){
@@ -198,6 +202,19 @@ class controller_Customers{
         echo "window.location.href = '?act=shoping-Cart';";
         echo "</script>";
         }
+    }
+    public function action_history(){
+        session_start();
+        $limit = 5;
+        $page = $_GET['page'] ?? 1;
+        $offset = ($page - 1 ) * 5;
+        $action = $_GET['action'];
+        if(isset($_SESSION['id'])){
+            $id = $_SESSION['id'];
+            $data_Custm = $this->info->renderInfo($id);
+        }
+        $data_cart_item_edit = $this->order_item->action_history($action,$id,$limit,$offset);
+        require_once "customers/action_history_buy_products.php";
     }
         public function showError($error){
             require_once "customers/info_detail.php";
