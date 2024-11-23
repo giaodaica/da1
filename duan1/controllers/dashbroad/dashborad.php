@@ -21,7 +21,7 @@
     }
     public function admin(){
         session_start();
-        header("location: admin");
+        header("location: ./admin");
     }
  }
 
