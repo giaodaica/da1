@@ -1,5 +1,7 @@
 <?php
 // print_r($d);
+// phpinfo();
+
 if (isset($_SESSION['user'])) {
     $username = $_SESSION['user'];
 } else {
@@ -257,8 +259,7 @@ if (isset($_SESSION['user'])) {
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Tra cứu <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                     <a href="?act=shoping-Cart" class="dropdown-item">Giỏ Hàng</a>
-                                    <a href="" class="dropdown-item">Hóa Đơn</a>
-                                    <a href="" class="dropdown-item">Lịch Sử Mua Hàng</a>
+                                    <a href="?act=history_shop" class="dropdown-item">Lịch Sử Mua Hàng</a>
                                 </div>
                             </div>
                             <a href="?act=shop-Contact" class="nav-item nav-link">Liên Hệ</a>

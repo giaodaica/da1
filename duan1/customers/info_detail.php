@@ -8,6 +8,10 @@
 //     echo "co";
 // }
 // echo $data_Custm['full_name'];
+require_once 'vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -271,7 +275,7 @@
                     <a href="?act=info" class="list-group-item list-group-item-action " aria-current="true">
                         Trang Chủ
                     </a>
-                    <a href="#" class="history_shop list-group-item list-group-item-action">Lịch sử mua hàng</a>
+                    <a href="#" class="history_shop list-group-item list-group-item-action">Đơn Hàng Của Tôi</a>
                     <a href="?act=info_detail" class="info-ctm list-group-item list-group-item-action" id="info_ctm" <?php if (empty($data_Custm)) {
                                                                                                                             echo "success='true'";
                                                                                                                         } else {
@@ -281,32 +285,34 @@
 
 
                 <?php
-                if(!empty($data_Custm) && $data_Custm['authen'] === "Chưa Xác Thực"){ ?>
-                        <div class="">
-                    <button id="openPopup">Xác nhận số điện thoại</button>
+                if (!empty($data_Custm) && $data_Custm['authen'] === "Chưa Xác Thực") { ?>
+                    <div class="">
+                        <button id="openPopup">Xác nhận email</button>
 
-                    <!-- Popup -->
-                    <div class="popup-overlay" id="popupOverlay">
-                        <div class="popup" id="popup">
-                            <!-- Step 1: Nhập số điện thoại -->
-                            <div id="step1">
-                                <h2>Nhập số điện thoại</h2>
-                                <input type="text" id="phoneNumber" placeholder="Nhập số điện thoại" value="<?php echo $data_Custm['phone'] ?>" readonly>
-                                <button id="sendOtp">Gửi OTP</button>
-                            </div>
+                        <!-- Popup -->
+                        <div class="popup-overlay" id="popupOverlay">
+                            <div class="popup" id="popup">
+                                <!-- Step 1: Nhập số điện thoại -->
+                                <div id="step1">
+                                    <h2>Email</h2>
+                                    <form action="" method="post">
+                                        <input type="email" id="text_email" placeholder="" name="email" value="<?php echo $data_Custm['email'] ?>" readonly>
+                                        <button id="sendOtp">Gửi OTP</button>
+                                    </form>
+                                </div>
 
-                            <!-- Step 2: Nhập OTP -->
-                            <div id="step2" style="display: none;">
-                                <h2>Nhập mã OTP</h2>
-                                <form action="?act=confirm_phone" method="post">
-                                    <input type="text" id="otpCode" placeholder="Nhập mã OTP" value="" name="otp">
-                                    <button id="verifyOtp">Xác nhận</button>
-                                </form>
+                                <!-- Step 2: Nhập OTP -->
+                                <div id="step2" style="display: none;">
+                                    <h2>Nhập mã OTP</h2>
+                                    <form action="?act=confirm_email" method="post">
+                                        <input type="text" id="otpCode" placeholder="Nhập mã OTP" value="" name="otp">
+                                        <button id="verifyOtp">Xác nhận</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-               <?php }
+                <?php }
                 ?>
 
 
@@ -314,6 +320,7 @@
 
             </div>
 
+            
             <?php if (!empty($data_Custm)) { ?>
 
                 <div>
@@ -357,13 +364,14 @@
                                                                                                                                                             } ?>">
                             <small id="eBirthday" class="text-muted"></small>
                         </div>
-                        <!-- <div class="form-group">
-                        <label for="">Xác Nhận Số Điện Thoại</label>
-                        <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                        <label for="">Mã OTP</label>
-                        <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                        <button>Xác Nhận</button>
-                    </div> -->
+
+                        <div class="form-group">
+                        <?php
+                        if($data_Custm['authen'] == "Đã Xác Thực"){ ?>
+                                <p class="text-success">Đã Xác Thực</p>
+                       <?php }
+                        ?>
+                        </div>
                         <button type="submit" class="btn btn-success">Sửa thông tin</button>
 
                     <?php } else { ?>
@@ -646,27 +654,50 @@
     const sendOtp = document.getElementById('sendOtp');
     const verifyOtp = document.getElementById('verifyOtp');
 
-    // Hiển thị popup
-    openPopup.addEventListener('click', () => {
-        popupOverlay.style.display = 'flex';
-    });
+   // Hiển thị popup
+openPopup.addEventListener('click', () => {
+    popupOverlay.style.display = 'flex';
+});
 
-    // Đóng popup khi nhấn ra ngoài
-    popupOverlay.addEventListener('click', (e) => {
-        if (e.target === popupOverlay) {
-            popupOverlay.style.display = 'none';
-        }
-    });
+// Đóng popup khi nhấn ra ngoài
+popupOverlay.addEventListener('click', (e) => {
+    if (e.target === popupOverlay) {
+        popupOverlay.style.display = 'none';
+    }
+});
 
-    // Chuyển từ bước nhập số điện thoại sang nhập OTP
-    sendOtp.addEventListener('click', () => {
-        const phoneNumber = document.getElementById('phoneNumber').value;
-        if (phoneNumber) {
-            alert(`OTP đã gửi đến số: ${phoneNumber}`);
-            step1.style.display = 'none';
-            step2.style.display = 'block';
-        } else {
-            alert('Vui lòng nhập số điện thoại hợp lệ.');
+// Chuyển từ bước nhập số điện thoại sang nhập OTP
+sendOtp.addEventListener('click', (e) => {
+    e.preventDefault(); // Ngăn chặn form submit
+
+    const text_email = document.getElementById('text_email').value;
+    if (!text_email) {
+        alert('Vui lòng nhập email hợp lệ.');
+        return;
+    }
+
+    // Gửi yêu cầu AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '?act=send-otp', true); // Gọi đúng route send-otp trong MVC
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                alert(response.message);
+                // Chuyển tới bước nhập OTP
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+            } else {
+                alert(response.message);
+            }
         }
-    });
+    };
+
+    // Gửi dữ liệu email
+    xhr.send(`email=${encodeURIComponent(text_email)}`);
+});
+
+
 </script>

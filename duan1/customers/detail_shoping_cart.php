@@ -275,7 +275,7 @@
                     <a href="?act=info" class="list-group-item list-group-item-action " aria-current="true">
                         Trang Chủ
                     </a>
-                    <a href="#" class="history_shop list-group-item list-group-item-action">Lịch sử mua hàng</a>
+                    <a href="#" class="history_shop list-group-item list-group-item-action">Đơn Hàng Của Tôi</a>
                     <a href="?act=info_detail" class="info-ctm list-group-item list-group-item-action" id="info_ctm" <?php if (empty($data_Custm)) {
                                                                                                                             echo "success='true'";
                                                                                                                         } else {

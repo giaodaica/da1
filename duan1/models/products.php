@@ -7,4 +7,10 @@ class products extends database {
         $stmt->execute();
         return $stmt->fetch();
     }
+    public function render_product($limit,$offset){
+        $sql = "SELECT * FROM `products` limit $limit offset $offset";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

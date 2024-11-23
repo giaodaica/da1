@@ -26,6 +26,10 @@ class Shop_Control
     }
     public function renderShop()
     {
+        $limit = $_GET['limit'] ?? 12;
+        $page = $_GET['page'] ?? 1;;
+        $offset = ($page - 1) * 12;
+        $data_products = $this->products->render_product($limit,$offset);
         require_once "./views/shop.php";
     }
    
@@ -203,6 +207,10 @@ class Shop_Control
     public function delete_select(){
         $cart_item_id = $_GET['id_cart'];
         $this->cart->delete_item($cart_item_id);
+        echo "<script>";
+        echo "alert('Xóa thành công');";
+        echo "window.location = '?act=shoping-Cart';";
+        echo "</script>";
     }
     public function dathang()
     {

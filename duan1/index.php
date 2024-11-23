@@ -1,5 +1,6 @@
 <?php
-require_once "core/core.php"
+require_once "core/core.php";
+
 ?>
 
 <?php
@@ -28,7 +29,8 @@ match($act){
     'history_shop' => $customers->history_shop(),
     'detail' => $customers->detail_shoping_cart(),
     'cancel_shoping' => $customers->cancel_shoping(),
-    'confirm_phone' => $customers->confirm_phone(),
+    'send-otp' => $customers->sendOtp(),
+    'confirm_email' => $customers->confirm_email(),
     'action_history' => $customers->action_history(),
     // phần sản phẩm
     'products_detail' => $shop->products_detail(),

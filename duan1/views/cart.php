@@ -343,7 +343,7 @@ if (isset($_SESSION['user'])) {
                                                         <i class="fa fa-minus"></i>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="<?= $render_cart['quantity'] ?>" name="quantity">
+                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="<?= $render_cart['quantity'] ?>" name="quantity" >
                                                 <div class="input-group-btn">
                                                     <button class="btn btn-sm btn-primary btn-plus">
                                                         <i class="fa fa-plus"></i>
@@ -368,7 +368,7 @@ if (isset($_SESSION['user'])) {
                                 <?php
                                 foreach($data_voucher as $voucher){}
                                 if (empty($data_voucher)) { ?>
-                                    <input type="text" name="" id="">
+                                 
                                 <?php } else { ?>
                                     <select name="voucher" id="">
                                         <?php foreach ($data_voucher as $render_voucher) { ?>
@@ -389,7 +389,10 @@ if (isset($_SESSION['user'])) {
                                             echo $data_her['voucher_id'];
                                         }
                                     }?>">
-                                    <button class="btn btn-primary">Áp dụng voucher</button>
+                                    <?php if(!empty($data_voucher)){ ?>
+                                        <button class="btn btn-primary">Áp dụng voucher</button>
+                                    <?php }else{ ?>
+                                  <?php  } ?>
                                 </div>
                             </div>
                         </form>

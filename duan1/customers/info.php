@@ -232,7 +232,6 @@
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                     <a href="?act=shoping-Cart" class="dropdown-item">Giỏ Hàng</a>
-                                    <a href="" class="dropdown-item">Hóa Đơn</a>
                                     <a href="" class="dropdown-item">Lịch Sử Mua Hàng</a>
                                 </div>
                             </div>
@@ -272,7 +271,7 @@
                     <a href="?act=info" class="list-group-item list-group-item-action " aria-current="true">
                         Trang Chủ
                     </a>
-                    <a href="?act=history_shop" class="history_shop list-group-item list-group-item-action">Lịch sử mua hàng</a>
+                    <a href="?act=history_shop" class="history_shop list-group-item list-group-item-action">Đơn Hàng Của Tôi</a>
                     <a href="?act=info_detail" class="info-ctm list-group-item list-group-item-action" id="info_ctm" <?php if (empty($data_Custm)) {
                                                                                                             echo "success='true'";
                                                                                                         } else {
