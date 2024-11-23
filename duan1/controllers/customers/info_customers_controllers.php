@@ -50,7 +50,8 @@ class controller_Customers
         $phone = $_POST['phone'];
         $address = $_POST['address'];
         $date_of_birth = $_POST['date_of_birth'];
-
+        $email = $_POST['email_users'];
+        
         // Kiểm tra Tên
         if (strtolower(trim($full_name)) == "") {
             $error = "Tên không được để trống";
@@ -123,9 +124,9 @@ class controller_Customers
 
         if (isset($_SESSION['user'])) {
             $user_id = $_SESSION['id'];
-            $this->info->insert_info_ctm($user_id, $full_name, $phone, $address, $gender, $date_of_birth);
+            $this->info->insert_info_ctm($user_id, $full_name,$email, $phone, $address, $gender, $date_of_birth);
             echo "<script>";
-            echo "alert('Cập nhật thành công hãy xác nhận số điện thoại để hoàn tất');";
+            echo "alert('Cập nhật thành công hãy xác nhận email để hoàn tất');";
             echo "window.location.href = '?act=info_detail';";
             echo "</script>";
         }
@@ -139,9 +140,10 @@ class controller_Customers
         $phone = $_POST['phone'];
         $address = $_POST['address'];
         $date_of_birth = $_POST['date_of_birth'];
+        $email = $_POST['email_users'];
         if (isset($_SESSION['user'])) {
             $user_id = $_SESSION['id'];
-            $this->info->update_info_ctm($user_id, $full_name, $phone, $address, $gender, $date_of_birth);
+            $this->info->update_info_ctm($user_id, $full_name,$email,$phone, $address, $gender, $date_of_birth);
             echo "<script>";
             echo "alert('Cập nhật thành công');";
             echo "window.location.href = '?act=info_detail';";

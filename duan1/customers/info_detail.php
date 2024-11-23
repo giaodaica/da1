@@ -340,6 +340,13 @@ use PHPMailer\PHPMailer\Exception;
                             <small id="ePhone" class="text-muted"></small>
                         </div>
                         <div class="form-group">
+                            <label for="">Email</label>
+                            <input type="email" name="email_users" id="" class="form-control" placeholder="" aria-describedby="helpId" value="<?php if (isset($data_Custm['email'])) {
+                                                                                                                                                    echo $data_Custm['email'];
+                                                                                                                                                } ?>" readonly>
+                            <small id="ePhone" class="text-muted"></small>
+                        </div>
+                        <div class="form-group">
                             <label for="">Địa chỉ</label>
                             <input type="text" name="address" id="address" class="form-control" placeholder="" aria-describedby="helpId" value="<?php if (isset($data_Custm['address'])) {
                                                                                                                                                     echo $data_Custm['address'];
@@ -386,6 +393,10 @@ use PHPMailer\PHPMailer\Exception;
                                 <label for="">Số điện thoại</label>
                                 <input type="number" name="phone" id="phone" class="form-control" placeholder="" aria-describedby="helpId">
                                 <small id="ePhone" class="text-muted"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Email</label>
+                                <input type="email" name="email_users" id="" class="form-control" placeholder="" aria-describedby="helpId">
                             </div>
                             <div class="form-group">
                                 <label for="">Địa chỉ</label>
