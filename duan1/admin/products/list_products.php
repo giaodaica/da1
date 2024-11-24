@@ -227,9 +227,10 @@
                                         </td>
                                         <td>
                                         <a href="?act=update_products&products_id=<?= $index['product_id']?>">Sửa</a>
-
                                         </td>
-                                        
+                                        <td>
+                                            <a href="?act=render_list_variant&id=<?= $index['product_id'] ?>">Variant</a>
+                                        </td>
                                     </tr>
                                    <?php }else{ ?>
                                     <tr>
@@ -259,7 +260,9 @@
                                         <td>
                                             <a href="?act=delete&products_id=<?= $index['product_id']?>">Xóa Vĩnh Viễn</a>
                                         </td>
-                                        
+                                        <td>
+                                            <a href="?act=render_list_variant&id=<?= $index['product_id'] ?>">Variant</a>
+                                        </td>
                                     </tr>
                                   <?php } ?>
                                 <?php } ?>

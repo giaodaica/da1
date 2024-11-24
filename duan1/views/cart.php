@@ -329,7 +329,7 @@ if (isset($_SESSION['user'])) {
                                 $total += $render_cart['quantity'] * $render_cart['price'];
                             ?>
                                 <tr>
-                                    <td class="align-middle"><img src="<?php echo $render_cart['image'] ?>" alt="" style="width: 50px;"><?= $render_cart['name'] . " " . $render_cart['color'] ?></td>
+                                    <td class="align-middle"><img src="<?php echo "./admin". $render_cart['image'] ?>" alt="" style="width: 50px;"><?= $render_cart['name'] . " " . $render_cart['color'] ?></td>
                                     <td class="align-middle"><?= $render_cart['price'] ?></td>
                                     <td class="align-middle">
                                         <form action="?act=update_quantity&cart_item_id=<?php if (isset($render_cart['cart_item_id'])) {

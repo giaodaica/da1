@@ -177,8 +177,8 @@
                               <span class="sub-item">Sản phẩm đã ẩn</span>
                             </a>
                           </li> <li>
-                            <a href="?act=render_list_products">
-                              <span class="sub-item"></span>
+                            <a href="?act=hidden_variant">
+                              <span class="sub-item">Biến Thể Đã Ẩn</span>
                             </a>
                           </li> <li>
                             <a href="?act=render_list_products">

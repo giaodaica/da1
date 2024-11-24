@@ -254,6 +254,8 @@
                           <label for="">Ngày Nhập</label>
                           <input type="" name="date" id="" class="form-control" placeholder="" aria-describedby="helpId" value="<?= $data_by_id['ngaynhap'] ?>" readonly>
                         </div>
+                        <h3 class="text-danger"><?php if(isset($_SESSION['error'])){echo $_SESSION['error'];} ?></h3>
+                            <input type="hidden" name="nameOld" id="" value="<?= $data_by_id['name']?>">
                         <button class="btn btn-primary" type="submit">Sửa Sản Phẩm</button>
                     </form>
                     </div>

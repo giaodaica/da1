@@ -177,73 +177,39 @@
                         </ul>
                     </div>
                     <div class="page-category">
+                                                        <h1><a class="text-info" href="?act=add_variant&id=<?= $_GET['id']?>">Thêm Mới Biến Thể</a></h1>
+                        <table class="table table-striped table-inverse table-responsive">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>Tên Sản Phẩm</th>
+                                    <th>Size</th>
+                                    <th>Màu Sắc</th>
+                                    <th>Số Lượng</th>
+                                    <th>Ảnh</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <?php if (empty($data_variant)) {
+                                            echo "Sản Phẩm này chưa có biến thể";
+                                        } else { ?>
+                                            <?php foreach ($data_variant as $render) { ?>
+                                <tr>
+                                    <td scope="row"><?= $render['name'] ?></td>
+                                    <td><?= $render['size'] ?></td>
+                                    <td><?= $render['color'] ?></td>
+                                    <td><?= $render['stock_quantity'] ?></td>
+                                    <td><img src="<?= str_replace("./admin",".",$render['image'])?>" alt="" width="50"></td>
+                                    <td><a href="?act=update_variant&id=<?= $render['variant_id']?>&id_prd=<?= $render['product_id'] ?>">Sửa</a></td>
+                                </tr>
+                            <?php  } ?>
+                        <?php } ?>
+                        </td>
+                        </tr>
+                            </tbody>
+                        </table>
 
-                    <form class="form" action="?act=post_products" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                          <label for="">Tên Sản Phẩm</label>
-                          <input type="text" name="name" id="" class="form-control" placeholder="nhập tên sản phẩm" aria-describedby="helpId" >
-                          <small id="helpId" class="text-muted"></small>
-                        </div>
-                        <div class="form-group">
-                          <label for="">Danh Mục</label>
-                          <select class="form-control" name="category_id" id="">
-                           <?php foreach($data_category as $category){ ?>
-                             <option value="<?= $category['category_id'] ?>"><?= $category['name']; ?></option>
-                          <?php } ?>
-                          </select>
-                        </div>
-                        <div class="form-group">
-                          <label for="">Giá bán</label>
-                          <input type="number" name="price" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                          <small id="helpId" class="text-muted"></small>
-                        </div>
-                        <div class="form-group">
-                          <label for="">Giá Nhập</label>
-                          <input type="number" name="gianhap" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                          <small id="helpId" class="text-muted"></small>
-                        </div>
-                        <div class="form-group">
-                          <label for="">Số Lượng Nhập</label>
-                          <input type="number" name="stock_quantity" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                          <small id="helpId" class="text-muted"></small>
-                        </div>
-                       <div class="form-group">
-                         <label for="">Trạng Thái</label>
-                         <select class="form-control" name="status" id="">
-                           <option value="Available">Còn hàng</option>
-                           <option value="Unavailable">Hết Hàng</option>
-                         </select>
-                       </div>
-                        <div class="form-group">
-                          <label for="">Ẩn/Hiện</label>
-                          <select class="form-control" name="comment" id="">
-                            <option value="1">Hiện</option>
-                            <option value="0">Ẩn</option>
-                          </select>
-                        </div>
-                        <div class="form-group">
-                          <label for="">Ảnh Sản Phẩm</label>
-                          <input type="file" name="image" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                          <small id="helpId" class="text-muted"></small>
-                        </div>
-                        <div class="form-group">
-                          <label for="">Số lượng đã bán</label>
-                          <input type="number" name="Quantity_sold" id="" class="form-control" placeholder="" aria-describedby="helpId" value="0" readonly>
-                          <small id="helpId" class="text-muted"></small>
-                        </div>
-                        <div class="form-group">
-                          <label for="">Mô Tả</label>
-                          <input type="text" name="mota" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                          <small id="helpId" class="text-muted"></small>
-                        </div>
-                        <div class="form-group">
-                          <label for="">Ngày Nhập</label>
-                          <input type="date" name="date" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                          <small id="helpId" class="text-muted"></small>
-                        </div>
-                        <h3 class="text-danger"><?php if(isset($error)){echo $error;} ?></h3>
-                        <button class="btn btn-primary" type="submit">Thêm sản phẩm</button>
-                    </form>
                     </div>
                 </div>
             </div>

@@ -51,7 +51,8 @@ class Shop_Control
         $data_variants_black = $this->variant->renderVariants("đen", $id);
         $data_variants_blue = $this->variant->renderVariants("xanh", $id);
         $data_variants_red = $this->variant->renderVariants("đỏ", $id);
-
+        $data_variants_yellow = $this->variant->renderVariants("vàng", $id);
+        $data_variants_orange = $this->variant->renderVariants("cam", $id);
         if (isset($_SESSION['id'])) {
             $data_Gift = $this->voucher_By_User->select_Gift_byUserID($_SESSION['id']);
         }

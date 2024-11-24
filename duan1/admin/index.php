@@ -18,5 +18,9 @@ match($act){
     'post_products' => $products->post_products(),
     'update_products'=> $products->update_products(),
     'post_update_products' => $products->post_update_products(),
-    
+    'render_list_variant' => $products ->render_list_variant(),
+    'update_variant' => $products->update_variant(),
+    'post_update_variant' => $products->post_update_variant(),
+    'add_variant' => $products->add_variant(),
+    'post_insert_variant' => $products->post_insert_variant()
 };

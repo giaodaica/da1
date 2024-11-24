@@ -1,113 +1,41 @@
-
-<style>
-    
-    .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        display: none;
-        justify-content: center;
-        align-items: center;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dải Màu Cho Options</title>
+  <style>
+    select {
+      width: 200px;
+      padding: 5px;
     }
-
-    .popup {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        width: 100%;
-        max-width: 400px; /* Đảm bảo popup cân đối */
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    option {
+      padding: 5px;
     }
-
-    .popup h2 {
-        margin: 0 0 15px;
-    }
-
-    .popup input {
-        width: 100%; /* Đảm bảo input chiếm toàn bộ chiều ngang */
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-sizing: border-box; /* Giữ chiều ngang chính xác */
-    }
-
-    .popup button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 10px; /* Cách đều nút với input */
-    }
-
-    .popup button:hover {
-        background-color: #0056b3;
-    }
-</style>
-
-
-<button id="openPopup">Xác nhận số điện thoại</button>
-
-<!-- Popup -->
-<div class="popup-overlay" id="popupOverlay">
-    <div class="popup" id="popup">
-        <!-- Step 1: Nhập số điện thoại -->
-        <div id="step1">
-            <h2>Nhập số điện thoại</h2>
-            <input type="text" id="phoneNumber" placeholder="Nhập số điện thoại">
-            <button id="sendOtp">Gửi OTP</button>
-        </div>
-
-        <!-- Step 2: Nhập OTP -->
-        <div id="step2" style="display: none;">
-            <h2>Nhập mã OTP</h2>
-            <form action="?act=hello" method="post">
-                <input type="text" id="otpCode" placeholder="Nhập mã OTP">
-            <button id="verifyOtp">Xác nhận</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    const openPopup = document.getElementById('openPopup');
-    const popupOverlay = document.getElementById('popupOverlay');
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const sendOtp = document.getElementById('sendOtp');
-    const verifyOtp = document.getElementById('verifyOtp');
-
-    // Hiển thị popup
-    openPopup.addEventListener('click', () => {
-        popupOverlay.style.display = 'flex';
-    });
-
-    // Đóng popup khi nhấn ra ngoài
-    popupOverlay.addEventListener('click', (e) => {
-        if (e.target === popupOverlay) {
-            popupOverlay.style.display = 'none';
-        }
-    });
-
-    // Chuyển từ bước nhập số điện thoại sang nhập OTP
-    sendOtp.addEventListener('click', () => {
-        const phoneNumber = document.getElementById('phoneNumber').value;
-        if (phoneNumber) {
-            alert(`OTP đã gửi đến số: ${phoneNumber}`);
-            step1.style.display = 'none';
-            step2.style.display = 'block';
-        } else {
-            alert('Vui lòng nhập số điện thoại hợp lệ.');
-        }
-    });
-
-   
-</script>
-
+    option[data-color="red"] { background-color: #ff0000; color: #fff; }
+    option[data-color="yellow"] { background-color: yellow; color: #000000; }
+    option[data-color="orange"] { background-color: #ffa500; color: #fff; }
+    option[data-color="green"] { background-color: #008000; color: #fff; }
+    option[data-color="blue"] { background-color: #0000ff; color: #fff; }
+    option[data-color="indigo"] { background-color: #4b0082; color: #fff; }
+    option[data-color="violet"] { background-color: #8a2be2; color: #fff; }
+    option[data-color="black"] { background-color: #000000; color: #fff; }
+    option[data-color="cyan"] { background-color: #00ffff; color: #000; }
+  </style>
+</head>
+<body>
+  <label for="colorSelect">Chọn màu sắc:</label>
+  <select id="colorSelect">
+    <option value=""></option>
+    <option data-color="red" value="red">Đỏ</option>
+    <option data-color="orange" value="orange">Cam</option>
+    <option data-color="yellow" value="yellow">Vàng</option>
+    <option data-color="green" value="green">Lục</option>
+    <option data-color="blue" value="blue">Lam</option>
+    <option data-color="indigo" value="indigo">Chàm</option>
+    <option data-color="violet" value="violet">Tím</option>
+    <option data-color="black" value="black">Đen</option>
+    <option data-color="cyan" value="cyan">Xanh</option>
+  </select>
+</body>
+</html>

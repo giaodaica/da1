@@ -12,7 +12,7 @@
     public function home(){
         session_start();
          $d = $this->categories->select();
-         $products = $this->prod->select();
+         $products = $this->prod->select_by16();
         //  $shoping_Cart = $this->
          if(isset($_SESSION['id'])){
             $data_Gift = $this->voucher_By_User->select_Gift_byUserID($_SESSION['id']);

@@ -13,4 +13,10 @@ class products extends database {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function select_by16(){
+        $sql = "SELECT * FROM `products` where comment = '1' limit 16 offset 0";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

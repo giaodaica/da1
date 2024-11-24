@@ -82,12 +82,11 @@ class controller_Customers
             $this->showError($error);
             return;
         }
-        if (!preg_match("/^\d{10}$/", $phone)) {
-            $error = "Số điện thoại phải bao gồm 10 chữ số";
+        if (strlen($phone) !== 10 || !ctype_digit($phone) || $phone[0] !== '0') {
+            $error = "Số điện thoại phải bao gồm đúng 10 chữ số, bắt đầu bằng số 0 và chỉ chứa chữ số";
             $this->showError($error);
             return;
         }
-
         // Kiểm tra Địa chỉ
         if (strtolower(trim($address)) == "") {
             $error = "Địa chỉ không được để trống";
@@ -117,6 +116,13 @@ class controller_Customers
         $checkphone =  $this->info->select_phone($phone);
         if ($checkphone) {
             $error = "Số Điện Thoại Đã Tồn Tại Vui Lòng Nhập Số Điện Thoại Khác";
+            $this->showError($error);
+            return;
+        }
+        $email = $_POST['email_users'];
+        $checkmail =  $this->info->select_email($email);
+        if ($checkmail) {
+            $error = "Email Đã Tồn Tại Vui Lòng Nhập Email Khác";
             $this->showError($error);
             return;
         }

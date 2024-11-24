@@ -56,7 +56,8 @@ if (isset($_SESSION['user'])) {
             z-index: 9999;
             /* Đặt z-index cao để thông điệp nổi bật */
         }
-        .error{
+
+        .error {
             color: red;
             font-weight: bold;
         }
@@ -309,17 +310,38 @@ if (isset($_SESSION['user'])) {
                     <div id="product-carousel" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner bg-light">
                             <div class="carousel-item active">
-                                <img class="w-100 h-100" src="<?= $data_products['image'] ?>" alt="Image">
+                                <img class="w-100 h-100" src="<?= "./admin" . $data_products['image'] ?>" alt="Image">
                             </div>
-                            <div class="carousel-item">
-                                <img class="w-100 h-100" src="<?= $data_variants_black['image'] ?>" alt="Image">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="w-100 h-100" src="<?= $data_variants_blue['image'] ?>" alt="Image">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="w-100 h-100" src="<?= $data_variants_red['image'] ?>" alt="Image">
-                            </div>
+
+                            <?php if (!empty($data_variants_black['image'])) { ?>
+                                <div class="carousel-item">
+                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_black['image'] ?>" alt="Image">
+                                </div>
+                            <?php } ?>
+
+                            <?php if (!empty($data_variants_blue['image'])) { ?>
+                                <div class="carousel-item">
+                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_blue['image'] ?>" alt="Image">
+                                </div>
+                            <?php } ?>
+
+                            <?php if (!empty($data_variants_red['image'])) { ?>
+                                <div class="carousel-item">
+                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_red['image'] ?>" alt="Image">
+                                </div>
+                            <?php } ?>
+
+                            <?php if (!empty($data_variants_yellow['image'])) { ?>
+                                <div class="carousel-item">
+                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_yellow['image'] ?>" alt="Image">
+                                </div>
+
+                            <?php } ?> <?php if (!empty($data_variants_orange['image'])) { ?>
+                                <div class="carousel-item">
+                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_orange['image'] ?>" alt="Image">
+                                </div>
+                            <?php } ?>
+
                         </div>
                         <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
                             <i class="fa fa-2x fa-angle-left text-dark"></i>
@@ -359,29 +381,37 @@ if (isset($_SESSION['user'])) {
                                 <br>
                                 <div class="color-group">
                                     <strong class="text-dark mr-3">Màu</strong>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input" id="color-1" name="color" value="Đen">
-                                        <label class="custom-control-label" for="color-1">Đen</label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input" id="color-2" name="color" value="Trắng">
-                                        <label class="custom-control-label" for="color-2">Trắng</label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input" id="color-3" name="color" value="Đỏ">
-                                        <label class="custom-control-label" for="color-3">Đỏ</label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" class="custom-control-input" id="color-4" name="color" value="Xanh">
-                                        <label class="custom-control-label" for="color-4">Xanh</label>
-                                    </div>
+                                    <?php
+                                    // Mảng chứa thông tin màu và điều kiện hiển thị
+                                    $colors = [
+                                        ['name' => 'Đen', 'value' => 'Đen', 'id' => 'color-1', 'condition' => !empty($data_variants_black['image'])],
+                                        ['name' => 'Trắng', 'value' => 'Trắng', 'id' => 'color-2', 'condition' => true],
+                                        ['name' => 'Đỏ', 'value' => 'Đỏ', 'id' => 'color-3', 'condition' => !empty($data_variants_red['image'])],
+                                        ['name' => 'Xanh', 'value' => 'Xanh', 'id' => 'color-4', 'condition' => !empty($data_variants_blue['image'])],
+                                        ['name' => 'Cam', 'value' => 'Cam', 'id' => 'color-5', 'condition' => !empty($data_variants_orange['image'])],
+                                        ['name' => 'Vàng', 'value' => 'Vàng', 'id' => 'color-6', 'condition' => !empty($data_variants_yellow['image'])],
+
+                                    ];
+
+                                    foreach ($colors as $color) {
+                                        if ($color['condition']) {
+                                            echo '<div class="custom-control custom-radio custom-control-inline">';
+                                            echo '<input type="radio" class="custom-control-input" id="' . $color['id'] . '" name="color" value="' . $color['value'] . '">';
+                                            echo '<label class="custom-control-label" for="' . $color['id'] . '">' . $color['name'] . '</label>';
+                                            echo '</div>';
+                                        }
+                                    }
+                                    ?>
                                 </div>
+
                                 <div class="d-flex align-items-center mb-4 pt-2">
                                     <input type="hidden" name="price_present" id="" value="<?= $data_products['price'] ?>">
                                     <input type="hidden" name="name" id="" value="<?= $data_products['name'] ?>">
-                                    <button class="btn btn-primary px-3" type="submit"><i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ</button> 
+                                    <button class="btn btn-primary px-3" type="submit"><i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ</button>
                                     <br>
-                                    <div class="error" style="color: red;"><?php if(isset($error)){echo $error;} ?></div>
+                                    <div class="error" style="color: red;"><?php if (isset($error)) {
+                                                                                echo $error;
+                                                                            } ?></div>
                                 </div>
                             </form>
                         </div>

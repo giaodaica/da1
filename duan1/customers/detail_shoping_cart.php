@@ -327,7 +327,7 @@
                             <?php foreach ($data_item as $item_cart => $index) { ?>
                                 <tr>
                                     <th scope="row"><?= $item_cart + 1  ?></th>
-                                    <td><img src="<?= $index['image']; ?>" alt="" width="50"></td>
+                                    <td><img src="<?= "./admin". $index['image']; ?>" alt="" width="50"></td>
                                     <td><?= $index['name']; ?></td>
                                     <td><?= $index['quantity']; ?></td>
                                     <td><?= number_format($index['price']); ?></td>

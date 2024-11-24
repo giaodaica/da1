@@ -53,6 +53,10 @@ if (isset($_SESSION['user'])) {
             z-index: 9999;
             /* Đặt z-index cao để thông điệp nổi bật */
         }
+        a.h6.text-decoration-none.text-truncate {
+     padding-left: 80px;
+     font-weight: bold;
+        }
     </style>
 </head>
 
@@ -398,21 +402,29 @@ if (isset($_SESSION['user'])) {
 
     <!-- Products Start -->
     <div class="container-fluid pt-5 pb-3">
-        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Featured Products</span></h2>
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản Phẩm Hot</span></h2>
         <div class="row px-xl-5">
             <?php foreach($products as $data_products){ ?>
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
-                        <img class="img-fluid w-100" src="<?= $data_products->image  ?>" alt="">
+                        <img class="img-fluid w-100" src="<?= "./admin".$data_products['image'] ?>" alt="">
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" href="?act=products_detail&product_id=<?= $data_products->product_id?>"><i class="fa fa-search"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href="?act=products_detail&product_id=<?= $data_products['product_id']?>"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
                     <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate" href="?act=products_detail&product_id=<?= $data_products->product_id?>"><?= $data_products->name ?></a>
+                        <a class="h6 text-decoration-none text-truncate" href="?act=products_detail&product_id=<?= $data_products['product_id']?>"><?= $data_products['name'] ?></a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5><?= $data_products->price?>Đ</h5>
+                            <h5><?= $data_products['price']." "?>Đ</h5><h6 class="text-muted ml-2"><del><?= number_format($data_products['price']*1.2)." Đ" ?></del>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small>(99)</small>
                         </div>
                     </div>
                 </div>

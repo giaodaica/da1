@@ -24,6 +24,12 @@ class customers_models extends database{
         $stmt->execute();
         return $stmt->fetch();
     }
+    public function select_email($email){
+        $sql = "SELECT * FROM customer_info WHERE email = '$email'";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
     public function authen_mail($user_id){
         $sql = "UPDATE `customer_info` SET `authen` = 'Đã Xác Thực' WHERE `customer_info`.`user_id` = $user_id";
         $this->conn->exec($sql);

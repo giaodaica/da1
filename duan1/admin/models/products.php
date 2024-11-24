@@ -35,5 +35,13 @@ class product extends database {
         // echo $sql;
         // die;
         $this->conn->exec($sql);
+        
     }
+    public function select_where_products_name($name){
+        $sql = "SELECT * FROM products where `name` = '$name'";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    
 }
