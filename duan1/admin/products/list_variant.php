@@ -186,6 +186,8 @@
                                     <th>Màu Sắc</th>
                                     <th>Số Lượng</th>
                                     <th>Ảnh</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -201,7 +203,9 @@
                                     <td><?= $render['color'] ?></td>
                                     <td><?= $render['stock_quantity'] ?></td>
                                     <td><img src="<?= str_replace("./admin",".",$render['image'])?>" alt="" width="50"></td>
+                                    <td><?= $render['status']==1 ?"Hiển Thị" : "Ẩn" ?></td>
                                     <td><a href="?act=update_variant&id=<?= $render['variant_id']?>&id_prd=<?= $render['product_id'] ?>">Sửa</a></td>
+                                    <td><a href="?act=delete_variant&id=<?= $render['variant_id']?>&id_prd=<?= $render['product_id'] ?>">Xóa</a></td>
                                 </tr>
                             <?php  } ?>
                         <?php } ?>

@@ -10,16 +10,20 @@ class controller_Customers
     public $info;
     public $order_item;
     public $order_item_detail;
+    public $categories;
     public function __construct()
     {
         $this->info = new customers_models();
         $this->gift = new Voucher_model();
         $this->order_item = new order; // bảng order
         $this->order_item_detail = new order_detail();
+        $this->categories = new Categories_models();
     }
     public function renderInfo()
     {
         session_start();
+        $d = $this->categories->select();
+
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
@@ -35,6 +39,8 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
+        $d = $this->categories->select();
+
         }
         if (isset($_SESSION['id'])) {
             $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
@@ -162,13 +168,17 @@ class controller_Customers
     {
 
         session_start();
+
         $limit = 5;
         $page = $_GET['page'] ?? 1;
         $offset = ($page - 1) * 5;
+        $d = $this->categories->select();
+
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
         }
+
         $data_cart_item_edit = $this->order_item->select_order($id, $limit, $offset);
         require_once "./customers/history_buy_product.php";
     }
@@ -279,6 +289,8 @@ class controller_Customers
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
         }
+        $d = $this->categories->select();
+
         $data_cart_item_edit = $this->order_item->action_history($action, $id, $limit, $offset);
         require_once "customers/action_history_buy_products.php";
     }

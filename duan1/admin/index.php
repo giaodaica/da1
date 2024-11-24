@@ -22,5 +22,9 @@ match($act){
     'update_variant' => $products->update_variant(),
     'post_update_variant' => $products->post_update_variant(),
     'add_variant' => $products->add_variant(),
-    'post_insert_variant' => $products->post_insert_variant()
+    'post_insert_variant' => $products->post_insert_variant(),
+    'hidden_variant' => $products->hidden_variant(),
+    // phần danh mục 
+    'list_category' => $category->render_List_Category(),
+    
 };

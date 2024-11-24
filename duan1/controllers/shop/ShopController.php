@@ -29,6 +29,7 @@ class Shop_Control
         $limit = $_GET['limit'] ?? 12;
         $page = $_GET['page'] ?? 1;;
         $offset = ($page - 1) * 12;
+        $d = $this->categories->select();
         $data_products = $this->products->render_product($limit,$offset);
         require_once "./views/shop.php";
     }
@@ -66,7 +67,6 @@ class Shop_Control
         $id_user = $_SESSION['id'] ?? 0;
         $cart_user = $this->cart_of_user->select_cart_of_user($id_user);
         $data_products = $this->products->render_product_by_id($id);
-    
         // Kiểm tra size
         if (empty($_POST['size'])) {
             $error = "Bạn chưa chọn size!!!";
@@ -147,6 +147,7 @@ class Shop_Control
     {
         session_start();
         $id = $_SESSION['id'] ?? 0;
+        $d = $this->categories->select();
         $data_voucher = $this->voucher_By_User->select_Gift_byUserID($id);
         if(!isset($_SESSION['user'])){
             $data_cart = $_SESSION['cart'] ?? [];
@@ -160,17 +161,17 @@ class Shop_Control
             //  echo "<pre>";
             // print_r($_POST);
             // die;
-            
         session_start();
+        $d = $this->categories->select();
         $id = $_SESSION['id'] ?? 0;
         $data_customer = $this->customer->renderInfo($id);
-        if(empty($data_customer)){
+        if(isset($_SESSION['user']) && empty($data_customer)){
             echo "<script>";
             echo "alert('Vui Lòng Cập Nhật Thông Tin Để Thực Hiện Chức Năng Này');";
             echo "window.location = '?act=info';";
             echo "</script>";
         }
-        if($data_customer['authen'] == "Chưa Xác Thực"){
+        if(isset($_SESSION['user']) && $data_customer['authen'] == "Chưa Xác Thực"){
             echo "<script>";
             echo "alert('Vui Lòng Xác Nhận Số Điện Thoại Để Thực Hiện Chức Năng Này');";
             echo "window.location = '?act=info_detail';";

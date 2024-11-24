@@ -221,6 +221,17 @@
               <input type="hidden" name="image_old" id="" class="form-control" placeholder="" aria-describedby="helpId" value="<?= $data_variant['image'] ?>">
               <input type="file" name="image_new" id="" class="form-control" placeholder="" aria-describedby="helpId">
             </div>
+            <div class="form-group">
+              <label for="">Trạng Thái</label>
+              <select class="form-control" name="status" id="">
+                  <option value="<?= $data_variant?>"> <?= $data_variant['status']==1 ? "Hiển Thị" : "Ẩn" ?> </option>
+                  <?php if($data_variant['status'] == 1){ ?>
+                  <option value="0">Ẩn</option>
+                 <?php }else{ ?>
+                  <option value="1">Hiện</option>
+               <?php  } ?>
+                </select>
+            </div>
             <button class="btn btn-primary">Cập Nhật</button>
                 </form>
             </div>

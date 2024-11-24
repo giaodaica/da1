@@ -1,4 +1,8 @@
 
+<?php
+// print_r($data_catagori);
+
+?>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -185,54 +189,32 @@
                         </ul>
                     </div>
                     <div class="page-category">
-                        <h1><a class="text-info" href="?act=new_products">Thêm Sản Phẩm Mới</a></h1>
+                        <h1><a class="text-info" href="?act=">Thêm Danh Mục Mới</a></h1>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tên Sản Phẩm</th>
-                                    <th scope="col">Danh Mục</th>
+                                    <th scope="col">Tên Danh Mục</th>
+                                    <th scope="col">Giới Hạn</th>
                                     <th scope="col">Ảnh Mô Tả</th>
-                                    <th scope="col">Mô Tả Sản Phẩm</th>
-                                    <th scope="col">Giá Nhập</th>
-                                    <th scope="col">Giá Bán</th>
-                                    <th scope="col">Số Lượng Đã Bán</th>
-                                    <th scope="col">Số Lượng Tồn Kho</th>
-                                    <th scope="col">Trạng Thái Kho Hàng</th>
-                                    <th scope="col">Comment</th>
-                                    <th scope="col">Ngày Nhập</th>
+                                    <th scope="col">Trạng Thái</th>
                                     <th scope="col">Hành Đông</th>
                                 </tr>
                             </thead>
                             <tbody>
-                               
-                               <?php if(!isset($_GET['category_id']) || empty($_GET['category_id'])){ ?>
-                                <?php foreach ($data_products as $list_products => $index) { ?>
-                                    <?php if($index['comment'] == "1"){ ?>    
+                                <?php foreach ($data_catagori as $list_cate => $index) { ?>
+                                    <?php if($index['status'] == "1"){ ?>    
                                         <tr>
-                                        <td><?= $index['name'] ?></td>
-                                        <td><?= $index['category'] ?></td>
-                                        <td><img src="<?= $index['image'] ?>" alt="" width="60"></td>
-                                        <td><?= $index['mota'] ?></td>
-                                        <td><?= number_format($index['gianhap']) ?></td>
-                                        <td><?= number_format($index['price']) ?></td>
-                                        <td><?= $index['Quantity_sold'] ?></td>
-                                        <td><?= $index['stock_quantity'] ?></td>
-                                        <td><?php if ($index['status'] == "Available") {
-                                                echo "Còn Hàng";
-                                            } else {
-                                                echo "Hết Hàng";
-                                            } ?></td>
-                                        <td><?= $index['comment'] == 1 ? "Hiển Thị" : "Ẩn"; ?></td>
-                                        <td><?= $index['ngaynhap']?></td>
+                                        <td><?= $index['category_name'] ?></td>
+                                        <td><?= $index['only'] ?></td>
+                                        <td><img src="<?= str_replace("./admin",".",$index['image']) ?>" alt="" width="60"></td>
+                                        <td><?= $index['status']== 1 ? "Hiện" : "Ẩn" ?></td>
                                         <td>
-                                            <a href="?act=delete_products&products_id=<?= $index['product_id']?>">Xóa</a>
+                                            <a href="?act=delete_products&products_id=<?= $index['category_id']?>">Xóa</a>
                                         </td>
                                         <td>
-                                        <a href="?act=update_products&products_id=<?= $index['product_id']?>">Sửa</a>
+                                        <a href="?act=update_products&products_id=<?= $index['category_id']?>">Sửa</a>
                                         </td>
-                                        <td>
-                                            <a href="?act=render_list_variant&id=<?= $index['product_id'] ?>">Variant(<?= $index['variant_count'] ?>)</a>
-                                        </td>
+                                        <td><a href="?act=render_list_products&comment=presently&category_id=<?=  $index['category_id'] ?>">Xem Sản Phẩm(<?= $index['product_count'] ?>)</a></td>
                                     </tr>
                                    <?php }else{ ?>
                                     <tr>
@@ -249,59 +231,25 @@
                                             } else {
                                                 echo "Hết Hàng";
                                             } ?></td>
-                                        <td><?= $index['comment'] == 1 ? "Hiển Thị" : "Ẩn"; ?></td>
+                                        <td><?= $index['status'] == 1 ? "Hiển Thị" : "Ẩn"; ?></td>
                                         <td><?= $index['ngaynhap']?></td>
 
                                         <td>
-                                            <a href="?act=presently&products_id=<?= $index['product_id']?>">Hiện</a>
+                                            <a href="?act=presently&products_id=<?= $index['category_id']?>">Hiện</a>
                                         </td>
                                         <td>
-                                        <a href="?act=update_products&products_id=<?= $index['product_id']?>">Sửa</a>
+                                        <a href="?act=update_products&products_id=<?= $index['category_id']?>">Sửa</a>
 
                                         </td>
                                         <td>
-                                            <a href="?act=delete&products_id=<?= $index['product_id']?>">Xóa Vĩnh Viễn</a>
+                                            <a href="?act=delete&products_id=<?= $index['category_id']?>">Xóa Vĩnh Viễn</a>
                                         </td>
                                         <td>
-                                            <a href="?act=render_list_variant&id=<?= $index['product_id'] ?>">Variant</a>
+                                            <a href="?act=render_list_variant&id=<?= $index['category_id'] ?>">Variant</a>
                                         </td>
                                     </tr>
                                   <?php } ?>
                                 <?php } ?>
-                              <?php }else { ?>
-                                <?php foreach ($data_products as $list_products => $index) { ?>
-                                    <?php if($index['comment'] == "1" && $index['category_id'] == $_GET['category_id']){ ?>    
-                                        <tr>
-                                        <td><?= $index['name'] ?></td>
-                                        <td><?= $index['category'] ?></td>
-                                        <td><img src="<?= $index['image'] ?>" alt="" width="60"></td>
-                                        <td><?= $index['mota'] ?></td>
-                                        <td><?= number_format($index['gianhap']) ?></td>
-                                        <td><?= number_format($index['price']) ?></td>
-                                        <td><?= $index['Quantity_sold'] ?></td>
-                                        <td><?= $index['stock_quantity'] ?></td>
-                                        <td><?php if ($index['status'] == "Available") {
-                                                echo "Còn Hàng";
-                                            } else {
-                                                echo "Hết Hàng";
-                                            } ?></td>
-                                        <td><?= $index['comment'] == 1 ? "Hiển Thị" : "Ẩn"; ?></td>
-                                        <td><?= $index['ngaynhap']?></td>
-                                        <td>
-                                            <a href="?act=delete_products&products_id=<?= $index['product_id']?>">Xóa</a>
-                                        </td>
-                                        <td>
-                                        <a href="?act=update_products&products_id=<?= $index['product_id']?>">Sửa</a>
-                                        </td>
-                                        <td>
-                                            <a href="?act=render_list_variant&id=<?= $index['product_id'] ?>">Variant(<?= $index['variant_count'] ?>)</a>
-                                        </td>
-                                    </tr>
-                                   <?php }else{ ?>
-                                     
-                                  <?php } ?>
-                                <?php } ?>
-                               <?php   } ?>
                             </tbody>
                         </table>
                         <nav aria-label="Page navigation example">
@@ -311,28 +259,26 @@
                     <ul class="pagination">
                       
                         <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="?act=render_list_products&comment=<?= $_GET['comment']?>&page=<?php echo max(1, $current_page - 1); ?><?php if(isset($_GET['category_id'])){echo "&category_id=".$_GET['category_id'];} ?>">Trước</a>
+                            <a class="page-link" href="?act=list_category&status=<?= $_GET['status']?>&page=<?php echo max(1, $current_page - 1); ?>">Trước</a>
                         </li>
-
-                      
                         <?php
                         $start = max(1, $current_page - 2); 
                         $end = $current_page + 2;          
                         for ($i = $start; $i <= $end; $i++) {
                         ?>
-                            <?php if(!empty($data_products)){ ?>
+                            <?php if(!empty($data_catagori)){ ?>
                                 <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
-                                <a class="page-link" href="?act=render_list_products&comment=<?= $_GET['comment']?>&page=<?php echo $i; ?><?php if(isset($_GET['category_id'])){echo "&category_id=".$_GET['category_id'];} ?>"><?php echo $i; ?></a>
+                                <a class="page-link" href="?act=list_category&status=<?= $_GET['status']?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
                             </li>
                            <?php } ?>
                         <?php } ?>
-                      <?php if(!empty($data_products)){ ?>
+                      <?php if(!empty($data_catagori)){ ?>
                         <li class="page-item">
-                            <a class="page-link" href="?act=render_list_products&comment=<?= $_GET['comment']?>&page=<?php echo $current_page + 1; ?><?php if(isset($_GET['category_id'])){echo "&category_id=".$_GET['category_id'];} ?>">Sau</a>
+                            <a class="page-link" href="?act=list_category&status=<?= $_GET['status']?>&page=<?php echo $current_page + 1; ?>">Sau</a>
                         </li>
                     <?php  }else{ ?>
                         <li class="page-item disabled">
-                            <a class="page-link" href="?act=render_list_products&comment=<?= $_GET['comment']?>&page=<?php echo $current_page + 1; ?><?php if(isset($_GET['category_id'])){echo "&category_id=".$_GET['category_id'];} ?>">Sau</a>
+                            <a class="page-link" href="?act=list_category&status=<?= $_GET['status']?>&page=<?php echo $current_page + 1; ?>">Sau</a>
                         </li>
                     <?php } ?>
                     </ul>

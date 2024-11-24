@@ -148,7 +148,7 @@
                       <div class="collapse" id="subnav1">
                         <ul class="nav nav-collapse subnav">
                           <li>
-                            <a href="?act=list_category">
+                            <a href="?act=list_category&status=presently">
                               <span class="sub-item">Danh Sách</span>
                             </a>
                           </li>

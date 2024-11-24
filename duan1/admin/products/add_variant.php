@@ -238,6 +238,13 @@
                   <label for="">Ảnh</label>
                   <input type="file" name="image" id="" class="form-control" placeholder="" aria-describedby="helpId">
                 </div>
+                <div class="form-group">
+                  <label for="">Trạng Thái</label>
+                  <select class="form-control" name="status" id="">
+                    <option value="0">Ẩn</option>
+                    <option value="1">Hiển Thị</option>
+                  </select>
+                </div>
         <button class="btn btn-primary">thêm mới</button>
             </form>
 

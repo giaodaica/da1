@@ -3,7 +3,10 @@
 class product extends database {
     protected $table = "products";
     public function render_prd($comment,$litmit,$offset){
-        $sql = "SELECT products.*,categories.name as category FROM products JOIN categories ON products.category_id = categories.category_id where products.comment = '$comment' order by ngaynhap desc limit $litmit offset $offset ";
+        $sql = "SELECT products.*, categories.name AS category, COUNT(product_variants.product_id) AS variant_count FROM 
+        products LEFT JOIN product_variants ON products.product_id = product_variants.product_id AND product_variants.status = '1' 
+        JOIN categories ON products.category_id = categories.category_id WHERE products.comment = '$comment'
+         GROUP BY products.product_id, categories.name ORDER BY products.ngaynhap DESC LIMIT $litmit OFFSET $offset;";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();

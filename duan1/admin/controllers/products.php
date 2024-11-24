@@ -214,9 +214,10 @@ class products {
           } else {
            $image = $_POST['image_old'];
           } 
+          $status = $_POST['status'];
        $stock_quantity = $_POST['stock_quantity'];
        $product_id = $_GET['id_prd'];
-       $this->variant->update_variant($size,$color,$stock_quantity,$image,$variant_id);
+       $this->variant->update_variant($size,$color,$stock_quantity,$image,$status,$variant_id);
        echo "<script>";
         echo "alert('Sửa Thành Công');";
         echo "window.location = '?act=render_list_variant&id=$product_id';";
@@ -247,6 +248,9 @@ class products {
         echo "alert('Thêm Mới Thành Công');";
         echo "window.location = '?act=render_list_variant&id=$product_id';";
         echo "</script>";
+
+    }
+    public function hidden_variant(){
 
     }
     public function showError($error){
