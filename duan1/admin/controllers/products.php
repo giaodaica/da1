@@ -20,6 +20,7 @@ class products {
         $page = $_GET['page'] ?? 1;
         $offset = ($page - 1) * 5;
         $data_products = $this->product->render_prd($comment,$limit,$offset);
+        
         require_once "./products/list_products.php";
     }
     public function delete_products(){

@@ -65,9 +65,9 @@ if (isset($_SESSION['user'])) {
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="<?= BASE_URL?>">Trang Chủ</a>
-                    <a class="breadcrumb-item text-dark" href="?act=shop">Cửa Hàng</a>
-                    <span class="breadcrumb-item active">Danh Sách Sản Phẩm</span>
+                    <a class="breadcrumb-item text-dark" href="<?= BASE_URL?>">Home</a>
+                    <a class="breadcrumb-item text-dark" href="?act=shop">Shop</a>
+                    <span class="breadcrumb-item active">Shop List</span>
                 </nav>
             </div>
         </div>
@@ -81,37 +81,37 @@ if (isset($_SESSION['user'])) {
             <!-- Shop Sidebar Start -->
             <div class="col-lg-3 col-md-4">
                 <!-- Price Start -->
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Lọc Theo Giá</span></h5>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
                 <div class="bg-light p-4 mb-30">
-                    <form action="" method="POST">
+                    <form>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="price-all">
-                            <label class="custom-control-label" for="price-all">Tất cả</label>
+                            <label class="custom-control-label" for="price-all">All Price</label>
                             <span class="badge border font-weight-normal">1000</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-1" name="price" value="50000">
-                            <label class="custom-control-label" for="price-1">0 - 50.000 VND</label>
+                            <input type="checkbox" class="custom-control-input" id="price-1">
+                            <label class="custom-control-label" for="price-1">$0 - $100</label>
                             <span class="badge border font-weight-normal">150</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label" for="price-2">50.000VND - 150.000 VND</label>
+                            <label class="custom-control-label" for="price-2">$100 - $200</label>
                             <span class="badge border font-weight-normal">295</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-3">
-                            <label class="custom-control-label" for="price-3">150.000 VND - 250.000 VND</label>
+                            <label class="custom-control-label" for="price-3">$200 - $300</label>
                             <span class="badge border font-weight-normal">246</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label" for="price-4">250.000 VND - 350.000 VND</label>
+                            <label class="custom-control-label" for="price-4">$300 - $400</label>
                             <span class="badge border font-weight-normal">145</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                             <input type="checkbox" class="custom-control-input" id="price-5">
-                            <label class="custom-control-label" for="price-5">350.000 VND - 500.000 VND</label>
+                            <label class="custom-control-label" for="price-5">$400 - $500</label>
                             <span class="badge border font-weight-normal">168</span>
                         </div>
                     </form>
@@ -198,9 +198,19 @@ if (isset($_SESSION['user'])) {
 
 
             <!-- Shop Product Start -->
-            <div class="col-lg-9 col-md-8">
-                <div class="row pb-3">
-                    
+        <?php  
+        if(isset($error)){ ?>
+               <h4 class="text-danger"><p><?= $error ?></p></h5>
+      <?  } else { ?>
+        <div class="col-lg-9 col-md-8">
+            <?php if(isset($_POST['key'])  && !empty($data_products)){?>
+        <h5>Sản phầm với từ khóa bạn tìm <?php if(isset($_POST['key'])){echo '"'. $_POST['key'].'"';} ?></h5>
+           <?php } ?>
+            <?php if(empty($data_products)){ ?>
+                    <h5 class="text-danger"><p>Không Tìm Thấy Sản Phẩm Bạn Tìm  <?php if(isset($_POST['key'])){echo '"'. $_POST['key'].'"';} ?></p></h5>
+           <?php }else { ?>
+                
+            <div class="row pb-3">
                    <?php foreach($data_products as $products){ ?>
                     <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
@@ -228,7 +238,7 @@ if (isset($_SESSION['user'])) {
                     <ul class="pagination">
                       
                         <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="?act=shop&page=<?php echo max(1, $current_page - 1); ?>">Trước</a>
+                            <a class="page-link" href="?act=search&page=<?php echo max(1, $current_page - 1); ?>">Trước</a>
                         </li>
 
                       
@@ -239,24 +249,27 @@ if (isset($_SESSION['user'])) {
                         ?>
                             <?php if(!empty($data_cart_item_edit)){ ?>
                                 <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
-                                <a class="page-link" href="?act=shop&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                <a class="page-link" href="?act=search&page=<?php echo $i; ?>"><?php echo $i; ?></a>
                             </li>
                            <?php } ?>
                         <?php } ?>
                       <?php if(!empty($data_cart_item_edit)){ ?>
                         <li class="page-item">
-                            <a class="page-link" href="?act=shop&page=<?php echo $current_page + 1; ?>">Sau</a>
+                            <a class="page-link" href="?act=search&page=<?php echo $current_page + 1; ?>">Sau</a>
                         </li>
                     <?php  }else{ ?>
                         <li class="page-item disabled">
-                            <a class="page-link" href="?act=shop&page=<?php echo $current_page + 1; ?>">Sau</a>
+                            <a class="page-link" href="?act=search&page=<?php echo $current_page + 1; ?>">Sau</a>
                         </li>
                     <?php } ?>
                     </ul>
                 </nav>
                     </div>
                 </div>
+          <?php } ?>
             </div>
+       <?php }
+        ?>
             <!-- Shop Product End -->
         </div>
     </div>

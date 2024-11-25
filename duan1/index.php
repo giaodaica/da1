@@ -39,7 +39,8 @@ match($act){
     'apply_voucher' => $shop->apply_voucher(),
     'dathang' => $shop->dathang(),
     'delete_item_cart' => $shop->delete_select(),
-    
+    'search' => $shop->search(),
+    'filter_by_price' => $shop->filter_by_price(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

@@ -26,11 +26,14 @@ class Shop_Control
     }
     public function renderShop()
     {
+
         $limit = $_GET['limit'] ?? 12;
         $page = $_GET['page'] ?? 1;;
         $offset = ($page - 1) * 12;
+        $price_below = 0;
+        $price_above = 5000000;
         $d = $this->categories->select();
-        $data_products = $this->products->render_product($limit,$offset);
+        $data_products = $this->products->render_product($price_below,$price_above,$limit,$offset);
         require_once "./views/shop.php";
     }
    
@@ -173,7 +176,7 @@ class Shop_Control
         }
         if(isset($_SESSION['user']) && $data_customer['authen'] == "Chưa Xác Thực"){
             echo "<script>";
-            echo "alert('Vui Lòng Xác Nhận Số Điện Thoại Để Thực Hiện Chức Năng Này');";
+            echo "alert('Vui Lòng Xác Nhận Email Để Thực Hiện Chức Năng Này');";
             echo "window.location = '?act=info_detail';";
             echo "</script>";
         }
@@ -183,6 +186,7 @@ class Shop_Control
     }
     public function hander_update_quantity(){
         session_start();
+        
         if(isset($_SESSION['user'])){
             $value = $_POST['quantity'];
         $id_user = $_SESSION['id'] ?? 0;
@@ -271,6 +275,38 @@ class Shop_Control
         }
         echo "<script>alert('Đặt hàng thành công');</script>";
         echo "<script>window.location.href = '" . BASE_URL . "';</script>";
+    }
+    public function search(){
+        $error = "";
+        if(isset($_POST['key'])){
+           $key =  trim(strtolower($_POST['key']));
+        }
+        
+        if(empty($key)){
+            $error = "Vui Lòng Nhập Từ Khóa Để Tìm Kiếm VD(Áo Khoác Nam , Áo Nam ....)";
+            $this->showError($error);
+            return;
+        }
+        $price_below = 0;
+        $price_above = 500000;
+        $limit = 12;
+        $offset = 0;
+        $data_products = $this->products->result_search($key,$price_below,$price_above,$limit,$offset);
+        require_once "./views/search.php";
+    }
+    public function filter_by_price(){
+        $price = $_POST['price'];
+        list($price_below, $price_above) = explode('-', $price);
+        $limit = 12;
+        $page = $_POST['page'] ?? 1;
+        $offset = ($page - 1) * 12;
+        $data_products = $this->products->render_product($price_below,$price_above,$limit,$offset);
+        require_once "./filter/filter_by_price.php";
+       
+      
+    }
+    public function showError($error){
+        require_once "./views/search.php";
     }
 }
 $shop = new Shop_Control;

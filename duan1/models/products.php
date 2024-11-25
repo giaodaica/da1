@@ -7,8 +7,8 @@ class products extends database {
         $stmt->execute();
         return $stmt->fetch();
     }
-    public function render_product($limit,$offset){
-        $sql = "SELECT * FROM `products` limit $limit offset $offset";
+    public function render_product($price_below,$price_above,$limit,$offset){
+        $sql = "SELECT * FROM `products` where comment = '1' AND price BETWEEN $price_below AND $price_above limit $limit offset $offset";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -19,4 +19,11 @@ class products extends database {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function result_search($key,$price_below,$price_above,$limit,$offset){
+        $sql = "SELECT * FROM products WHERE products.name LIKE '%$key%' AND price BETWEEN $price_below AND $price_above LIMIT $limit OFFSET $offset";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
 }

@@ -17,6 +17,13 @@ if (isset($_SESSION['user'])) {
         font-size: large;
         color: black;
     }
+    button.btn.btn-sm.btn-primary.btn-plus {
+    height: 30px;
+    
+}
+button.btn.btn-sm.btn-primary.btn-minus {
+    height: 30px;
+}
 </style>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,7 +130,7 @@ if (isset($_SESSION['user'])) {
                                                         <i class="fa fa-minus"></i>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="<?= $render_cart['quantity'] ?>" name="quantity" >
+                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="<?= $render_cart['quantity'] ?>" name="quantity" readonly>
                                                 <div class="input-group-btn">
                                                     <button class="btn btn-sm btn-primary btn-plus">
                                                         <i class="fa fa-plus"></i>

@@ -101,9 +101,9 @@
                 </a>
             </div>
             <div class="col-lg-4 col-6 text-left">
-                <form action="">
+                <form action="?act=search" method="POST">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Tìm sản phẩm">
+                        <input type="text" class="form-control" placeholder="Tìm sản phẩm" name="key">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>

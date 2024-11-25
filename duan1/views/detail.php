@@ -10,6 +10,15 @@ if (isset($_SESSION['user'])) {
 } else {
     $username = '';
 }
+
+
+if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['product_id'])) {
+    $product_id = $_GET['product_id']; 
+    $conn = new PDO("mysql:host=localhost;dbname=db_duan1","root","");
+    $sql = "UPDATE `products` SET `views` = views + 1 WHERE `products`.`product_id` = $product_id";
+    $conn->exec($sql);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -392,5 +401,6 @@ if (isset($_SESSION['user'])) {
 
     <?php require_once "menu/footer.php"; ?>
 </body>
+
 
 </html>

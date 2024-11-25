@@ -2,6 +2,7 @@
 // print_r($d);
 // echo "<pre>";
 // print_r($data_products);
+print_r($_POST);
 if (isset($_SESSION['user'])) {
     $username = $_SESSION['user'];
 } else {
@@ -83,45 +84,41 @@ if (isset($_SESSION['user'])) {
                 <!-- Price Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Lọc Theo Giá</span></h5>
                 <div class="bg-light p-4 mb-30">
-                    <form action="" method="POST">
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="price-all">
-                            <label class="custom-control-label" for="price-all">Tất cả</label>
-                            <span class="badge border font-weight-normal">1000</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-1" name="price" value="50000">
-                            <label class="custom-control-label" for="price-1">0 - 50.000 VND</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label" for="price-2">50.000VND - 150.000 VND</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-3">
-                            <label class="custom-control-label" for="price-3">150.000 VND - 250.000 VND</label>
-                            <span class="badge border font-weight-normal">246</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label" for="price-4">250.000 VND - 350.000 VND</label>
-                            <span class="badge border font-weight-normal">145</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="price-5">
-                            <label class="custom-control-label" for="price-5">350.000 VND - 500.000 VND</label>
-                            <span class="badge border font-weight-normal">168</span>
-                        </div>
-                    </form>
+                <form id="filterForm" action="?act=filter_by_price" method="POST">
+    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+        <input type="checkbox" class="custom-control-input" id="price-1" name="price" value="0-50000" >
+        <label class="custom-control-label" for="price-1">0 - 50.000 VND</label>
+        <span class="badge border font-weight-normal">150</span>
+    </div>
+    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+        <input type="checkbox" class="custom-control-input" id="price-2" name="price" value="50000-150000" >
+        <label class="custom-control-label" for="price-2">50.000VND - 150.000 VND</label>
+        <span class="badge border font-weight-normal">295</span>
+    </div>
+    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+        <input type="checkbox" class="custom-control-input" id="price-3" name="price" value="150000-250000">
+        <label class="custom-control-label" for="price-3">150.000 VND - 250.000 VND</label>
+        <span class="badge border font-weight-normal">246</span>
+    </div>
+    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+        <input type="checkbox" class="custom-control-input" id="price-4" name="price" value="250000-350000">
+        <label class="custom-control-label" for="price-4">250.000 VND - 350.000 VND</label>
+        <span class="badge border font-weight-normal">145</span>
+    </div>
+    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+        <input type="checkbox" class="custom-control-input" id="price-5" name="price" value="350000-500000" >
+        <label class="custom-control-label" for="price-5">350.000 VND - 500.000 VND</label>
+        <span class="badge border font-weight-normal">168</span>
+    </div>
+    </form>
+
                 </div>
                 <!-- Price End -->
                 
                 <!-- Color Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by color</span></h5>
                 <div class="bg-light p-4 mb-30">
-                    <form>
+                    <form action="?act=filter_by_price" method="POST">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="color-all">
                             <label class="custom-control-label" for="price-all">All Color</label>
