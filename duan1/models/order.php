@@ -33,4 +33,10 @@ class order extends database {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function premium_user($user_id){
+        $sql = "SELECT * FROM orders WHERE orders.user_id = $user_id AND orders.status = 'Đã hoàn tất';";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

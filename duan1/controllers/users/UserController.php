@@ -193,7 +193,8 @@ class Controller_User{
         }
        }
        echo "<script>";
-       echo "alert('Đăng ký thành công')";
+       echo "alert('Đăng ký thành công cập nhật thông tin ngay để mua sắm bạn nhé')";
+       echo "window.location.href = '?act=info';";
        echo  "</script>";
        $this->login();
 

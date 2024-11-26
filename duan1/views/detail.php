@@ -13,8 +13,8 @@ if (isset($_SESSION['user'])) {
 
 
 if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['product_id'])) {
-    $product_id = $_GET['product_id']; 
-    $conn = new PDO("mysql:host=localhost;dbname=db_duan1","root","");
+    $product_id = $_GET['product_id'];
+    $conn = new PDO("mysql:host=localhost;dbname=db_duan1", "root", "");
     $sql = "UPDATE `products` SET `views` = views + 1 WHERE `products`.`product_id` = $product_id";
     $conn->exec($sql);
 }
@@ -74,7 +74,7 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
 </head>
 
 <body>
-<?php require_once "menu/header.php"; ?>
+    <?php require_once "menu/header.php"; ?>
 
 
     <!-- Breadcrumb Start -->
@@ -107,30 +107,30 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
 
                             <?php if (!empty($data_variants_black['image'])) { ?>
                                 <div class="carousel-item">
-                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_black['image'] ?>" alt="Image">
+                                    <img class="w-100 h-100" src="<?= "./admin" . $data_variants_black['image'] ?>" alt="Image">
                                 </div>
                             <?php } ?>
 
                             <?php if (!empty($data_variants_blue['image'])) { ?>
                                 <div class="carousel-item">
-                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_blue['image'] ?>" alt="Image">
+                                    <img class="w-100 h-100" src="<?= "./admin" . $data_variants_blue['image'] ?>" alt="Image">
                                 </div>
                             <?php } ?>
 
                             <?php if (!empty($data_variants_red['image'])) { ?>
                                 <div class="carousel-item">
-                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_red['image'] ?>" alt="Image">
+                                    <img class="w-100 h-100" src="<?= "./admin" . $data_variants_red['image'] ?>" alt="Image">
                                 </div>
                             <?php } ?>
 
                             <?php if (!empty($data_variants_yellow['image'])) { ?>
                                 <div class="carousel-item">
-                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_yellow['image'] ?>" alt="Image">
+                                    <img class="w-100 h-100" src="<?= "./admin" . $data_variants_yellow['image'] ?>" alt="Image">
                                 </div>
 
                             <?php } ?> <?php if (!empty($data_variants_orange['image'])) { ?>
                                 <div class="carousel-item">
-                                    <img class="w-100 h-100" src="<?= "./admin". $data_variants_orange['image'] ?>" alt="Image">
+                                    <img class="w-100 h-100" src="<?= "./admin" . $data_variants_orange['image'] ?>" alt="Image">
                                 </div>
                             <?php } ?>
 
@@ -199,7 +199,11 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
                                 <div class="d-flex align-items-center mb-4 pt-2">
                                     <input type="hidden" name="price_present" id="" value="<?= $data_products['price'] ?>">
                                     <input type="hidden" name="name" id="" value="<?= $data_products['name'] ?>">
-                                    <button class="btn btn-primary px-3" type="submit"><i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ</button>
+                                    <?php if ($data_products['stock_quantity'] == 0) { ?>
+                                        <h4 class="text-danger">Tạm Hết Hàng</h4>
+                                    <?php } else { ?>
+                                        <button class="btn btn-primary px-3" type="submit"><i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ</button>
+                                    <?php } ?>
                                     <br>
                                     <div class="error" style="color: red;"><?php if (isset($error)) {
                                                                                 echo $error;
@@ -218,11 +222,11 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
                             <div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h4 class="mb-4">1 review for "Product Name"</h4>
-                                        <div class="media mb-4">
-                                            <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                        <h4 class="mb-4"><?= count($rating)." lời nhận xét về sản phẩm"; ?></h4>
+                                        <?php foreach($rating as $render){ ?>
+                                            <div class="media mb-4">
                                             <div class="media-body">
-                                                <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
+                                                <h6><?= $render['full_name'] ?><small> - <i><?= $render['rating_date'] ?></i></small></h6>
                                                 <div class="text-primary mb-2">
                                                     <i class="fas fa-star"></i>
                                                     <i class="fas fa-star"></i>
@@ -230,19 +234,33 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
                                                     <i class="fas fa-star-half-alt"></i>
                                                     <i class="far fa-star"></i>
                                                 </div>
-                                                <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                                <p><?= $render['comments'] ?></p>
                                             </div>
                                         </div>
+                                       <?php } ?>
+                                        
                                     </div>
                                     <div class="col-md-6">
                                         <h4 class="mb-4">Nhận xét về sản phẩm</h4>
-                                        <form>
+                                        <form action="?act=post_comment&products_id=<?= $_GET['product_id'] ?>" method="POST">
                                             <div class="form-group">
                                                 <label for="message">Đánh giá của bạn</label>
-                                                <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                                <textarea id="message" cols="30" rows="5" class="form-control" name="index"></textarea>
                                             </div>
+                                            <?php
+                                        
+
+                                            if (isset($_SESSION['error_cm'])) {
+                                                if (time() - $_SESSION['error_cm_time'] > 5) {
+                                                    unset($_SESSION['error_cm']);
+                                                    unset($_SESSION['error_cm_time']);
+                                                } else { ?>
+                                                     <h5 class="text-danger"><?= $_SESSION['error_cm'] ?></h5>
+                                             <?php   }
+                                            }
+                                            ?>
                                             <div class="form-group mb-0">
-                                                <input type="submit" value="Gửi đánh giá" class="btn btn-primary px-3">
+                                                <button class="btn btn-success" type="submit" name="cm">Gửi Đánh Giá</button>
                                             </div>
                                         </form>
                                     </div>

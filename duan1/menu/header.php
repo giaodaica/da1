@@ -1,14 +1,3 @@
-<div id="welcome-message" class="<?php echo $username ? '' : 'hidden'; ?>">
-        <?php if (isset($_SESSION['role_admin'])) { ?>
-            Chào admin, <?php echo htmlspecialchars($username); ?>!
-        <?php } ?>
-        <?php if (isset($_SESSION['role_epl'])) { ?>
-            Chào nhân viên, <?php echo htmlspecialchars($username); ?>!
-        <?php } ?>
-        <?php if (isset($_SESSION['role_customers'])) { ?>
-            Chào mừng bạn, <?php echo htmlspecialchars($username); ?>!
-        <?php } ?>
-    </div>
 
     <!-- Topbar Start -->
     <div class="container-fluid">
@@ -134,7 +123,7 @@
                                 <?php
                                 foreach ($d as $categories) { ?>
                                     <?php if ($categories->only == 0) { ?>
-                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                        <a href="?act=s&s=<?= $categories->name ?>" class="dropdown-item"><?= $categories->name ?></a>
                                     <?php } ?>
                                 <?php }
                                 ?>
@@ -148,7 +137,7 @@
                                 <?php
                                 foreach ($d as $categories) { ?>
                                     <?php if ($categories->only == 1) { ?>
-                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                        <a href="?act=s&s=<?= $categories->name ?>" class="dropdown-item"><?= $categories->name ?></a>
                                     <?php } ?>
                                 <?php }
                                 ?>
@@ -162,7 +151,7 @@
                                 <?php
                                 foreach ($d as $categories) { ?>
                                     <?php if ($categories->only == 2) { ?>
-                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                        <a href="?act=s&s=<?= $categories->name ?>" class="dropdown-item"><?= $categories->name ?></a>
                                     <?php } ?>
                                 <?php }
                                 ?>
@@ -176,7 +165,7 @@
                                 <?php
                                 foreach ($d as $categories) { ?>
                                     <?php if ($categories->only == 5 || $categories->only == 4) { ?>
-                                        <a href="" class="dropdown-item"><?= $categories->name ?></a>
+                                        <a href="?act=s&s=<?= $categories->name ?>" class="dropdown-item"><?= $categories->name ?></a>
                                     <?php } ?>
                                 <?php }
                                 ?>

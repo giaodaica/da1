@@ -1,41 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dải Màu Cho Options</title>
-  <style>
-    select {
-      width: 200px;
-      padding: 5px;
-    }
-    option {
-      padding: 5px;
-    }
-    option[data-color="red"] { background-color: #ff0000; color: #fff; }
-    option[data-color="yellow"] { background-color: yellow; color: #000000; }
-    option[data-color="orange"] { background-color: #ffa500; color: #fff; }
-    option[data-color="green"] { background-color: #008000; color: #fff; }
-    option[data-color="blue"] { background-color: #0000ff; color: #fff; }
-    option[data-color="indigo"] { background-color: #4b0082; color: #fff; }
-    option[data-color="violet"] { background-color: #8a2be2; color: #fff; }
-    option[data-color="black"] { background-color: #000000; color: #fff; }
-    option[data-color="cyan"] { background-color: #00ffff; color: #000; }
-  </style>
-</head>
-<body>
-  <label for="colorSelect">Chọn màu sắc:</label>
-  <select id="colorSelect">
-    <option value=""></option>
-    <option data-color="red" value="red">Đỏ</option>
-    <option data-color="orange" value="orange">Cam</option>
-    <option data-color="yellow" value="yellow">Vàng</option>
-    <option data-color="green" value="green">Lục</option>
-    <option data-color="blue" value="blue">Lam</option>
-    <option data-color="indigo" value="indigo">Chàm</option>
-    <option data-color="violet" value="violet">Tím</option>
-    <option data-color="black" value="black">Đen</option>
-    <option data-color="cyan" value="cyan">Xanh</option>
-  </select>
-</body>
-</html>
+<form method="GET" action="filter_products.php">
+  <label>
+      <input type="checkbox" name="category[]" value="1"> Áo Sơ Mi
+  </label>
+  <label>
+      <input type="checkbox" name="category[]" value="2"> Quần Jean
+  </label>
+  <label>
+      <input type="checkbox" name="color[]" value="red"> Đỏ
+  </label>
+  <label>
+      <input type="checkbox" name="color[]" value="blue"> Xanh
+  </label>
+  <label>
+      <input type="checkbox" name="size[]" value="M"> M
+  </label>
+  <label>
+      <input type="checkbox" name="size[]" value="L"> L
+  </label>
+  <button type="submit">Lọc sản phẩm</button>
+</form>

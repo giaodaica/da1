@@ -21,6 +21,8 @@ match($act){
     'shoping-Cart' => $shop->renderCart(),
     'shop-Pay' => $shop->handerPay(),
     'shop-Contact' => $shop->handerContact(),
+    'post_comment' => $shop->post_comment(),
+
     // phần khách hàng
     'info' => $customers->renderInfo(),
     'info_detail' =>$customers->render_Infodetail(),
@@ -40,7 +42,8 @@ match($act){
     'dathang' => $shop->dathang(),
     'delete_item_cart' => $shop->delete_select(),
     'search' => $shop->search(),
-    'filter_by_price' => $shop->filter_by_price(),
+    's' => $shop -> search_s(),
+    'filter_by' => $shop->filter_by(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

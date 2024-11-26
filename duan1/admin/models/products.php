@@ -20,8 +20,9 @@ class product extends database {
         $this->conn->exec($sql);
     }
     public function add_products($name,$category_id,$price,$gianhap,$stock_quantity,$status,$comment,$image,$Quantity_sold,$mota){
-        $sql = "INSERT INTO `products` ( `name`, `category_id`, `price`, `gianhap`, `stock_quantity`, `status`, `comment`, `image`, `Quantity_sold`, `mota`,`ngaynhap`)
-         VALUES ('$name', '$category_id', '$price', '$gianhap', '$stock_quantity', '$status', '$comment', '$image', '$Quantity_sold', '$mota',CURRENT_TIMESTAMP)";
+        $sql = "INSERT INTO `products` ( `name`, `category_id`, `price`, `gianhap`, `stock_quantity`, `status`, `comment`, `image`, `Quantity_sold`, `mota`,`ngaynhap`,`views`)
+         VALUES ('$name', '$category_id', '$price', '$gianhap', '$stock_quantity', '$status', '$comment', '$image', '$Quantity_sold', '$mota',CURRENT_TIMESTAMP,0)";
+         
          $this->conn->exec($sql);
 
     }

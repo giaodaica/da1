@@ -25,5 +25,35 @@ class products extends database {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function filter($where){
+        $sql = "SELECT products.*,product_variants.image as img_variant,product_variants.size,product_variants.color FROM products JOIN product_variants ON products.product_id = product_variants.product_id $where ";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function update_stock_quantity($count,$product_id){
+        $sql = "UPDATE `products` SET `stock_quantity` = stock_quantity - $count WHERE `products`.`product_id` = $product_id";
+        $this->conn->exec($sql);
+    }
+    public function update_quantity_sold($Quantity_sold,$product_id){
+        $sql = "UPDATE `products` SET `Quantity_sold` = Quantity_sold + $Quantity_sold WHERE `products`.`product_id` = $product_id";
+        $this->conn->exec($sql);
+    }
+    public function update_quantity_sold_where_users_cancel_shoping($Quantity_sold,$product_id){
+        $sql = "UPDATE `products` SET `Quantity_sold` = Quantity_sold - $Quantity_sold WHERE `products`.`product_id` = $product_id";
+        $this->conn->exec($sql);
+    }
+    public function update_stock_quantity_where_users_cancel_shoping($count,$product_id){
+        $sql = "UPDATE `products` SET `stock_quantity` = stock_quantity + $count WHERE `products`.`product_id` = $product_id";
+        $this->conn->exec($sql);
+    }
+    public function search_by_cate($categori){
+        $sql = "SELECT categories.*, products.*,products.name as products_name FROM categories
+         JOIN products ON categories.category_id = products.category_id WHERE categories.name = '$categori';";
+       
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
     
 }

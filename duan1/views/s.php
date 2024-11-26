@@ -7,7 +7,13 @@ if (isset($_SESSION['user'])) {
 } else {
     $username = '';
 }
+
 ?>
+<style>
+    .form-fill{
+        width: 225px;
+    }
+</style>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -79,28 +85,19 @@ if (isset($_SESSION['user'])) {
     <div class="container-fluid">
         <div class="row px-xl-5">
             <!-- Shop Sidebar Start -->
-    
+ 
             <!-- Shop Sidebar End -->
 
-
+            <?php if(empty($data_products)){
+                echo "sản phẩm này tạm thời không có";
+            }else{?>
+                    
             <!-- Shop Product Start -->
-        <?php  
-        if(isset($error)){ ?>
-               <h4 class="text-danger"><p><?= $error ?></p></h5>
-      <?  } else { ?>
-        <div class="col-sm-12">
-            <?php if(isset($_POST['key'])  && !empty($data_products)){?>
-        <h5>Sản phầm với từ khóa bạn tìm <?php if(isset($_POST['key'])){echo '"'. $_POST['key'].'"';} ?></h5>
-           <?php } ?>
-            <?php if(empty($data_products)){ ?>
-                   <?php if(empty($error)){ ?>
-                    <h5 class="text-danger"><p>Không Tìm Thấy Sản Phẩm Bạn Tìm  <?php if(isset($_POST['key'])){echo '"'. $_POST['key'].'"';} ?></p></h5>
-                  <?php } ?>
-           <?php }else { ?>
-                
-            <div class="row pb-3">
+            <div class="col-lg-12 col-md-8">
+                <div class="row pb-3">
+                    
                    <?php foreach($data_products as $products){ ?>
-                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="col-lg-3 col-md-6 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100" src="<?= "./admin". $products['image'] ?>" alt="">
@@ -117,48 +114,10 @@ if (isset($_SESSION['user'])) {
                         </div>
                     </div>
                   <?php } ?>
-
-                    <div class="col-12">
-                    <nav aria-label="Page navigation example">
-                    <?php
-                    $current_page = isset($_GET['page']) && $_GET['page'] > 0 ? $_GET['page'] : 1;
-                    ?>
-                    <ul class="pagination">
-                      
-                        <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="?act=search&page=<?php echo max(1, $current_page - 1); ?>">Trước</a>
-                        </li>
-
-                      
-                        <?php
-                        $start = max(1, $current_page - 2); 
-                        $end = $current_page + 2;          
-                        for ($i = $start; $i <= $end; $i++) {
-                        ?>
-                            <?php if(!empty($data_products)){ ?>
-                                <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
-                                <a class="page-link" href="?act=search&page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                           <?php } ?>
-                        <?php } ?>
-                      <?php if(!empty($data_products)){ ?>
-                        <li class="page-item">
-                            <a class="page-link" href="?act=search&page=<?php echo $current_page + 1; ?>">Sau</a>
-                        </li>
-                    <?php  }else{ ?>
-                        <li class="page-item disabled">
-                            <a class="page-link" href="?act=search&page=<?php echo $current_page + 1; ?>">Sau</a>
-                        </li>
-                    <?php } ?>
-                    </ul>
-                </nav>
-                    </div>
                 </div>
-          <?php } ?>
             </div>
-       <?php }
-        ?>
             <!-- Shop Product End -->
+           <?php } ?>
         </div>
     </div>
     <!-- Shop End -->

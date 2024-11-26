@@ -26,5 +26,7 @@ match($act){
     'hidden_variant' => $products->hidden_variant(),
     // phần danh mục 
     'list_category' => $category->render_List_Category(),
+    // phần user
+    'list_users' => $users->render_List_user(),
     
 };

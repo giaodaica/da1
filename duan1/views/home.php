@@ -8,6 +8,18 @@ if (isset($_SESSION['user'])) {
     $username = '';
 }
 ?>
+<div id="welcome-message" class="<?php echo $username ? '' : 'hidden'; ?>">
+        <?php if (isset($_SESSION['role_admin'])) { ?>
+            Chào admin, <?php echo htmlspecialchars($username); ?>!
+        <?php } ?>
+        <?php if (isset($_SESSION['role_epl'])) { ?>
+            Chào nhân viên, <?php echo htmlspecialchars($username); ?>!
+        <?php } ?>
+        <?php if (isset($_SESSION['role_customers'])) { ?>
+            Chào mừng bạn, <?php echo htmlspecialchars($username); ?>!
+        <?php } ?>
+    </div>
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -5,6 +5,8 @@ require_once "dashbroad/dashborad.php";
 require_once "users/UserController.php";
 // require toàn bộ shop 
 require_once "shop/ShopController.php";
+
 //require toàn bộ khách hàng
 require_once "customers/info_customers_controllers.php";
+
 

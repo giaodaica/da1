@@ -11,6 +11,7 @@ class controller_Customers
     public $order_item;
     public $order_item_detail;
     public $categories;
+    public $product;
     public function __construct()
     {
         $this->info = new customers_models();
@@ -18,6 +19,7 @@ class controller_Customers
         $this->order_item = new order; // bảng order
         $this->order_item_detail = new order_detail();
         $this->categories = new Categories_models();
+        $this->product = new products();
     }
     public function renderInfo()
     {
@@ -27,6 +29,8 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
+        $premium = $this->order_item->premium_user($id);
+
         }
         if (isset($_SESSION['id'])) {
             $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
@@ -39,6 +43,8 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
+        $premium = $this->order_item->premium_user($id);
+
         $d = $this->categories->select();
 
         }
@@ -177,6 +183,8 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
+        $premium = $this->order_item->premium_user($id);
+
         }
 
         $data_cart_item_edit = $this->order_item->select_order($id, $limit, $offset);
@@ -191,6 +199,8 @@ class controller_Customers
             $order_id = $_GET['order_id'] ?? 0;
             $data_cart_item_edit = $this->order_item->select_order_by_order_id($order_id);
             $data_item = $this->order_item_detail->select_items_cart($order_id);
+        $premium = $this->order_item->premium_user($id);
+
         }
 
         require_once "./customers/detail_shoping_cart.php";
@@ -204,9 +214,17 @@ class controller_Customers
         }
         if ($_SESSION['id']) {
             $id_user = $_SESSION['id'];
+        $premium = $this->order_item->premium_user($id_user);
+
         }
         // $this->order_item->cancel($order_id);
+        $data_item = $this->order_item_detail->select_items_cart($order_id);
         $check_voucher_in_order = $this->order_item->select_order_by_order_id($order_id);
+        foreach($data_item as $item){
+            $quantity = $item['quantity'];
+            $this->product->update_quantity_sold_where_users_cancel_shoping($quantity,$item['product_id']);
+            $this->product->update_stock_quantity_where_users_cancel_shoping($quantity,$item['product_id']);
+        }
         if ($check_voucher_in_order['voucher_id']) {
             $voucher_id = $check_voucher_in_order['voucher_id'];
             $this->gift->add_voucher_if_delete_order_true_voucher($id_user, $voucher_id);
@@ -288,6 +306,8 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
+        $premium = $this->order_item->premium_user($id);
+
         }
         $d = $this->categories->select();
 

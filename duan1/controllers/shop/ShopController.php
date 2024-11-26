@@ -11,6 +11,7 @@ class Shop_Control
     public $orders;
     public $voucher_big;
     public $order_mini;
+    public $comment;
     public function __construct()
     {
         $this->categories = new Categories_models;
@@ -23,10 +24,12 @@ class Shop_Control
         $this->orders = new order(); // bảng orders
         $this->voucher_big = new voucher(); // bảng voucher
         $this->order_mini = new order_detail(); // bảng chi tiết 
+        $this->comment = new  comment_users();
+
     }
     public function renderShop()
     {
-
+        session_start();
         $limit = $_GET['limit'] ?? 12;
         $page = $_GET['page'] ?? 1;;
         $offset = ($page - 1) * 12;
@@ -50,6 +53,7 @@ class Shop_Control
         if (isset($_GET['product_id'])) {
             $id = $_GET['product_id'];
         }
+        $rating = $this->comment->render_Comment($id);
         $d = $this->categories->select();
         $data_products = $this->products->render_product_by_id($id);
         $data_variants_black = $this->variant->renderVariants("đen", $id);
@@ -222,8 +226,7 @@ class Shop_Control
     {
         session_start();
         
-        // print_r($_POST);
-        // die;
+        
 
         $user_id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
         
@@ -264,6 +267,8 @@ class Shop_Control
             $size = $data_cart['size'];
             $image = $data_cart['image'];
             $cart_id = $data_cart['cart_id'];
+            $this->products->update_stock_quantity($quantity,$product_id);
+            $this->products->update_quantity_sold($quantity,$product_id);
         $this->order_mini->insert_orders_detail($order_id,$product_id,$quantity,$price,$color,$size,$image);
         $this->cart->delete_cart($cart_id);
         $this->voucher_By_User->deleta_Gift_after_oder_success($user_id,$voucher_id);
@@ -277,36 +282,172 @@ class Shop_Control
         echo "<script>window.location.href = '" . BASE_URL . "';</script>";
     }
     public function search(){
+        session_start();
+        $d = $this->categories->select();
+        $price_below = 0;
+        $price_above = 500000;
+        $limit = 12;
+        $offset = 0;
         $error = "";
         if(isset($_POST['key'])){
            $key =  trim(strtolower($_POST['key']));
+           $key = str_replace("'", "", $key);
         }
-        
+       
         if(empty($key)){
             $error = "Vui Lòng Nhập Từ Khóa Để Tìm Kiếm VD(Áo Khoác Nam , Áo Nam ....)";
             $this->showError($error);
             return;
         }
-        $price_below = 0;
-        $price_above = 500000;
-        $limit = 12;
-        $offset = 0;
         $data_products = $this->products->result_search($key,$price_below,$price_above,$limit,$offset);
         require_once "./views/search.php";
     }
-    public function filter_by_price(){
-        $price = $_POST['price'];
-        list($price_below, $price_above) = explode('-', $price);
-        $limit = 12;
-        $page = $_POST['page'] ?? 1;
-        $offset = ($page - 1) * 12;
-        $data_products = $this->products->render_product($price_below,$price_above,$limit,$offset);
-        require_once "./filter/filter_by_price.php";
+    public function filter_by(){
+        session_start();
+        $where_sql = [];
+        if(!empty($_POST['price'])){
+            $price_sql = [];
+            foreach ($_POST['price'] as $price) {
+                switch ($price) {
+                    case '0-50000':
+                        $price_sql[] = "price BETWEEN 0 AND 50000";
+                        break;
+                    case '50000-150000':
+                        $price_sql[] = "price BETWEEN 50000 AND 150000";
+                        break;
+                    case '150000-250000':
+                        $price_sql[] = "price BETWEEN 150000 AND 250000";
+                        break;
+                    case '250000-500000':
+                        $price_sql[] = "price BETWEEN 250000 AND 500000";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (!empty($price_sql)) {
+                $where_sql[] = '(' . implode(' OR ', $price_sql) . ')';
+            }
+        }
+     
+     if (!empty($_POST['color'])) {
+        $color_sql = []; 
+
        
-      
+        foreach ($_POST['color'] as $color) {
+            switch ($color) {
+                case 'Đen':
+                    $color_sql[] = "color = 'Đen'"; 
+                    break;
+                case 'Đỏ':
+                    $color_sql[] = "color = 'Đỏ'"; 
+                    break;
+                case 'Xanh':
+                    $color_sql[] = "color = 'Xanh'"; 
+                    break;
+                    case 'Vàng':
+                        $color_sql[] = "color = 'Vàng'"; 
+                        break;
+                    case 'Cam':
+                        $color_sql[] = "color = 'Cam'"; 
+                        break;
+                default:
+                    break;
+            }
+        }
+
+       
+        if (!empty($color_sql)) {
+            $where_sql[] = '(' . implode(' OR ', $color_sql) . ')';
+        }
+    }
+    if (!empty($_POST['size'])) {
+        $size_sql = []; 
+
+        foreach ($_POST['size'] as $size) {
+            switch ($size) {
+                case 'S':
+                    $size_sql[] = "size = 'S'"; 
+                    break;
+                case 'M':
+                    $size_sql[] = "size = 'M'"; 
+                    break;
+                case 'L':
+                    $size_sql[] = "size = 'L'"; 
+                    break;
+                case 'XL':
+                    $size_sql[] = "size = 'XL'"; 
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (!empty($size_sql)) {
+            $where_sql[] = '(' . implode(' OR ', $size_sql) . ')';
+        }
+    }
+    $where = "";
+    if (!empty($where_sql)) {
+        $where .= " WHERE " . implode(' AND ', $where_sql);
+    }
+   
+    $data_products = $this->products->filter($where);
+   require_once "./filter/filter_by_price.php";
+    }
+    public function post_comment() {
+        session_start();
+        if (isset($_SESSION['user'])) {
+            $user_id = $_SESSION['id'];
+        }
+        $data_customer = $this->customer->renderInfo($user_id);
+        if(!$data_customer){
+            echo "<script>alert('Vui Lòng Cập Nhật Thông Tin');</script>";
+            echo "<script>window.location.href = '?act=info';</script>";
+            exit;
+        }
+        $products_id = $_GET['products_id'];
+        if (!isset($_SESSION['user'])) {
+            header("location: ?act=login");
+            exit;
+        }
+        $index = trim($_POST['index']);
+        if (empty($index)) {
+            $_SESSION['error_cm'] = "Vui lòng nhập nhận xét của bạn";
+            $_SESSION['error_cm_time'] = time(); // Lưu thời gian lỗi xảy ra
+            header("location:?act=products_detail&product_id=$products_id");
+            exit;
+        }
+        if (!empty($index)) {
+            $index_bad = ['dmm', 'dm', 'lol', 'cm', 'mẹ', 'mày', 'tao', 'đéo', 'd m'];
+            foreach ($index_bad as $bad) {
+                $index = str_replace($bad, "***", $index);
+            }
+    
+            
+            $check = $this->comment->checkduplicate($user_id,$products_id);
+            if ($check) {
+                $_SESSION['error_cm'] = "Bạn đã nhận xét cho sản phẩm này";
+                $_SESSION['error_cm_time'] = time(); 
+                header("location:?act=products_detail&product_id=$products_id");
+                exit;
+            }
+            $this->comment->create_comment($user_id, $products_id, $index);
+            header("location:?act=products_detail&product_id=$products_id");
+            exit;
+        }
+    }
+    public function search_s(){
+        if(isset($_GET['s'])){
+            $key = $_GET['s'];
+        }
+        $d = $this->categories->select();
+        $data_products = $this->products->search_by_cate($key);
+        require_once "./views/s.php";
     }
     public function showError($error){
         require_once "./views/search.php";
     }
+
 }
 $shop = new Shop_Control;
