@@ -2,8 +2,9 @@
 // print_r($products);
 // echo "<pre>";
 // print_r($data_cart_of_user);
-// print_r($data_customer);
+// // print_r($data_customer);
 // print_r($_POST);
+// print_r($_SESSION['cart']);
 // echo $_POST['product_quantities'][];
 
 
@@ -113,6 +114,12 @@ if (isset($_SESSION['user'])) {
                                 <span></span>
 
                             </div>
+                            <div class="col-md-9 form-group">
+                                <label>Email</label>
+                                <input class="form-control" type="email" placeholder="" name="email" value="<?php if(isset($data_customer['email'])){echo $data_customer['email'];} ?>">
+                                <span></span>
+
+                            </div>
                         </div>
                         <span><?php if(isset($error)){
                             echo $error;
@@ -126,6 +133,10 @@ if (isset($_SESSION['user'])) {
                     <div class="bg-light p-30 mb-5">
                         <div class="border-bottom">
                             <h6 class="mb-3">Sản Phẩm</h6>
+
+                           <?php if(empty($data_cart_of_user)){
+                            $data_cart_of_user = $_SESSION['cart'];
+                           } ?>
                                 <?php foreach($data_cart_of_user as $render){ ?>
                                     <div class="d-flex justify-content-between mb-3">
                                         <h6><?= $render['name'] ?></h6>

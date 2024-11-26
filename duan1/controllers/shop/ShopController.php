@@ -1,4 +1,8 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 class Shop_Control
 {
     public $categories;
@@ -125,7 +129,7 @@ class Shop_Control
             }
             if ($flag) {
                 $cart_product = [
-                    "products_id" => $product_id,
+                    "product_id" => $product_id,
                     "id" => $_SESSION['stt'],
                     "image" => $image,
                     "name" => $data_products['name'],
@@ -222,16 +226,20 @@ class Shop_Control
         echo "window.location = '?act=shoping-Cart';";
         echo "</script>";
     }
+    public function random_key_limit() {
+        
+        $date = date("dmy"); 
+        $randomString = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 5);
+        $orderCode = "FPL" . $date . $randomString . "68";
+        return $orderCode;
+    // echo $orderCode;
+}
     public function dathang()
     {
         session_start();
-        
-        
-
+        // print_r($_SESSION['cart']);
+        // die;
         $user_id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
-        
-       
-       
         if(!empty($_POST['voucher'])){
             $data_voucher = $this->voucher_big->select_voucher($_POST['voucher']);
             $voucher_id = $data_voucher['voucher_id'];
@@ -252,13 +260,29 @@ class Shop_Control
             require_once "./views/pay.php";
             return;
         }
+        if(trim($_POST['email'])== ""){
+            $error = "Email người nhận không được để trống";
+            require_once "./views/pay.php";
+            return;
+        }
        
         $total = round($_POST['total'],0);
         $name = $_POST['fullname'];
         $phone = $_POST['phone'];
         $address = $_POST['address'];
-        $order_id = $this->orders->orders_products($user_id,$voucher_id,$total,$name,$phone,$address);
+        $email = $_POST['email'];
+        $key_limited = $this->random_key_limit();
+        $order_id = $this->orders->orders_products($user_id,$voucher_id,$total,$name,$phone,$address,$email,$key_limited);
+      if($user_id == 0){
+        $data_shoping_cart = $_SESSION['cart'];
+      }else{
         $data_shoping_cart =  $this->cart->render_cart_where_user($user_id);
+      }
+        $conten = "";
+        $conten_voucher = "";
+        if($voucher_id != 0){
+            $conten_voucher = "Bạn được giảm giá ". ($_POST['voucher'] * 100)."%";
+        }
         foreach($data_shoping_cart as $data_cart){
             $product_id = $data_cart['product_id'];
             $quantity = $data_cart['quantity'];
@@ -266,19 +290,72 @@ class Shop_Control
             $color = $data_cart['color'];
             $size = $data_cart['size'];
             $image = $data_cart['image'];
-            $cart_id = $data_cart['cart_id'];
+            $cart_id = $data_cart['cart_id'] ?? 0;
+            $name_products = $data_cart['name'];
+            $conten .= "<tr>
+            <td>{$name_products}</td>
+            <td>{$quantity}</td>
+            <td>{$size}</td>
+            <td>{$color}</td>
+            <td>" . number_format($price, 0, ',', '.') . " VND</td>
+        </tr>";
+    
             $this->products->update_stock_quantity($quantity,$product_id);
             $this->products->update_quantity_sold($quantity,$product_id);
-        $this->order_mini->insert_orders_detail($order_id,$product_id,$quantity,$price,$color,$size,$image);
-        $this->cart->delete_cart($cart_id);
-        $this->voucher_By_User->deleta_Gift_after_oder_success($user_id,$voucher_id);
+            $this->order_mini->insert_orders_detail($order_id,$product_id,$quantity,$price,$color,$size,$image);
+           if(isset($_SESSION['user'])){
+            $this->cart->delete_cart($cart_id);
+           }
+            $this->voucher_By_User->deleta_Gift_after_oder_success($user_id,$voucher_id);
+        }
+             // Nội dung email
+    $emailContent = "
+    <h2>Đơn hàng của bạn đã được đặt thành công!</h2>
+    <p>Xin chào <strong>{$name}</strong>,</p>
+    <p>Cảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi. Dưới đây là thông tin đơn hàng của bạn:</p>
+    <table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse;'>
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Kích Cỡ</th>
+                <th>Màu Sắc</th>
+                <th>Giá</th>
+            </tr>
+        </thead>
+        <tbody>
+            {$conten}
+        </tbody>
+    </table>
+            <p><strong>Tổng tiền:</strong> " . number_format($total, 0, ',', '.') . " VND</p>
+            <p>$conten_voucher</p>
+            <p><strong>Mã tra cứu đơn hàng:</strong> {$key_limited}</p>
+            <p>Vui lòng sử dụng mã này để kiểm tra trạng thái đơn hàng của bạn trên hệ thống của chúng tôi.</p>
+            <p>Trân trọng,<br>Đội ngũ hỗ trợ khách hàng Nhóm 11 Dự Án 1</p>";
+        $email = $_POST['email'] ?? '';
+        try {
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = BASE_MAIL;
+            $mail->Password = BASE_PASS;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+            $mail->setFrom(BASE_MAIL, 'FPL SHOP');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Thông báo đơn hàng';
+            $mail->Body = $emailContent;
+            $mail->send();
+            echo "<script>alert('Đặt hàng thành công! Email xác nhận đã được gửi.');</script>";
+        } catch (Exception $e) {
+            echo "<script>alert('Đặt hàng thành công nhưng không thể gửi email: {$mail->ErrorInfo}');</script>";
         }
         if(isset($_SESSION['cart'])){
           unset($_SESSION['cart']);
-            echo "<script>alert('Đặt hàng thành công');</script>";
         echo "<script>window.location.href = '" . BASE_URL . "';</script>";
         }
-        echo "<script>alert('Đặt hàng thành công');</script>";
         echo "<script>window.location.href = '" . BASE_URL . "';</script>";
     }
     public function search(){
@@ -400,6 +477,10 @@ class Shop_Control
         if (isset($_SESSION['user'])) {
             $user_id = $_SESSION['id'];
         }
+        if(!isset($_SESSION['user'])){
+            header("location: ?act=login");
+            return;
+        }
         $data_customer = $this->customer->renderInfo($user_id);
         if(!$data_customer){
             echo "<script>alert('Vui Lòng Cập Nhật Thông Tin');</script>";
@@ -444,6 +525,13 @@ class Shop_Control
         $d = $this->categories->select();
         $data_products = $this->products->search_by_cate($key);
         require_once "./views/s.php";
+    }
+    public function select_history_order(){
+        if(isset($_POST['key'])){
+            $key_limited = $_POST['key'];
+        $data_key = $this->orders->select_by_key($key_limited);
+        }
+        require_once "customers/detail_select.php";
     }
     public function showError($error){
         require_once "./views/search.php";

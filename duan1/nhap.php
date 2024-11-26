@@ -1,183 +1,523 @@
 <?php
-public function login(){
-    $errorUL = "";
-    $errorPL = "";
-    $username = strtolower(trim($_POST['username']));
-    $password = strtolower(trim($_POST['password']));
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-    // Kiểm tra tên đăng nhập
-    if (trim($username) == "") {
-        $errorUL = "Tên Đăng Nhập Không Được Để Trống";
-        $this->showErrorUL($errorUL);
-        return;
-    }
-    if (preg_match('/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i', $username)) {
-        $errorUL = "Tài Khoản không được chứa ký tự có dấu.";
-        $this->showErrorUL($errorUL);
-        return;
-    }
-    if (strlen($username) < 5) {
-        $errorUL = "Tên Đăng Nhập Phải Chứa 5 Ký Tự Trở Lên";
-        $this->showErrorUL($errorUL);
-        return;
-    }
-    if (preg_match('/\s/', $username)) { // Kiểm tra dấu cách trong tên đăng nhập
-        $errorUL = "Tên Đăng Nhập Không Được Chứa Khoảng Trắng";
-        $this->showErrorUL($errorUL);
-        return;
-    }
-    // Kiểm tra mật khẩu
-    if (trim($password) == "") {
-        $errorPL = "Mật Khẩu Không Được Để Trống";
-        $this->showErrorPL($errorPL);
-        return;
-    }
-    if (strlen($password) < 6) {
-        $errorPL = "Mật Khẩu Phải Chứa 6 Ký Tự Trở Lên";
-        $this->showErrorPL($errorPL);
-        return;
-    }
-    if (preg_match('/\s/', $password)) { // Kiểm tra dấu cách trong tên đăng nhập
-        $errorPL = "Mật Khẩu Không Được Chứa Khoảng Trắng";
-        $this->showErrorPL($errorPL);
-        return;
-    }
-    if (preg_match('/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i', $password)) {
-        $errorPL = "Mật khẩu không được chứa ký tự có dấu.";
-        $this->showErrorPL($errorPL);
-        return;
-    }
-    $users = $this->models_users->select_User(strtolower(trim($username)));
-    // $data = $this->models_users->select_User(strtolower(trim("11111111")));
-    if(!$users){
-        $errorUL = "Tài khoản không tồn tại!!";
-        $this->showErrorUL($errorUL);
-        return;
-    }
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+class Shop_Control
+{
+    public $categories;
+    public $products;
+    public $cart_of_user;
+    public $voucher_By_User;
+    public $variant;
+    public $cart;
+    public $customer;
+    public $orders;
+    public $voucher_big;
+    public $order_mini;
+    public $comment;
+    public function __construct()
+    {
+        $this->categories = new Categories_models;
+        $this->voucher_By_User = new Voucher_model; // vocher của người dùng
+        $this->variant = new products_variant;
+        $this->products = new products();
+        $this->cart = new shoping_cart(); // cart item
+        $this->cart_of_user = new shoping_cart_big(); //shopping_cart
+        $this->customer = new customers_models(); // khách hàng
+        $this->orders = new order(); // bảng orders
+        $this->voucher_big = new voucher(); // bảng voucher
+        $this->order_mini = new order_detail(); // bảng chi tiết 
+        $this->comment = new  comment_users();
 
-    $passwordDatabase = $users['password'];
+    }
+    public function renderShop()
+    {
+        session_start();
+        $limit = $_GET['limit'] ?? 12;
+        $page = $_GET['page'] ?? 1;;
+        $offset = ($page - 1) * 12;
+        $price_below = 0;
+        $price_above = 5000000;
+        $d = $this->categories->select();
+        $data_products = $this->products->render_product($price_below,$price_above,$limit,$offset);
+        require_once "./views/shop.php";
+    }
    
-    if(password_verify($_POST['password'],$passwordDatabase)){
     
+    public function handerContact()
+    {
+        require_once "./views/contact.php";
     }
-    elseif($password == $users['password']){
-      
-    }else{
-        $errorUL = "Tài Khoản Hoặc Mật Khẩu Không Chính Xác Vui Lòng Kiểm Tra Lại";
-        $this->showErrorUL($errorUL);
-        return;
+    public function renderCategories() {}
+    public function products_detail()
+    {
+       
+        session_start();
+        if (isset($_GET['product_id'])) {
+            $id = $_GET['product_id'];
+        }
+        $rating = $this->comment->render_Comment($id);
+        $d = $this->categories->select();
+        $data_products = $this->products->render_product_by_id($id);
+        $data_variants_black = $this->variant->renderVariants("đen", $id);
+        $data_variants_blue = $this->variant->renderVariants("xanh", $id);
+        $data_variants_red = $this->variant->renderVariants("đỏ", $id);
+        $data_variants_yellow = $this->variant->renderVariants("vàng", $id);
+        $data_variants_orange = $this->variant->renderVariants("cam", $id);
+        if (isset($_SESSION['id'])) {
+            $data_Gift = $this->voucher_By_User->select_Gift_byUserID($_SESSION['id']);
+        }
+        require_once "./views/detail.php";
     }
-    switch($users['role']){
-        case 0:
-            session_start();
-            $_SESSION['user'] = $users['username'];
-            $_SESSION['role_admin'] = $users['role'];
-            header("location:".BASE_URL);
-            break;
-            case 1:
-                session_start();
-                $_SESSION['user'] = $users['username'];
-                $_SESSION['role_epl'] = $users['role'];
-                header("location:".BASE_URL);
-                break;
-                    case 4:
-                        session_start();
-                    $_SESSION['user'] = $users['username'];
-                    $_SESSION['role_customers'] = $users['role'];
-                    $_SESSION['id'] = $users['user_id'];
-                    // echo $_SESSION['id'];
-                    // die;
-                    // $id = 23;
-                    // $data_Gift = $this->gift->select_Gift_byUserID($id);
-                    header("location:".BASE_URL);
-                    exit;
+    public function Add_to_Cart()
+    {
+        session_start();
+        $error = "";
+        $id = $_GET['products_id'];
+        $id_user = $_SESSION['id'] ?? 0;
+        $cart_user = $this->cart_of_user->select_cart_of_user($id_user);
+        $data_products = $this->products->render_product_by_id($id);
+        // Kiểm tra size
+        if (empty($_POST['size'])) {
+            $error = "Bạn chưa chọn size!!!";
+            $data_variants_black = $this->variant->renderVariants("đen", $id);
+            $data_variants_blue = $this->variant->renderVariants("xanh", $id);
+            $data_variants_red = $this->variant->renderVariants("đỏ", $id);
+            require_once "./views/detail.php";
+            return; // Dừng hàm nếu thiếu size
+        }
+    
+        // Kiểm tra màu
+        if (empty($_POST['color'])) {
+            $error = "Bạn chưa chọn màu!!!";
+            $this->showErrorCart($error);
+            $data_variants_black = $this->variant->renderVariants("đen", $id);
+            $data_variants_blue = $this->variant->renderVariants("xanh", $id);
+            $data_variants_red = $this->variant->renderVariants("đỏ", $id);
+            require_once "./views/detail.php";
+            return; // Dừng hàm nếu thiếu màu
+        }
+    
+        // Lấy link ảnh theo màu đã chọn
+        $data_variants_img = $this->variant->renderVariants($_POST['color'], $id);
+        $product_id = $data_products['product_id'];
+        $size = $_POST['size'];
+        $color = $_POST['color'];
+        $image = ($_POST['color'] == "Trắng") ? $data_products['image'] : $data_variants_img['image'];
+        $price_present = $_POST['price_present'];
+        $cart_id = $cart_user['cart_id'] ?? 0;
+        $check_duplicate = $this->cart->check_duplicate_cart($cart_id, $product_id, $size, $color);
+    
+        // Xử lý khi người dùng không đăng nhập
+        if (!$id_user) {
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
+    
+            $flag = true;
+            foreach ($_SESSION['cart'] as $item) {
+                if ($item['color'] == $color && $item['size'] == $size && $item['name'] == $_POST['name']) {
+                    $flag = false;
+                    echo "<script>alert('Sản phẩm đã tồn tại trong giỏ hàng');</script>";
+                    echo "<script>window.location.href = '?act=products_detail&product_id=$id';</script>";
+                    return;
+                }
+            }
+            if(!isset($_SESSION['stt'])){
+                $_SESSION['stt'] = 1;
+            }
+            if ($flag) {
+                $cart_product = [
+                    "products_id" => $product_id,
+                    "id" => $_SESSION['stt'],
+                    "image" => $image,
+                    "name" => $data_products['name'],
+                    "quantity" => 1,
+                    "price" => $price_present,
+                    "size" => $size,
+                    "color" => $color,
+                ];
+                $_SESSION['cart'][] = $cart_product;
+                echo "<script>alert('Thêm thành công');</script>";
+                echo "<script>window.location.href = '?act=products_detail&product_id=$id';</script>";
+                $_SESSION['stt']++;
+            }
+        } elseif ($check_duplicate) {
+            echo "<script>alert('Sản Phẩm Đã Tồn Tại Trong Giỏ Hàng');</script>";
+            echo "<script>window.location.href = '?act=products_detail&product_id=$id';</script>";
+        } elseif (empty($error)) {
+            $this->cart->insert_cart_items_of_user($cart_id, $product_id, $size, $color, $image, $price_present);
+            echo "<script>alert('Thêm thành công');</script>";
+            echo "<script>window.location.href = '?act=products_detail&product_id=$id';</script>";
+        }
+    }
+    
+
+    public function renderCart()
+    {
+        session_start();
+        $id = $_SESSION['id'] ?? 0;
+        $d = $this->categories->select();
+        $data_voucher = $this->voucher_By_User->select_Gift_byUserID($id);
+        if(!isset($_SESSION['user'])){
+            $data_cart = $_SESSION['cart'] ?? [];
+        }else{
+            $data_cart = $this->cart->render_cart_where_user($id);
+        }
+        require_once "./views/cart.php";
+    }
+    public function handerPay()
+    {  
+            //  echo "<pre>";
+            // print_r($_POST);
+            // die;
+        session_start();
+        $d = $this->categories->select();
+        $id = $_SESSION['id'] ?? 0;
+        $data_customer = $this->customer->renderInfo($id);
+        if(isset($_SESSION['user']) && empty($data_customer)){
+            echo "<script>";
+            echo "alert('Vui Lòng Cập Nhật Thông Tin Để Thực Hiện Chức Năng Này');";
+            echo "window.location = '?act=info';";
+            echo "</script>";
+        }
+        if(isset($_SESSION['user']) && $data_customer['authen'] == "Chưa Xác Thực"){
+            echo "<script>";
+            echo "alert('Vui Lòng Xác Nhận Email Để Thực Hiện Chức Năng Này');";
+            echo "window.location = '?act=info_detail';";
+            echo "</script>";
+        }
+        // die;
+        $data_cart_of_user = $this->cart->render_cart_where_user($id);
+        require_once "./views/pay.php";
+    }
+    public function hander_update_quantity(){
+        session_start();
+        
+        if(isset($_SESSION['user'])){
+            $value = $_POST['quantity'];
+        $id_user = $_SESSION['id'] ?? 0;
+        $data_cart = $this->cart->render_cart_where_user($id_user);
+        $id_cart_items = $_GET['cart_item_id'];
+        $this->cart->update_quantity($value,$id_cart_items);
+        header("location: ?act=shoping-Cart");
+        }else{
+            $new_quantity = $_POST['quantity'];
+            $id  = $_GET['cart_item_id'];
+            $guest = $_SESSION['cart'];
+            foreach($guest as &$data_g){
+                if($data_g['id'] == $id){
+                    $data_g['quantity'] = $new_quantity;
+                    break;
+                }
+            }
+           $_SESSION['cart'] = $guest;
+        }
+        header("Location: ?act=shoping-Cart");
+    }
+   
+    public function showErrorCart() {}
+    public function delete_select(){
+        $cart_item_id = $_GET['id_cart'];
+        $this->cart->delete_item($cart_item_id);
+        echo "<script>";
+        echo "alert('Xóa thành công');";
+        echo "window.location = '?act=shoping-Cart';";
+        echo "</script>";
+    }
+    public function random_key_limit() {
+        
+        $date = date("dmy"); 
+        $randomString = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 5);
+        $orderCode = "FPL" . $date . $randomString . "68";
+        return $orderCode;
+    // echo $orderCode;
+}
+    public function dathang()
+    {
+        session_start();
+        $user_id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
+        if(!empty($_POST['voucher'])){
+            $data_voucher = $this->voucher_big->select_voucher($_POST['voucher']);
+            $voucher_id = $data_voucher['voucher_id'];
+        }else{
+            $voucher_id = 0;
+        }
+        if(trim($_POST['fullname']) == ""){
+            $error = "Tên người nhận không được để trống";
+            require_once "./views/pay.php";
+            return;
+        }
+        if(trim($_POST['address']) == ""){
+            $error = "Địa chỉ người nhận không được để trống";
+            require_once "./views/pay.php";
+            return;
+        }  if(trim($_POST['phone']) == ""){
+            $error = "Số điện thoại người nhận không được để trống";
+            require_once "./views/pay.php";
+            return;
+        }
+        if(trim($_POST['email'])== ""){
+            $error = "Email người nhận không được để trống";
+            require_once "./views/pay.php";
+            return;
+        }
+       
+        $total = round($_POST['total'],0);
+        $name = $_POST['fullname'];
+        $phone = $_POST['phone'];
+        $address = $_POST['address'];
+        $email = $_POST['email'];
+        $key_limited = $this->random_key_limit();
+        $order_id = $this->orders->orders_products($user_id,$voucher_id,$total,$name,$phone,$address,$email,$key_limited);
+        $data_shoping_cart =  $this->cart->render_cart_where_user($user_id);
+        $conten = "";
+        $conten_voucher = "";
+        if($voucher_id != 0){
+            $conten_voucher = "Bạn được giảm giá ". ($_POST['voucher'] * 100)."%";
+        }
+       
+        foreach($data_shoping_cart as $data_cart){
+            $product_id = $data_cart['product_id'];
+            $quantity = $data_cart['quantity'];
+            $price = $data_cart['price'];
+            $color = $data_cart['color'];
+            $size = $data_cart['size'];
+            $image = $data_cart['image'];
+            $cart_id = $data_cart['cart_id'];
+            $name_products = $data_cart['name'];
+            $conten .= "<tr>
+            <td>{$name_products}</td>
+            <td>{$quantity}</td>
+            <td>{$size}</td>
+            <td>{$color}</td>
+            <td>" . number_format($price, 0, ',', '.') . " VND</td>
+        </tr>";
+    
+            $this->products->update_stock_quantity($quantity,$product_id);
+            $this->products->update_quantity_sold($quantity,$product_id);
+            $this->order_mini->insert_orders_detail($order_id,$product_id,$quantity,$price,$color,$size,$image);
+            $this->cart->delete_cart($cart_id);
+            $this->voucher_By_User->deleta_Gift_after_oder_success($user_id,$voucher_id);
+        }
+             // Nội dung email
+    $emailContent = "
+    <h2>Đơn hàng của bạn đã được đặt thành công!</h2>
+    <p>Xin chào <strong>{$name}</strong>,</p>
+    <p>Cảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi. Dưới đây là thông tin đơn hàng của bạn:</p>
+    <table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse;'>
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Kích Cỡ</th>
+                <th>Màu Sắc</th>
+                <th>Giá</th>
+            </tr>
+        </thead>
+        <tbody>
+            {$conten}
+        </tbody>
+    </table>
+            <p><strong>Tổng tiền:</strong> " . number_format($total, 0, ',', '.') . " VND</p>
+            <p>$conten_voucher</p>
+            <p><strong>Mã tra cứu đơn hàng:</strong> {$key_limited}</p>
+            <p>Vui lòng sử dụng mã này để kiểm tra trạng thái đơn hàng của bạn trên hệ thống của chúng tôi.</p>
+            <p>Trân trọng,<br>Đội ngũ hỗ trợ khách hàng Nhóm 11 Dự Án 1</p>";
+        $email = $_POST['email'] ?? '';
+        try {
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = BASE_MAIL;
+            $mail->Password = BASE_PASS;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+            $mail->setFrom(BASE_MAIL, 'FPL SHOP');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Thông báo đơn hàng';
+            $mail->Body = $emailContent;
+            $mail->send();
+            echo "<script>alert('Đặt hàng thành công! Email xác nhận đã được gửi.');</script>";
+        } catch (Exception $e) {
+            echo "<script>alert('Đặt hàng thành công nhưng không thể gửi email: {$mail->ErrorInfo}');</script>";
+        }
+        if(isset($_SESSION['cart'])){
+          unset($_SESSION['cart']);
+        echo "<script>window.location.href = '" . BASE_URL . "';</script>";
+        }
+        echo "<script>window.location.href = '" . BASE_URL . "';</script>";
+    }
+    public function search(){
+        session_start();
+        $d = $this->categories->select();
+        $price_below = 0;
+        $price_above = 500000;
+        $limit = 12;
+        $offset = 0;
+        $error = "";
+        if(isset($_POST['key'])){
+           $key =  trim(strtolower($_POST['key']));
+           $key = str_replace("'", "", $key);
+        }
+       
+        if(empty($key)){
+            $error = "Vui Lòng Nhập Từ Khóa Để Tìm Kiếm VD(Áo Khoác Nam , Áo Nam ....)";
+            $this->showError($error);
+            return;
+        }
+        $data_products = $this->products->result_search($key,$price_below,$price_above,$limit,$offset);
+        require_once "./views/search.php";
+    }
+    public function filter_by(){
+        session_start();
+        $where_sql = [];
+        if(!empty($_POST['price'])){
+            $price_sql = [];
+            foreach ($_POST['price'] as $price) {
+                switch ($price) {
+                    case '0-50000':
+                        $price_sql[] = "price BETWEEN 0 AND 50000";
                         break;
+                    case '50000-150000':
+                        $price_sql[] = "price BETWEEN 50000 AND 150000";
+                        break;
+                    case '150000-250000':
+                        $price_sql[] = "price BETWEEN 150000 AND 250000";
+                        break;
+                    case '250000-500000':
+                        $price_sql[] = "price BETWEEN 250000 AND 500000";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (!empty($price_sql)) {
+                $where_sql[] = '(' . implode(' OR ', $price_sql) . ')';
+            }
+        }
+     
+     if (!empty($_POST['color'])) {
+        $color_sql = []; 
 
+       
+        foreach ($_POST['color'] as $color) {
+            switch ($color) {
+                case 'Đen':
+                    $color_sql[] = "color = 'Đen'"; 
+                    break;
+                case 'Đỏ':
+                    $color_sql[] = "color = 'Đỏ'"; 
+                    break;
+                case 'Xanh':
+                    $color_sql[] = "color = 'Xanh'"; 
+                    break;
+                    case 'Vàng':
+                        $color_sql[] = "color = 'Vàng'"; 
+                        break;
+                    case 'Cam':
+                        $color_sql[] = "color = 'Cam'"; 
+                        break;
+                default:
+                    break;
+            }
+        }
+
+       
+        if (!empty($color_sql)) {
+            $where_sql[] = '(' . implode(' OR ', $color_sql) . ')';
+        }
     }
-}
+    if (!empty($_POST['size'])) {
+        $size_sql = []; 
 
-public function post_Register(){
+        foreach ($_POST['size'] as $size) {
+            switch ($size) {
+                case 'S':
+                    $size_sql[] = "size = 'S'"; 
+                    break;
+                case 'M':
+                    $size_sql[] = "size = 'M'"; 
+                    break;
+                case 'L':
+                    $size_sql[] = "size = 'L'"; 
+                    break;
+                case 'XL':
+                    $size_sql[] = "size = 'XL'"; 
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (!empty($size_sql)) {
+            $where_sql[] = '(' . implode(' OR ', $size_sql) . ')';
+        }
+    }
+    $where = "";
+    if (!empty($where_sql)) {
+        $where .= " WHERE " . implode(' AND ', $where_sql);
+    }
+   
+    $data_products = $this->products->filter($where);
+   require_once "./filter/filter_by_price.php";
+    }
+    public function post_comment() {
+        session_start();
+        if (isset($_SESSION['user'])) {
+            $user_id = $_SESSION['id'];
+        }
+        $data_customer = $this->customer->renderInfo($user_id);
+        if(!$data_customer){
+            echo "<script>alert('Vui Lòng Cập Nhật Thông Tin');</script>";
+            echo "<script>window.location.href = '?act=info';</script>";
+            exit;
+        }
+        $products_id = $_GET['products_id'];
+        if (!isset($_SESSION['user'])) {
+            header("location: ?act=login");
+            exit;
+        }
+        $index = trim($_POST['index']);
+        if (empty($index)) {
+            $_SESSION['error_cm'] = "Vui lòng nhập nhận xét của bạn";
+            $_SESSION['error_cm_time'] = time(); // Lưu thời gian lỗi xảy ra
+            header("location:?act=products_detail&product_id=$products_id");
+            exit;
+        }
+        if (!empty($index)) {
+            $index_bad = ['dmm', 'dm', 'lol', 'cm', 'mẹ', 'mày', 'tao', 'đéo', 'd m'];
+            foreach ($index_bad as $bad) {
+                $index = str_replace($bad, "***", $index);
+            }
     
-    $errorUR = "";
-    $errorPR = "";
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Kiểm tra tên đăng nhập
-    if (strtolower(trim($username)) == "") {
-        $errorUR = "Tên Đăng Nhập Không Được Để Trống";
-        $this->showErrorUR($errorUR);
-        return;
+            
+            $check = $this->comment->checkduplicate($user_id,$products_id);
+            if ($check) {
+                $_SESSION['error_cm'] = "Bạn đã nhận xét cho sản phẩm này";
+                $_SESSION['error_cm_time'] = time(); 
+                header("location:?act=products_detail&product_id=$products_id");
+                exit;
+            }
+            $this->comment->create_comment($user_id, $products_id, $index);
+            header("location:?act=products_detail&product_id=$products_id");
+            exit;
+        }
     }
-    if (preg_match('/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i', $username)) {
-        $errorUR = "Tài Khoản không được chứa ký tự có dấu.";
-        $this->showErrorUR($errorUR);
-        return;
+    public function search_s(){
+        if(isset($_GET['s'])){
+            $key = $_GET['s'];
+        }
+        $d = $this->categories->select();
+        $data_products = $this->products->search_by_cate($key);
+        require_once "./views/s.php";
     }
-    if (strlen($username) < 5) {
-        $errorUR = "Tên Đăng Nhập Phải Chứa 5 Ký Tự Trở Lên";
-        $this->showErrorUR($errorUR);
-        return;
+    public function showError($error){
+        require_once "./views/search.php";
     }
-    if (preg_match('/\s/', $username)) { // Kiểm tra dấu cách trong tên đăng nhập
-        $errorUR = "Tên Đăng Nhập Không Được Chứa Khoảng Trắng";
-        $this->showErrorUR($errorUR);
-        return;
-    }
-    // Kiểm tra mật khẩu
-    if (strtolower(trim($password)) == "") {
-        $errorPR = "Mật Khẩu Không Được Để Trống";
-        $this->showErrorPR($errorPR);
-        return;
-    }
-    if (strlen($password) < 6) {
-        $errorPR = "Mật Khẩu Phải Chứa 6 Ký Tự Trở Lên";
-        $this->showErrorPR($errorPR);
-        return;
-    }
-    if (preg_match('/\s/', $password)) { // Kiểm tra dấu cách trong tên đăng nhập
-        $errorPR = "Mật Khẩu Không Được Chứa Khoảng Trắng";
-        $this->showErrorPR($errorPR);
-        return;
-    }
-    if (preg_match('/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i', $password)) {
-        $errorPR = "Mật khẩu không được chứa ký tự có dấu.";
-        $this->showErrorPR($errorPR);
-        return;
-    }
-    $data = $this->models_users->select_User(strtolower(trim($username)));
-    if($data){
-        $errorUR = "Tên Đăng Nhập Đã Tồn Tại Vui Lòng Lựa Chọn Tên Khác!!";
-        $this->showErrorUR($errorUR);
-        return;
-    }
-    // Nếu không có lỗi nào xảy ra, tạo người dùng
-    $password_sha = password_hash(strtolower($password),PASSWORD_DEFAULT);
-    // echo $password_sha;
-    // die;
-   session_start();
-    $this->models_users->create_User(strtolower(trim($username)),(trim($password_sha)));
-    $data_id = $this->models_users->select_User(strtolower(trim($username)));
-    $id = $data_id['user_id'];
-    $this->gift->gift_Voucher($id);
-   $cart_id =  $this->shoping_Cart->insert_cart_user($id);
-   if(isset($_SESSION['cart'])){
-    foreach($_SESSION['cart'] as $cart_item){
-        $image = $cart_item['image'];
-        $name = $cart_item['name'];
-        $quantity = $cart_item['quantity'];
-        $price = $cart_item['price'];
-        $size = $cart_item['size'];
-        $color = $cart_item['color'];
-        $id = $cart_id;
-        $product_id = $cart_item['products_id'];
-        $this->cart->insert_Cart_items_of_user($id, $product_id, $size, $color,$image,$price);
-    }
-   }
-   echo "<script>";
-   echo "alert('Đăng ký thành công')";
-   echo  "</script>";
-   $this->login();
 
 }
-?>
+$shop = new Shop_Control;

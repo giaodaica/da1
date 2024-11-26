@@ -48,8 +48,7 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <?php if (isset($_SESSION['role_customers'])) { ?>
                                     <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info">Truy Cập Bee member</a></button>
-                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info_customers">Đơn hàng của tôi</a></button>
-                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=info_customers">Sổ địa chỉ nhận hàng</a></button>
+                                    <button class="dropdown-item" type="button"><a class="text-dark" href="?act=history_shop">Đơn hàng của tôi</a></button>
                                 <?php  } ?>
                                 <?php if (isset($_SESSION['role_admin'])) { ?>
                                     <button class="dropdown-item" type="button"><a class="text-dark" href="?act=admin">Admin</a></button>
@@ -66,6 +65,7 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <button class="dropdown-item" type="button"><a class="text-dark" href="?act=login">Đăng Nhập</a></button>
                                 <button class="dropdown-item" type="button"><a class="text-dark" href="?act=register">Đăng Ký</a></button>
+                                <button class="dropdown-item" type="button"><a class="text-dark" href="?act=select_history_order">Tra Cứu Đơn Hàng</a></button>
                             </div>
                         </div>
                     <?php  } ?>
