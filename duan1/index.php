@@ -46,6 +46,7 @@ match($act){
     'filter_by' => $shop->filter_by(),
     'select_history_order'=> $shop->select_history_order(),
     'post_select_htr' => $shop->post_select_htr(),
+    'detail_order' => $shop->detail_shoping(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

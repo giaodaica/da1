@@ -1,6 +1,7 @@
 <?php
 // print_r($d);
 // phpinfo();
+// print_r($_SESSION['order_info']);
 
 if (isset($_SESSION['user'])) {
     $username = $_SESSION['user'];

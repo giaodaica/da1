@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(isset($_SESSION['key'])){ ?>
+    <?php
 // print_r($d);
 // echo "<pre>";
 // print_r($data_products);
@@ -92,74 +94,24 @@ if (isset($_SESSION['user'])) {
     <!-- Breadcrumb End -->
 
 
-    <!-- Shop Start -->
-    <div class="container-fluid">
-        <form action="?act=select_history_order" method="post">
-            <div class="mb-3">
-                <label for="">Nhập mã đơn hàng để tra cứu</label>
-                <input type="text" name="key" id="" class="key">
-            </div>
-        </form>
-    </div>
-    <!-- Shop End -->
-    <?php if(isset($data_key) && !empty($data_key)){ ?>
-        <div>
-            <h3>Chi Tiết Đơn Hàng <?php if(isset($_POST['key'])){echo $_POST['key'];} ?></h3>
-            <p>Họ Tên Khách Hàng : <?= $data_key['recipient_name'] ?></p> 
-          <p>  Địa Chỉ Nhận Hàng : <?= $data_key['recipient_address'] ?></p>
-            <p>Số Điện Thoại : <?= $data_key['recipient_phone'] ?></p>
-          <p>  Email : <?= $data_key['email'] ?></p>
-          <?php echo "Trạng thái đơn hàng ";
-              switch($data_key['status']){
-                case "Chờ xử lý":
-                    echo "<p class='text-warning'>Chờ Xử Lý</p>";
-                    break;
-                    case "Đã hoàn tất":
-                        echo "<p class='text-success'>Trạng thái đơn hàng Đã giao hàng</p>";
-                        break;
-                        case "Đã Xác Nhận":
-                            echo "<p class='text-info'>Trạng thái đơn hàng Đã Xác Nhận</p>";
-                            break;
-                            
-              }
-              
-              ?>
-            <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Tên Sản Phẩm</th>
-      <th scope="col">Hình Ảnh</th>
-      <th scope="col">Số Lượng</th>
-      <th scope="col">Kích Cỡ</th>
-      <th scope="col">Màu Sắc</th>
-      <th scope="col">Giá</th>
-      <th scope="col">Thời Gian Đặt Hàng</th>
-    </tr>
-  </thead>
-  <tbody>
-        <?php foreach($data_prd as $data){ ?>
-              <tr>
-              <th scope="row"><?= $data['name'] ?></th>
-              <td><img src="<?= "./admin". $data['image'] ?>" alt="" width="100"></td>
-              <td><?= $data['quantity'] ?></td>
-              <td><?= $data['size'] ?></td>
-              <td><?= $data['color'] ?></td>
-              <td><?= number_format($data['total_amount']) ?></td>
-           
-              <td><?= $data['order_date'] ?></td>
-            </tr>
-       <?php } ?>
-  </tbody>
-</table>
-        </div>
-  <?php  }else{
-    if(isset($_POST['key'])){
-        echo "Không Tìm Thấy Đơn Hàng Này Hãy Kiểm Tra Lại Mã Đơn Hàng Trong Email Của Bạn";
-    }
-  } ?>
+    <h3>Chào Bạn</h3>
+<h4>Cảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi!</h4>
+<p>Chúng tôi sẽ xác nhận đơn hàng của bạn và gửi chi tiết vào email của bạn</p>
+<h5>Chúc bạn một ngày tốt lành!</h5>
+<h6>Mã đơn hàng để bạn có thể tra cứu : <?= $_SESSION['key']; ?> <?php
+if (isset($_SESSION['key_time']) && (time() - $_SESSION['key_time']) > 300) {
+    unset($_SESSION['key']);
+    unset($_SESSION['key_time']);
+    echo $_SESSION['key'];
+}
+?></h6>
 
 
     <?php require_once "menu/footer.php"; ?>
 </body>
 
 </html>
+<?php }else{?>
+    <?php require_once "error.php"; ?>
+<?php }
+?>

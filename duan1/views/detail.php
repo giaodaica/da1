@@ -242,7 +242,7 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
                                     </div>
                                     <div class="col-md-6">
                                         <h4 class="mb-4">Nhận xét về sản phẩm</h4>
-                                        <form action="?act=post_comment&products_id=<?= $_GET['product_id'] ?>" method="POST">
+                                        <form action="?act=post_comment&products_id=<?php if(isset($_GET['product_id'])){echo $_GET['product_id'];} ?>" method="POST">
                                             <div class="form-group">
                                                 <label for="message">Đánh giá của bạn</label>
                                                 <textarea id="message" cols="30" rows="5" class="form-control" name="index"></textarea>

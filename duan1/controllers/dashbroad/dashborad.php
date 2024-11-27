@@ -19,6 +19,9 @@
          }
         require_once "./views/home.php";
     }
+    public function error404(){
+        require_once "error.php";
+    }
     public function admin(){
         session_start();
         header("location: ./admin");

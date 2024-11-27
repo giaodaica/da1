@@ -34,4 +34,12 @@ class customers_models extends database{
         $sql = "UPDATE `customer_info` SET `authen` = 'Đã Xác Thực' WHERE `customer_info`.`user_id` = $user_id";
         $this->conn->exec($sql);
     }
+    public function delete_info($user_id){
+        $sql = "DELETE FROM `customer_info` WHERE `customer_info`.`user_id` = $user_id;";
+        $this->conn->exec($sql);
+    }
+    public function delete_acc($user_id){
+        $sql = "DELETE FROM `users` WHERE `users`.`user_id` = $user_id;";
+        $this->conn->exec($sql);
+    }
 }

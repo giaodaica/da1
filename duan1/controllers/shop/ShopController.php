@@ -16,6 +16,7 @@ class Shop_Control
     public $voucher_big;
     public $order_mini;
     public $comment;
+    public $black;
     public function __construct()
     {
         $this->categories = new Categories_models;
@@ -29,6 +30,7 @@ class Shop_Control
         $this->voucher_big = new voucher(); // bảng voucher
         $this->order_mini = new order_detail(); // bảng chi tiết 
         $this->comment = new  comment_users();
+        $this->black = new blacklist();
 
     }
     public function renderShop()
@@ -84,6 +86,8 @@ class Shop_Control
             $data_variants_black = $this->variant->renderVariants("đen", $id);
             $data_variants_blue = $this->variant->renderVariants("xanh", $id);
             $data_variants_red = $this->variant->renderVariants("đỏ", $id);
+        $rating = $this->comment->render_Comment($id);
+
             require_once "./views/detail.php";
             return; // Dừng hàm nếu thiếu size
         }
@@ -95,6 +99,8 @@ class Shop_Control
             $data_variants_black = $this->variant->renderVariants("đen", $id);
             $data_variants_blue = $this->variant->renderVariants("xanh", $id);
             $data_variants_red = $this->variant->renderVariants("đỏ", $id);
+        $rating = $this->comment->render_Comment($id);
+
             require_once "./views/detail.php";
             return; // Dừng hàm nếu thiếu màu
         }
@@ -234,56 +240,70 @@ class Shop_Control
         return $orderCode;
     // echo $orderCode;
 }
-    public function dathang()
-    {
-        session_start();
-        // print_r($_SESSION['cart']);
-        // die;
-        $user_id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
-        if(!empty($_POST['voucher'])){
+public function dathang()
+{
+    session_start();
+    $total = round($_POST['total'], 0);
+    $name = $_POST['fullname'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+    $email = $_POST['email'];
+    $user_id = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
+    date_default_timezone_set('Asia/Ho_Chi_Minh'); 
+    $time_limit = date('Y-m-d H:i:s', strtotime('-10 seconds'));  
+    $spam = $this->orders->cancel_spam_order($user_id, $time_limit);
+    if ($spam['order_count'] > 1) {
+       if($user_id == 0){
+        $this->black->insert_list($email,$phone,$user_id);
+        session_destroy();
+        header("location: spam.php");
+        die;  
+       }else{
+        $this->black->insert_list($email,$phone,$user_id);
+        $this->customer->delete_info($user_id);
+        $this->cart_of_user->delete_cart($user_id);
+        $this->customer->delete_acc($user_id);
+        session_destroy();
+        header("location: spam.php");
+        die;  
+       }
+       die;
+    } else {
+  
+        if (!empty($_POST['voucher'])) {
             $data_voucher = $this->voucher_big->select_voucher($_POST['voucher']);
             $voucher_id = $data_voucher['voucher_id'];
-        }else{
+        } else {
             $voucher_id = 0;
         }
-        if(trim($_POST['fullname']) == ""){
+        if (trim($_POST['fullname']) == "") {
             $error = "Tên người nhận không được để trống";
             require_once "./views/pay.php";
             return;
         }
-        if(trim($_POST['address']) == ""){
+        if (trim($_POST['address']) == "") {
             $error = "Địa chỉ người nhận không được để trống";
             require_once "./views/pay.php";
             return;
-        }  if(trim($_POST['phone']) == ""){
+        }
+        if (trim($_POST['phone']) == "") {
             $error = "Số điện thoại người nhận không được để trống";
             require_once "./views/pay.php";
             return;
         }
-        if(trim($_POST['email'])== ""){
+        if (trim($_POST['email']) == "") {
             $error = "Email người nhận không được để trống";
             require_once "./views/pay.php";
             return;
         }
-       
-        $total = round($_POST['total'],0);
-        $name = $_POST['fullname'];
-        $phone = $_POST['phone'];
-        $address = $_POST['address'];
-        $email = $_POST['email'];
-        $key_limited = $this->random_key_limit();
-        $order_id = $this->orders->orders_products($user_id,$voucher_id,$total,$name,$phone,$address,$email,$key_limited);
-      if($user_id == 0){
-        $data_shoping_cart = $_SESSION['cart'];
-      }else{
-        $data_shoping_cart =  $this->cart->render_cart_where_user($user_id);
-      }
-        $conten = "";
-        $conten_voucher = "";
-        if($voucher_id != 0){
-            $conten_voucher = "Bạn được giảm giá ". ($_POST['voucher'] * 100)."%";
+        if ($user_id == 0) {
+            $data_shoping_cart = $_SESSION['cart'];
+        } else {
+            $data_shoping_cart = $this->cart->render_cart_where_user($user_id);
         }
-        foreach($data_shoping_cart as $data_cart){
+        $key_limited = $this->random_key_limit();
+        $order_id = $this->orders->orders_products($user_id, $voucher_id, $total, $name, $phone, $address, $email, $key_limited);
+        foreach ($data_shoping_cart as $data_cart) {
             $product_id = $data_cart['product_id'];
             $quantity = $data_cart['quantity'];
             $price = $data_cart['price'];
@@ -292,72 +312,28 @@ class Shop_Control
             $image = $data_cart['image'];
             $cart_id = $data_cart['cart_id'] ?? 0;
             $name_products = $data_cart['name'];
-            $conten .= "<tr>
-            <td>{$name_products}</td>
-            <td>{$quantity}</td>
-            <td>{$size}</td>
-            <td>{$color}</td>
-            <td>" . number_format($price, 0, ',', '.') . " VND</td>
-        </tr>";
-    
-            $this->products->update_stock_quantity($quantity,$product_id);
-            $this->products->update_quantity_sold($quantity,$product_id);
-            $this->order_mini->insert_orders_detail($order_id,$product_id,$quantity,$price,$color,$size,$image);
-           if(isset($_SESSION['user'])){
-            $this->cart->delete_cart($cart_id);
-           }
-            $this->voucher_By_User->deleta_Gift_after_oder_success($user_id,$voucher_id);
+            
+            $this->products->update_stock_quantity($quantity, $product_id);
+            $this->products->update_quantity_sold($quantity, $product_id);
+            $this->order_mini->insert_orders_detail($order_id, $product_id, $quantity, $price, $color, $size, $image);
+            if (isset($_SESSION['user'])) {
+                $this->cart->delete_cart($cart_id);
+            }
+            $this->voucher_By_User->deleta_Gift_after_oder_success($user_id, $voucher_id);
         }
-             // Nội dung email
-    $emailContent = "
-    <h2>Đơn hàng của bạn đã được đặt thành công!</h2>
-    <p>Xin chào <strong>{$name}</strong>,</p>
-    <p>Cảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi. Dưới đây là thông tin đơn hàng của bạn:</p>
-    <table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse;'>
-        <thead>
-            <tr>
-                <th>Sản phẩm</th>
-                <th>Số lượng</th>
-                <th>Kích Cỡ</th>
-                <th>Màu Sắc</th>
-                <th>Giá</th>
-            </tr>
-        </thead>
-        <tbody>
-            {$conten}
-        </tbody>
-    </table>
-            <p><strong>Tổng tiền:</strong> " . number_format($total, 0, ',', '.') . " VND</p>
-            <p>$conten_voucher</p>
-            <p><strong>Mã tra cứu đơn hàng:</strong> {$key_limited}</p>
-            <p>Vui lòng sử dụng mã này để kiểm tra trạng thái đơn hàng của bạn trên hệ thống của chúng tôi.</p>
-            <p>Trân trọng,<br>Đội ngũ hỗ trợ khách hàng Nhóm 11 Dự Án 1</p>";
-        $email = $_POST['email'] ?? '';
-        try {
-            $mail = new PHPMailer(true);
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = BASE_MAIL;
-            $mail->Password = BASE_PASS;
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-            $mail->setFrom(BASE_MAIL, 'FPL SHOP');
-            $mail->addAddress($email);
-            $mail->isHTML(true);
-            $mail->Subject = 'Thông báo đơn hàng';
-            $mail->Body = $emailContent;
-            $mail->send();
-            echo "<script>alert('Đặt hàng thành công! Email xác nhận đã được gửi.');</script>";
-        } catch (Exception $e) {
-            echo "<script>alert('Đặt hàng thành công nhưng không thể gửi email: {$mail->ErrorInfo}');</script>";
+        if (isset($_SESSION['cart'])) {
+            unset($_SESSION['cart']);
         }
-        if(isset($_SESSION['cart'])){
-          unset($_SESSION['cart']);
-        echo "<script>window.location.href = '" . BASE_URL . "';</script>";
-        }
-        echo "<script>window.location.href = '" . BASE_URL . "';</script>";
+        $_SESSION['key'] = $key_limited;
+        $_SESSION['key_time'] = time();
+        header("location: ?act=detail_order");
     }
+}
+public function detail_shoping(){
+    session_start();
+    $d = $this->categories->select();
+    require_once "./views/detail_shoping.php";
+}
     public function search(){
         session_start();
         $d = $this->categories->select();
@@ -530,6 +506,7 @@ class Shop_Control
         if(isset($_POST['key'])){
             $key_limited = $_POST['key'];
         $data_key = $this->orders->select_by_key($key_limited);
+        $data_prd = $this->orders->select_by_key_get_prd($key_limited);
         }
         require_once "customers/detail_select.php";
     }

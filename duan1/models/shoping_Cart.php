@@ -13,4 +13,8 @@ class shoping_cart_big extends database{
         $stmt->execute();
         return $stmt->fetch();
     }
+    public function delete_cart($user_id){
+        $sql = "DELETE FROM `shopping_cart` WHERE `shopping_cart`.`user_id` = $user_id;";
+        $this->conn->exec($sql);
+    }
 }

@@ -46,4 +46,23 @@ class order extends database {
          $stmt->execute();
          return $stmt->fetch();
     }
-}
+    public function select_by_key_get_prd($key_limited){
+        $sql = "SELECT orders.*,order_details.*,products.name FROM orders LEFT JOIN order_details ON orders.order_id = order_details.order_id 
+        JOIN products ON order_details.product_id= products.product_id WHERE orders.key_limited = '$key_limited';";
+         $stmt = $this->conn->query($sql);
+         $stmt->execute();
+         return $stmt->fetchAll();
+    }
+    public function select_time($order_id){
+        $sql = "SELECT order_date FROM orders WHERE order_id = $order_id;";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    public function cancel_spam_order($user_id,$time_limit){
+        $sql = "SELECT COUNT(*) as order_count FROM orders WHERE user_id = $user_id AND order_date >= '$time_limit'";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+}   
