@@ -307,10 +307,8 @@ class controller_Customers
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
         $premium = $this->order_item->premium_user($id);
-
         }
         $d = $this->categories->select();
-
         $data_cart_item_edit = $this->order_item->action_history($action, $id, $limit, $offset);
         require_once "customers/action_history_buy_products.php";
     }

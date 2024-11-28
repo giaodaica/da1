@@ -2,8 +2,8 @@
 class order extends database {
     protected $table = "orders";
     public function orders_products($user_id,$voucher_id,$total,$name,$phone,$address,$email,$key_limited){
-        $sql = "INSERT INTO `orders` ( `user_id`, `voucher_id`, `total_amount`, `order_date`, `status`, `recipient_name`, `recipient_phone`, `recipient_address`,`email`,`key_limited`) 
-        VALUES ( '$user_id', '$voucher_id', '$total', CURRENT_TIMESTAMP, 'Chờ xử lý', '$name', '$phone', '$address','$email','$key_limited')";
+        $sql = "INSERT INTO `orders` ( `user_id`, `voucher_id`, `total_amount`, `order_date`, `status`, `recipient_name`, `recipient_phone`, `recipient_address`,`email`,`key_limited`,`note`) 
+        VALUES ( '$user_id', '$voucher_id', '$total', CURRENT_TIMESTAMP, 'Chờ xử lý', '$name', '$phone', '$address','$email','$key_limited','Chưa Gọi Xác Nhận')";
             // echo $sql;
             // die;
         $this->conn->exec($sql);
