@@ -162,7 +162,7 @@ class orders
             $conten = "";
             $conten_voucher = "";
             if ($data_cart['voucher_id'] != 0) {
-                $conten_voucher = "Bạn được giảm giá " . ($data_cart['voucher_id'] * 100) . "%";
+                $conten_voucher = "Bạn được giảm giá " . ($data_cart['discount_percent'] * 100) . "%";
             }
             foreach ($data_item_cart as $data) {
                 $name_products = $data['name'];

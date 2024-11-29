@@ -18,7 +18,7 @@ class order extends database {
         return $stmt->fetch();
     }
     public function select_order($id,$limit,$offset){
-        $sql = "SELECT * FROM orders WHERE user_id = $id ORDER BY order_date DESC LIMIT $limit OFFSET $offset;";
+        $sql = "SELECT orders.*,payments.status as hello from orders join payments on orders.order_id = payments.order_id WHERE user_id = $id ORDER BY order_date DESC LIMIT $limit OFFSET $offset;";
         $stmt =  $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -28,7 +28,7 @@ class order extends database {
         $this->conn->exec($sql);
     }
     public function action_history($action,$user_id,$limit,$offset){
-        $sql = "SELECT * FROM `orders` WHERE status = '$action' and `user_id` = $user_id ORDER BY order_date DESC LIMIT $limit OFFSET $offset";
+        $sql = "SELECT orders.*,payments.status as hello from orders join payments on orders.order_id = payments.order_id WHERE orders.status = '$action' and `user_id` = $user_id ORDER BY order_date DESC LIMIT $limit OFFSET $offset";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();

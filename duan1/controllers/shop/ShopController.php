@@ -303,6 +303,8 @@ public function dathang()
         }
         $key_limited = $this->random_key_limit();
         $order_id = $this->orders->orders_products($user_id, $voucher_id, $total, $name, $phone, $address, $email, $key_limited);
+        $_SESSION['total'] = $total;
+        $_SESSION['order_id'] = $order_id;
         foreach ($data_shoping_cart as $data_cart) {
             $product_id = $data_cart['product_id'];
             $quantity = $data_cart['quantity'];
@@ -326,8 +328,29 @@ public function dathang()
         }
         $_SESSION['key'] = $key_limited;
         $_SESSION['key_time'] = time();
-        header("location: ?act=detail_order");
+        header("location: ?act=vnpay");
+
     }
+}
+public function vnpay(){
+    session_start();
+    require_once "vnpay_php/vnpay_pay.php";
+}
+public function create_payment(){
+   
+   
+    if($_POST['bankCode'] == "cod"){
+       session_start();
+        header("location: ?act=detail_order");
+    }else{
+        session_start();
+        require_once "vnpay_php/vnpay_create_payment.php";
+    }
+}
+    
+public function returnUrl(){
+    session_start();
+    require_once "vnpay_php/vnpay_return.php";
 }
 public function detail_shoping(){
     session_start();

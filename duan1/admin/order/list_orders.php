@@ -361,6 +361,7 @@
                     <table class="table">
                         <thead class="">
                             <tr>
+                                <th>STT</th>
                                 <th scope="col"><input type="checkbox" id="checkAll" class="me-3">Tất Cả</th>
                                 <th>Địa chỉ</th>
                                 <th>Người nhận</th>
@@ -375,11 +376,14 @@
                         </thead>
                         <tbody>
                             <?php
+                                    $i = 1;
                                 foreach ($order_action as $render_action) {
-                                   
                             ?>
 
                                 <tr>
+                                    <td><?php 
+                                        echo $i++;
+                                    ?></td>
                                     <td>
                                         <input type="checkbox" class="item" name="checkbox[]" value="<?= $render_action['order_id'] ?>">
                                         <p class="d-inline-flex gap-1">
@@ -391,6 +395,11 @@
                                         <div class="card card-body">
                                             <p>Email: <?= $render_action['email'] ?></p>
                                             <p>Ghi Chú: <?= $render_action['note'] ?></p>
+                                            <p><?php if($render_action['status_pay'] == 1){
+                                                echo "Đã Thanh Toán";
+                                            }else{
+                                                echo "Thanh Toán Khi Nhận Hàng";
+                                            } ?></p>
                                             <p><a href="?act=update_info&order_id=<?= $render_action['order_id'] ?>">Sửa Thông Tin</a></p>
                                         </div>
                                     </div>

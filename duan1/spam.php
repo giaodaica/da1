@@ -1,1 +1,1 @@
-bạn đang spam dit cụ mày
+bạn đang spam

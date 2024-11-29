@@ -28,7 +28,8 @@ class order extends database
         return $stmt->execute();
     }
     public function action_history($action,$limit,$offset){
-        $sql = "SELECT orders.*,vouchers.discount_percent FROM orders JOIN vouchers ON orders.voucher_id=vouchers.voucher_id WHERE orders.status = '$action' ORDER BY order_date DESC LIMIT $limit OFFSET $offset";
+        $sql = "SELECT orders.*,vouchers.discount_percent,payments.status as status_pay FROM orders JOIN vouchers ON orders.voucher_id=vouchers.voucher_id LEFT JOIN
+         payments ON orders.order_id = payments.order_id WHERE orders.status = '$action' ORDER BY order_date DESC LIMIT $limit OFFSET $offset";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -45,7 +46,7 @@ class order extends database
          return $stmt->fetchAll();
     }
     public function select_order($order_id){
-        $sql = "SELECT * FROM orders where order_id = $order_id";
+        $sql = "SELECT orders.*,vouchers.discount_percent FROM orders JOIN vouchers ON orders.voucher_id=vouchers.voucher_id where order_id = $order_id";
         $stmt = $this->conn->query($sql);
          $stmt->execute();
          return $stmt->fetch();

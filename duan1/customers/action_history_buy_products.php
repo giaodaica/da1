@@ -116,6 +116,10 @@
                             <div class="total_cart">Tổng đơn : <?php if (!empty($data_cart_item)) {
                                                                     echo number_format($data_cart_item['total_amount']);
                                                                 } ?>
+                                                                <?php 
+                                                                if($data_cart_item['hello']==1){ ?>
+                                                                        <b class="text-success">Đã Thanh Toán</b>
+                                                               <?php }?>
                                 <div class="status">
                                     <p
                                         <?php switch ($data_cart_item['status']) {

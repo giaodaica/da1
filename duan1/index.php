@@ -47,6 +47,10 @@ match($act){
     'select_history_order'=> $shop->select_history_order(),
     'post_select_htr' => $shop->post_select_htr(),
     'detail_order' => $shop->detail_shoping(),
+    'vnpay' => $shop->vnpay(),
+    'create_payment' => $shop->create_payment(),
+    'returnUrl' => $shop->returnUrl(),
+    'check_stock'=>$shop->check_stock(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

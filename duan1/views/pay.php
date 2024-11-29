@@ -195,24 +195,8 @@ if (isset($_SESSION['user'])) {
                     <div class="mb-5">
                         <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
                         <div class="bg-light p-30">
-                            <div class="form-group">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment_method" id="paypal" value="cod">
-                                    <label class="custom-control-label" for="paypal">Thanh Toán Khi Nhận Hàng</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment_method" id="directcheck" value="momo">
-                                    <label class="custom-control-label" for="directcheck">Ví điện tử</label>
-                                </div>
-                            </div>
-                            <div class="form-group mb-4">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment_method" id="banktransfer" value="bank">
-                                    <label class="custom-control-label" for="banktransfer">Ngân hàng</label>
-                                </div>
-                            </div>
+                          
+                          
                             <input type="hidden" name="voucher" value="<?php if(!empty($_POST['voucher'])){echo $_POST['voucher'];} ?>">
                             <input type="hidden" name="total" value="<?= ($total - ($total * (empty($_POST['voucher']) ? 0 : $_POST['voucher']))) ?>">
                             <button class="btn btn-block btn-primary font-weight-bold py-3" id="btnsubmit">Đặt hàng</button>
