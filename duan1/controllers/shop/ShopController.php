@@ -536,6 +536,29 @@ public function detail_shoping(){
     public function showError($error){
         require_once "./views/search.php";
     }
+    public function check_stock(){
+      
+        if ($_GET['act'] === 'check_stock') {
+            $size = $_POST['size'];
+            $color = $_POST['color'];
+            $product_id = $_GET['products_id'];
+            if($color != "Trắng"){
+                $stock_quantity = $this->variant->select_color_size($size,$color,$product_id);
+            }else{
+                $sum = $this->products->render_product_by_id($product_id);
+                $sum_variant = $this->variant->sum_variant($product_id);
+                $stock_quantity['stock_quantity'] = ($sum['stock_quantity'] - $sum_variant['tong']);
+            }
+            if($stock_quantity > 0){
+                echo "Còn ". $stock_quantity['stock_quantity']. " Sản Phẩm";
+            }else{
+                echo "Tạm Hết Hàng";
+            }      
+           
+        
+        }
+        
 
+    }
 }
 $shop = new Shop_Control;

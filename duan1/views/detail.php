@@ -32,11 +32,13 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
@@ -195,7 +197,7 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
                                     }
                                     ?>
                                 </div>
-
+                                <div id="stock-message" class="text-success mt-3"></div>
                                 <div class="d-flex align-items-center mb-4 pt-2">
                                     <input type="hidden" name="price_present" id="" value="<?= $data_products['price'] ?>">
                                     <input type="hidden" name="name" id="" value="<?= $data_products['name'] ?>">
@@ -422,3 +424,39 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
 
 
 </html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    function checkStock() {
+        let selectedSize = $('input[name="size"]:checked').val();
+        let selectedColor = $('input[name="color"]:checked').val();
+
+        // Kiểm tra xem người dùng đã chọn đủ size và màu chưa
+        if (selectedSize && selectedColor) {
+            // Gửi AJAX đến server
+            $.ajax({
+                url: '<?= BASE_URL ?>?act=check_stock&products_id=<?= $_GET['product_id'] ?>', // Đường dẫn kiểm tra tồn kho
+                method: 'POST',
+                data: {
+                    size: selectedSize,
+                    color: selectedColor
+                },
+                success: function (response) {
+                    $('#stock-message').text(response); // Hiển thị thông báo tồn kho
+                },
+                error: function () {
+                    $('#stock-message').text('Lỗi xảy ra khi kiểm tra tồn kho.');
+                }
+            });
+        } else {
+            // Yêu cầu người dùng chọn đầy đủ
+            $('#stock-message').text('Vui lòng chọn cả size và màu sắc.');
+        }
+    }
+
+    // Gọi hàm khi thay đổi size hoặc màu
+    $('input[name="size"], input[name="color"]').on('change', function () {
+        checkStock();
+    });
+});
+</script>
