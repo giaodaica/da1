@@ -8,11 +8,13 @@ class orders
 {
     public $orderModel;
     public $order;
+    public $variant;
 
     public function __construct()
     {
         $this->orderModel = new order();
         $this->order = new order();
+        $this->variant = new variant_products();
     }
     public function render_List_Order()
     {
@@ -56,8 +58,6 @@ class orders
             foreach ($checkbox as $order_id) {
                 $data_item_cart = $this->orderModel->detail_shopingCart($order_id);
                 $conten = "";  
-                
-             
                 foreach ($data_item_cart as $data) {
                     $name_products = $data['name'];
                     $quantity = $data['quantity'];
@@ -71,6 +71,18 @@ class orders
                         <td>{$color}</td>
                         <td>" . number_format($price, 0, ',', '.') . " VND</td>
                     </tr>";
+                    if($color != "Trắng"){
+                        $data_min = $this->variant->cancel_if_min1($color,$size);
+                    }
+                    if(($data_min['stock_quantity'] - $quantity) < 0 ){
+                        echo "<script>";
+                        echo "alert('Số lượng tồn kho không đủ vui lòng kiểm tra lại');";
+                        echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
+                        echo "</script>";
+                        die;
+                    }else{
+                        $this->variant->update_stock_quantity($quantity,$color,$size);
+                    }
                 }
             
                 $data_cart = $this->orderModel->select_orderAll($order_id);
@@ -177,6 +189,18 @@ class orders
                 <td>{$color}</td>
                 <td>" . number_format($price, 0, ',', '.') . " VND</td>
             </tr>";
+            if($color != "Trắng"){
+                $data_min = $this->variant->cancel_if_min1($color,$size);
+            }
+                    if(($data_min['stock_quantity'] - $quantity) < 0 ){
+                        echo "<script>";
+                        echo "alert('Số lượng tồn kho không đủ vui lòng kiểm tra lại');";
+                        echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
+                        echo "</script>";
+                        die;
+                    }else{
+                        $this->variant->update_stock_quantity($quantity,$color,$size);
+                    }
             }
             $emailContent = "
             <h2>Đơn hàng của bạn đã được đặt thành công!</h2>

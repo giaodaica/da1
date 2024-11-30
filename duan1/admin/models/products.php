@@ -47,5 +47,8 @@ class product extends database {
         $stmt->execute();
         return $stmt->fetch();
     }
+  
+    
+    
     
 }

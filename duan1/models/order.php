@@ -12,7 +12,7 @@ class order extends database {
 
     }
     public function select_order_by_order_id($order_id){
-        $sql = "SELECT * FROM orders WHERE order_id = $order_id;";
+        $sql = "SELECT orders.*,payments.status as status_pay FROM orders JOIN payments ON orders.order_id=payments.order_id WHERE orders.order_id = $order_id;";
         $stmt =  $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetch();

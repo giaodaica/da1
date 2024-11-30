@@ -62,5 +62,34 @@ class order extends database
         `recipient_address` = '$address', `email` = '$email', `note` = '$note' WHERE `orders`.`order_id` = $order_id";
         $this->conn->exec($sql);
     }
+    public function sum_revenue($date_after,$date_before){
+        $sql = "SELECT orders.*, SUM(order_details.quantity) AS total_quantity FROM orders JOIN
+        order_details ON orders.order_id = order_details.order_id WHERE orders.status NOT IN 
+        ('Chờ xử lý', 'Đã hủy', 'Giao hàng thất bại') and orders.order_date BETWEEN '$date_after' 
+        AND '$date_before' GROUP BY orders.order_id;";
+        // echo $sql;
+        // die;
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function sum_order($date_after,$date_before){
+        $sql = "SELECT * FROM `orders` where orders.order_date BETWEEN '$date_after' 
+        AND '$date_before'";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function profit($date_after,$date_before){
+        $sql = "SELECT order_details.order_id, order_details.product_id,orders.voucher_id,order_details.price,
+        vouchers.discount_percent,products.gianhap,SUM(order_details.quantity) AS total_quantity 
+        FROM order_details JOIN orders ON order_details.order_id = orders.order_id JOIN vouchers 
+        ON vouchers.voucher_id = orders.voucher_id JOIN products ON order_details.product_id = products.product_id where orders.status = 'Đã hoàn tất' and orders.order_date BETWEEN '$date_after' 
+        AND '$date_before'
+        GROUP BY order_id, product_id,order_details.price;";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
     
 }

@@ -37,6 +37,10 @@ match ($act) {
     'detail_order' => $Order->render_detail_shoping_cart(),
     'update_info' => $Order->update_info(),
     'post_update' => $Order->post_update(),
+    'revenue' => $admin ->home_Admin()
+    // doanh thu 
+    
+
 
 
 };

@@ -29,8 +29,7 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
-        $premium = $this->order_item->premium_user($id);
-
+            $premium = $this->order_item->premium_user($id);
         }
         if (isset($_SESSION['id'])) {
             $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
@@ -43,10 +42,9 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
-        $premium = $this->order_item->premium_user($id);
+            $premium = $this->order_item->premium_user($id);
 
-        $d = $this->categories->select();
-
+            $d = $this->categories->select();
         }
         if (isset($_SESSION['id'])) {
             $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
@@ -63,7 +61,7 @@ class controller_Customers
         $address = $_POST['address'];
         $date_of_birth = $_POST['date_of_birth'];
         $email = $_POST['email_users'];
-        
+
         // Kiểm tra Tên
         if (strtolower(trim($full_name)) == "") {
             $error = "Tên không được để trống";
@@ -142,7 +140,7 @@ class controller_Customers
 
         if (isset($_SESSION['user'])) {
             $user_id = $_SESSION['id'];
-            $this->info->insert_info_ctm($user_id, $full_name,$email, $phone, $address, $gender, $date_of_birth);
+            $this->info->insert_info_ctm($user_id, $full_name, $email, $phone, $address, $gender, $date_of_birth);
             echo "<script>";
             echo "alert('Cập nhật thành công hãy xác nhận email để hoàn tất');";
             echo "window.location.href = '?act=info_detail';";
@@ -161,7 +159,7 @@ class controller_Customers
         $email = $_POST['email_users'];
         if (isset($_SESSION['user'])) {
             $user_id = $_SESSION['id'];
-            $this->info->update_info_ctm($user_id, $full_name,$email,$phone, $address, $gender, $date_of_birth);
+            $this->info->update_info_ctm($user_id, $full_name, $email, $phone, $address, $gender, $date_of_birth);
             echo "<script>";
             echo "alert('Cập nhật thành công');";
             echo "window.location.href = '?act=info_detail';";
@@ -183,8 +181,7 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
-        $premium = $this->order_item->premium_user($id);
-
+            $premium = $this->order_item->premium_user($id);
         }
 
         $data_cart_item_edit = $this->order_item->select_order($id, $limit, $offset);
@@ -199,8 +196,7 @@ class controller_Customers
             $order_id = $_GET['order_id'] ?? 0;
             $data_cart_item_edit = $this->order_item->select_order_by_order_id($order_id);
             $data_item = $this->order_item_detail->select_items_cart($order_id);
-        $premium = $this->order_item->premium_user($id);
-
+            $premium = $this->order_item->premium_user($id);
         }
 
         require_once "./customers/detail_shoping_cart.php";
@@ -214,27 +210,33 @@ class controller_Customers
         }
         if ($_SESSION['id']) {
             $id_user = $_SESSION['id'];
-        $premium = $this->order_item->premium_user($id_user);
-
+            $premium = $this->order_item->premium_user($id_user);
         }
         // $this->order_item->cancel($order_id);
         $data_item = $this->order_item_detail->select_items_cart($order_id);
         $check_voucher_in_order = $this->order_item->select_order_by_order_id($order_id);
-        foreach($data_item as $item){
+        foreach ($data_item as $item) {
             $quantity = $item['quantity'];
-            $this->product->update_quantity_sold_where_users_cancel_shoping($quantity,$item['product_id']);
-            $this->product->update_stock_quantity_where_users_cancel_shoping($quantity,$item['product_id']);
+            $this->product->update_quantity_sold_where_users_cancel_shoping($quantity, $item['product_id']);
+            $this->product->update_stock_quantity_where_users_cancel_shoping($quantity, $item['product_id']);
         }
         if ($check_voucher_in_order['voucher_id']) {
             $voucher_id = $check_voucher_in_order['voucher_id'];
             $this->gift->add_voucher_if_delete_order_true_voucher($id_user, $voucher_id);
         }
         $this->order_item->cancel($order_id);
-        // kiểm tra xem đơn hủy có dùng voucher k nếu có phải add lại cho nó 
-        echo "<script>";
-        echo "alert('Hủy thành công');";
-        echo "window.location.href = '?act=history_shop';";
-        echo "</script>";
+        if ($check_voucher_in_order['status_pay']) {
+            echo "<script>";
+            echo "alert('Đơn Của Bạn Đã Thanh Toán Vui Lòng Liên Hệ Email Trunghieu042000@gmail.com Hoặc Sdt 0775713230 để được hướng dẫn hoàn tiên');";
+            echo "window.location.href = '?act=history_shop';";
+            echo "</script>";
+        } else {
+            echo "<script>";
+            echo "alert('Hủy thành công');";
+            echo "window.location.href = '?act=history_shop';";
+            echo "</script>";
+        }
+       
     }
     public function sendOtp()
     {
@@ -306,7 +308,7 @@ class controller_Customers
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
             $data_Custm = $this->info->renderInfo($id);
-        $premium = $this->order_item->premium_user($id);
+            $premium = $this->order_item->premium_user($id);
         }
         $d = $this->categories->select();
         $data_cart_item_edit = $this->order_item->action_history($action, $id, $limit, $offset);

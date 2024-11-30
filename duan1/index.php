@@ -51,6 +51,7 @@ match($act){
     'create_payment' => $shop->create_payment(),
     'returnUrl' => $shop->returnUrl(),
     'check_stock'=>$shop->check_stock(),
+    'fill_products' => $shop->fill_products(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

@@ -32,4 +32,15 @@ class variant_products extends database {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function update_stock_quantity($stock_quantity,$color,$size){
+        $sql = "UPDATE `product_variants` SET `stock_quantity` = stock_quantity-$stock_quantity 
+        WHERE `product_variants`.`color` = '$color' and product_variants.size = '$size'";
+        $this->conn->exec($sql);
+    }
+    public function cancel_if_min1($color,$size){
+        $sql = "SELECT * from product_variants where color = '$color' and size = '$size'";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 }

@@ -13,7 +13,13 @@
       href="assets/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
-
+  <style>
+    .btn-custom{
+     margin-top: 26px;
+      width: 100px;
+      height: 40px;
+    }
+  </style>
     <!-- Fonts and icons -->
     <script src="assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
@@ -182,10 +188,98 @@
             </div>
             <div class="page-category">
 
-            Đây là khu vực để code 
+            
+            <form action="?act=revenue" method="post" style="display: flex;">
+                         
+                                <div class="me-3">
+                                    Từ ngày
+                                    <input type="date" name="time_after" id="" class="form-control">
+                                </div>
+                                <div class="me-3">
+                                    Tới ngày
+                                    <input type="datetime-local" name="time_before" id="" class="form-control">
+                                </div>
+                          
+                            <button class="btn btn-primary btn-custom">Xem</button>
+
+                        </form>
+                           <table class="table table-striped table-inverse table-responsive">
+                           <h1>Doanh Thu</h1>
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>Tổng Doanh Thu</th>
+                                    <th>Số Dơn Hàng</th>
+                                    <th>Số lượng sản phẩm bán được</th>
+                                    <th>Lợi Nhuận</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $total = 0;
+                                    $total_quantity = 0;
+                                    foreach($data_sum as $render){
+                                      $total += $render['total_amount'];
+                                      $total_quantity += $render['total_quantity'];
+                                    }  ?>
+                                    <?php
+                                    $total_t = 0;
+                                    $total_d = 0;
+                                    foreach($profit as $loinhuan){
+                                      if($loinhuan['discount_percent'] > 0){
+                                        $disc = ($loinhuan['price'] * $loinhuan['total_quantity']) * $loinhuan['discount_percent'];
+                                        $total_d += $disc;
+                                      }
+                                      $loi = (($loinhuan['price'] * $loinhuan['total_quantity'])) - ($loinhuan['gianhap'] * $loinhuan['total_quantity']);
+                                      $total_t += $loi;
+                                    } ?>
+                                      <tr>
+                                        <td scope="row"><?= number_format($total) ?></td>
+                                        <td><?= count($data_sum) ?></td>
+                                        <td><?= $total_quantity ?></td>
+                                        <td><?php echo $total_t - $total_d?></td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                        <table class="table table-striped table-inverse table-responsive">
+                           <h1>Đơn Hàng</h1>
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>Số đơn thành công (đã xử lý , giao hàng thành công)</th>
+                                    <th>Số đơn đang chờ xử lý</th>
+                                    <th>Số đơn bị hủy</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $total_success = 0;
+                                    $total_wait = 0;
+                                    $total_cancel = 0;
+                                    $rate = 0;
+                                
+                                    foreach($data_order as $render_order){
+                                      if($render_order['status'] == "Chờ xử lý"){
+                                        $total_wait++;
+                                      } 
+                                      if($render_order['status'] == "Đã hoàn tất" || $render_order['status'] == "Đã Xác Nhận" ){
+                                        $total_success++;
+                                      }
+                                      if($render_order['status'] == "Đã hủy"){
+                                        $total_cancel++;
+                                      }
+                                    }  ?>
+                                      <tr>
+                                        <td scope="row"><?= $total_success ?></td>
+                                        <td><?= $total_wait ?></td>
+                                        <td><?= $total_cancel ?></td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                      
+                    </div>
+                </div> 
 
             </div>
+      <?php require_once "menu/footer.php" ?>
+
           </div>
         </div>
-
-      <?php require_once "menu/footer.php" ?>
