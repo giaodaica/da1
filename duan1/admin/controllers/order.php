@@ -73,16 +73,17 @@ class orders
                     </tr>";
                     if($color != "Trắng"){
                         $data_min = $this->variant->cancel_if_min1($color,$size);
+                        if(($data_min['stock_quantity'] - $quantity) < 0 ){
+                            echo "<script>";
+                            echo "alert('Số lượng tồn kho không đủ vui lòng kiểm tra lại');";
+                            echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
+                            echo "</script>";
+                            die;
+                        }else{
+                            $this->variant->update_stock_quantity($quantity,$color,$size);
+                        }
                     }
-                    if(($data_min['stock_quantity'] - $quantity) < 0 ){
-                        echo "<script>";
-                        echo "alert('Số lượng tồn kho không đủ vui lòng kiểm tra lại');";
-                        echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
-                        echo "</script>";
-                        die;
-                    }else{
-                        $this->variant->update_stock_quantity($quantity,$color,$size);
-                    }
+                 
                 }
             
                 $data_cart = $this->orderModel->select_orderAll($order_id);
@@ -191,16 +192,17 @@ class orders
             </tr>";
             if($color != "Trắng"){
                 $data_min = $this->variant->cancel_if_min1($color,$size);
+                if(($data_min['stock_quantity'] - $quantity) < 0 ){
+                    echo "<script>";
+                    echo "alert('Số lượng tồn kho không đủ vui lòng kiểm tra lại');";
+                    echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
+                    echo "</script>";
+                    die;
+                }else{
+                    $this->variant->update_stock_quantity($quantity,$color,$size);
+                }
             }
-                    if(($data_min['stock_quantity'] - $quantity) < 0 ){
-                        echo "<script>";
-                        echo "alert('Số lượng tồn kho không đủ vui lòng kiểm tra lại');";
-                        echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
-                        echo "</script>";
-                        die;
-                    }else{
-                        $this->variant->update_stock_quantity($quantity,$color,$size);
-                    }
+                   
             }
             $emailContent = "
             <h2>Đơn hàng của bạn đã được đặt thành công!</h2>
@@ -253,9 +255,9 @@ class orders
     }
     public function render_detail_shoping_cart()
     {
-        if (isset($_GET['order_id'])) {
-            $order_id = $_GET['order_id'];
-            $data_item_cart =  $this->orderModel->detail_shopingCart($order_id);
+        if (isset($_GET['id_order'])) {
+            $order_id = $_GET['id_order'];
+        $data_item_cart =  $this->orderModel->detail_shopingCart($order_id);
         }
         require_once "./user/detail_order.php";
     }

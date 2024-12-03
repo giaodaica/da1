@@ -9,6 +9,21 @@ if (isset($_SESSION['user'])) {
     $username = '';
 }
 ?>
+<style>
+    .voucher{
+        border: 1px solid white;
+        width: 400;
+        height: 100;
+        padding: 10px 100px 15px;
+        border-radius: 5px 5px 5px;
+        background-color: white;
+    }
+    .giao{
+        display: flex;
+        gap: 50px;
+        padding-left: 120px;
+    }
+</style>
 <div id="welcome-message" class="<?php echo $username ? '' : 'hidden'; ?>">
         <?php if (isset($_SESSION['role_admin'])) { ?>
             Chào admin, <?php echo htmlspecialchars($username); ?>!
@@ -37,7 +52,8 @@ if (isset($_SESSION['user'])) {
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
@@ -168,6 +184,32 @@ if (isset($_SESSION['user'])) {
         </div>
     </div>
     <!-- Featured End -->
+        <!-- voucher  -->
+
+     
+        <div class="container">
+        <h3 style="padding-left: 400px;">Nhận Ngay Khuyến Mại</h3>
+    <div class="giao">
+        <?php
+        foreach($data_voucher as $render){ ?>
+            <div class="voucher">
+            <div class="name" id="voucher-name"><?= $render['code'] ?></div>
+            <div class="discount">Giảm <?= ($render['discount_percent']*100)."%" ?></div>
+            <?php if($render['quantity'] !=0){ ?>
+                <div class="action"><a class="text-danger" href="?act=add_cp&id_cp=<?= $render['voucher_id'] ?>">Nhận Ngay(<span id="voucher-count"><?= $render['quantity'] ?></span>)</a></div>
+           <?php }else{ ?>
+            <p class="text-danger">Đã Hết</p>
+          <?php } ?>
+        </div>
+        <?php } ?>
+       
+      
+    </div>
+</div>
+
+
+        <!-- voucher  -->
+
 
 
     <!-- Categories Start -->
@@ -180,11 +222,10 @@ if (isset($_SESSION['user'])) {
                 <a class="text-decoration-none" href="">
                     <div class="cat-item d-flex align-items-center mb-4">
                         <div class="overflow-hidden" style="width: 100px; height: 100px;">
-                                <img src="<?= $List_category->image ?>" alt="">
+                                <img src="<?= "./admin".$List_category['image'] ?>" alt="">
                         </div>
                         <div class="flex-fill pl-3">
-                            <h6><?= $List_category->name ?></h6>
-                            <small class="text-body">100 Products</small>
+                            <h6><?= $List_category['name'] ?></h6>
                         </div>
                     </div>
                 </a>
@@ -255,5 +296,5 @@ if (isset($_SESSION['user'])) {
             }
         };
 
-
+ 
     </script>

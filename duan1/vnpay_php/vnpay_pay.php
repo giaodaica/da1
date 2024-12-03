@@ -14,16 +14,20 @@
         <link href="vnpay_php/assets/jumbotron-narrow.css" rel="stylesheet">  
         <script src="vnpay_php/assets/jquery-1.11.3.min.js"></script>
     </head>
-
+<style>
+    .inp-custom{
+        width: 200px;
+    }
+</style>
     <body>
         <?php require_once("./vnpay_php/config.php");?>             
         <div class="container">
-        <h3>Đơn Hàng <?= $_SESSION['key']; ?></h3>
+        <h3 class="text-success">Đơn Hàng <?= $_SESSION['key']; ?></h3>
             <div class="table-responsive">
                 <form action="?act=create_payment" id="frmCreateOrder" method="post">      
                     <div class="form-group">
                         <label for="amount">Số tiền</label>
-                        <input class="form-control" data-val="true" data-val-number="The field Amount must be a number." data-val-required="The Amount field is required." id="amount" max="100000000" min="1" name="amount" type="number" value="<?=$_SESSION['total'] ?>" readonly />
+                        <input class="form-control inp-custom" data-val="true" data-val-number="The field Amount must be a number." data-val-required="The Amount field is required." id="amount" max="100000000" min="1" name="amount" type="number" value="<?=$_SESSION['total'] ?>" readonly />
                     </div>
                      <h4>Chọn phương thức thanh toán</h4>
                     <div class="form-group">
@@ -43,7 +47,7 @@
                     </div>
                     <input type="hidden" name="limit" value="<?= $_SESSION['key'] ?>">
                     <input type="hidden" name="order_id" value="<?= $_SESSION['order_id'] ?>">
-                    <button type="submit" class="btn btn-default" href>Thanh toán</button>
+                    <button type="submit" class="btn btn-primary" href>Thanh toán</button>
                 </form>
             </div>
             <p>

@@ -173,7 +173,8 @@ class controller_Customers
 
         session_start();
 
-        $limit = 5;
+        if(isset($_SESSION['user'])){
+            $limit = 5;
         $page = $_GET['page'] ?? 1;
         $offset = ($page - 1) * 5;
         $d = $this->categories->select();
@@ -186,6 +187,7 @@ class controller_Customers
 
         $data_cart_item_edit = $this->order_item->select_order($id, $limit, $offset);
         require_once "./customers/history_buy_product.php";
+        }
     }
     public function detail_shoping_cart()
     {

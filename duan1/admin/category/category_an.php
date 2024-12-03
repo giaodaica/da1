@@ -1,6 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
 
+<?php
+// print_r($data_catagori);
+
+?>
+<!DOCTYPE html>
+
+<html lang="en">
+<style>
+    .pagination{
+        padding-left: 900px !important;
+    }
+</style>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Trang admin</title>
@@ -45,7 +55,8 @@
 
 <body>
     <div class="wrapper">
-        <?php require_once "menu/sidebar.php"; ?>
+    <?php require_once "menu/sidebar.php"; ?>
+     
 
         <div class="main-panel">
             <div class="main-header">
@@ -73,7 +84,7 @@
                     </div>
                     <!-- End Logo Header -->
                 </div>
-               <!-- Navbar Header -->
+              <!-- Navbar Header -->
             <?php require_once "menu/nav_bar.php" ?>
           <!-- End Navbar -->
             </div>
@@ -81,7 +92,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h4 class="page-title">Dashboard</h4>
+                        <h4 class="page-title">FPL BEE</h4>
                         <ul class="breadcrumbs">
                             <li class="nav-home">
                                 <a href="#">
@@ -92,54 +103,50 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Pages</a>
+                                <a href="#">Sản Phẩm</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Starter Page</a>
+                                <a href="#">Danh Sách Sản Phẩm</a>
                             </li>
                         </ul>
                     </div>
                     <div class="page-category">
-                                                        <h1><a class="text-info" href="?act=add_variant&id=<?= $_GET['id']?>">Thêm Mới Biến Thể</a></h1>
-                        <table class="table table-striped table-inverse table-responsive">
-                            <thead class="thead-inverse">
+                        <h1><a class="text-info" href="?act=add_category">Thêm Danh Mục Mới</a></h1>
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <th>Tên Sản Phẩm</th>
-                                    <th>Size</th>
-                                    <th>Màu Sắc</th>
-                                    <th>Số Lượng</th>
-                                    <th>Ảnh</th>
-                                    <th>Trạng Thái</th>
-                                    <th>Thao tác</th>
+                                    <th scope="col">Tên Danh Mục</th>
+                                    <th scope="col">Giới Hạn</th>
+                                    <th scope="col">Ảnh Mô Tả</th>
+                                    <th scope="col">Trạng Thái</th>
+                                    <th scope="col">Hành Đông</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <?php if (empty($data_variant)) {
-                                            echo "Sản Phẩm này chưa có biến thể";
-                                        } else { ?>
-                                            <?php foreach ($data_variant as $render) { ?>
-                                <tr>
-                                    <td scope="row"><?= $render['name'] ?></td>
-                                    <td><?= $render['size'] ?></td>
-                                    <td><?= $render['color'] ?></td>
-                                    <td><?= $render['stock_quantity'] ?></td>
-                                    <td><img src="<?= str_replace("./admin",".",$render['image'])?>" alt="" width="50"></td>
-                                    <td><?= $render['status']==1 ?"Hiển Thị" : "Ẩn" ?></td>
-                                    <td><a href="?act=update_variant&id=<?= $render['variant_id']?>&id_prd=<?= $render['product_id'] ?>">Sửa</a></td>
-                                    <td><a href="?act=delete_variant&id=<?= $render['variant_id']?>&id_prd=<?= $render['product_id'] ?>">Xóa</a></td>
-                                </tr>
-                            <?php  } ?>
-                        <?php } ?>
-                        </td>
-                        </tr>
+                                <?php foreach ($data_catagori as $list_cate => $index) {
+                                    
+                                    ?>
+                                    <?php if($index['status'] == "0"){ ?>    
+                                        <tr>
+                                        <td><?= $index['category_name'] ?></td>
+                                        <td><?= $index['only'] ?></td>
+                                        <td><img src="<?= $index['image'] ?>" alt="" width="60"></td>
+                                        <td><?= $index['status']== 1 ? "Hiện" : "Ẩn" ?></td>
+                                        <td>
+                                            <a href="?act=presently_category&category_id=<?= $index['category_id']?>">Hiện</a>
+                                        </td>
+                                        <td>
+                                        <a href="?act=update_category&category_id=<?= $index['category_id']?>">Sửa</a>
+                                        </td>
+                                        <td><a href="?act=render_list_products&comment=presently&category_id=<?=  $index['category_id'] ?>">Xem Sản Phẩm(<?= $index['product_count'] ?>)</a></td>
+                                    </tr>
+                                   <?php }?>
+                                <?php } ?>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>

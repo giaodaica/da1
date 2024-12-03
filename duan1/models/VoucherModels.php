@@ -14,7 +14,7 @@ class Voucher_model extends database
         vouchers.discount_percent
         FROM user_vouchers
         JOIN vouchers ON user_vouchers.voucher_id = vouchers.voucher_id
-        WHERE user_vouchers.user_id = '$id'";
+        WHERE user_vouchers.user_id = '$id' and is_used = 0";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -27,5 +27,16 @@ class Voucher_model extends database
         $sql = "INSERT INTO `user_vouchers` ( `user_id`, `voucher_id`, `is_used`, `issued_date`) 
         VALUES ( '$user_id', '$voucher_id', '0', CURRENT_TIMESTAMP)";
         $this->conn->exec($sql);
+    }
+    public function check_voucher($user_id,$voucher_id){
+        $sql = "SELECT * from user_vouchers where user_id = $user_id and voucher_id = $voucher_id";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    public function add_voucher_event($user_id,$voucher_id){
+        $sql = "INSERT INTO `user_vouchers` ( `user_id`, `voucher_id`, `is_used`, `issued_date`)
+         VALUES ( '$user_id', '$voucher_id', '0', CURRENT_TIMESTAMP);";
+         $this->conn->exec($sql);
     }
 }

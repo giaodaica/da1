@@ -22,7 +22,7 @@ match($act){
     'shop-Pay' => $shop->handerPay(),
     'shop-Contact' => $shop->handerContact(),
     'post_comment' => $shop->post_comment(),
-
+    'add_cp' => $shop->add_cp(),
     // phần khách hàng
     'info' => $customers->renderInfo(),
     'info_detail' =>$customers->render_Infodetail(),

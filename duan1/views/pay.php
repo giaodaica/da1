@@ -134,7 +134,7 @@ if (isset($_SESSION['user'])) {
                         <div class="border-bottom">
                             <h6 class="mb-3">Sản Phẩm</h6>
 
-                           <?php if(empty($data_cart_of_user)){
+                           <?php if(empty($data_cart_of_user) && !empty($_SESSION['cart'])){
                             $data_cart_of_user = $_SESSION['cart'];
                            } ?>
                                 <?php foreach($data_cart_of_user as $render){ ?>

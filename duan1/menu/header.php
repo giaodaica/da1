@@ -4,9 +4,6 @@
         <div class="row bg-secondary py-1 px-xl-5">
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center h-100">
-                    <a class="text-body mr-3" href="">Giới Thiệu</a>
-                    <a class="text-body mr-3" href="">Liên Hệ</a>
-                    <a class="text-body mr-3" href="">Hỗ Trợ</a>
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
@@ -189,10 +186,13 @@
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Tra cứu <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                     <a href="?act=shoping-Cart" class="dropdown-item">Giỏ Hàng</a>
-                                    <a href="?act=history_shop" class="dropdown-item">Lịch Sử Mua Hàng</a>
+                                    <?php if(isset($_SESSION['user'])){ ?>
+                                        <a href="?act=history_shop" class="dropdown-item">Lịch Sử Mua Hàng</a>
+                              <?php  }else { ?>
+                                <a href="?act=select_history_order" class="dropdown-item">Lịch Sử Mua Hàng</a>
+                             <?php } ?>
                                 </div>
                             </div>
-                            <a href="?act=shop-Contact" class="nav-item nav-link">Liên Hệ</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                             <a href="?act=shoping-Cart" class="btn px-0 ml-3">

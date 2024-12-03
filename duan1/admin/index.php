@@ -26,6 +26,13 @@ match ($act) {
     'hidden_variant' => $products->hidden_variant(),
     // phần danh mục 
     'list_category' => $category->render_List_Category(),
+    'delete_category' => $category->delete_Category(),
+    'add_category' => $category->render_Add_Category(),
+    'post_add_category' => $category->Add_Category(),
+    'update_category' => $category->render_Update_Category(),
+    'post_update_category' => $category->Update_Category(),
+    'category_an' => $category->category_an(),
+    'presently_category' => $category->presently_category(),
     // phần user
     'list_users' => $user->render_List_User(),
     'history_shop' => $user->renderHistory_order(),

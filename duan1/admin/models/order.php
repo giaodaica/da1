@@ -3,7 +3,7 @@ class order extends database
 {
     public function render_order_by_user($user_id)
     {
-        $sql = "SELECT * FROM orders WHERE orders.user_id = $user_id;";
+        $sql = "SELECT orders.*,vouchers.discount_percent from orders join vouchers on orders.voucher_id = vouchers.voucher_id WHERE orders.user_id = $user_id;";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();

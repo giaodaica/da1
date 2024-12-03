@@ -132,6 +132,11 @@ class Controller_User{
             $this->showErrorUR($errorUR);
             return;
         }
+        if (preg_match('/[^a-zA-Z0-9]/', $username)) { 
+            $errorUR = "Tên Đăng Nhập Không Được Chứa Ký Tự Đặc Biệt";
+            $this->showErrorUR($errorUR);
+            return;
+        }
         if (strlen($username) < 5) {
             $errorUR = "Tên Đăng Nhập Phải Chứa 5 Ký Tự Trở Lên";
             $this->showErrorUR($errorUR);
@@ -145,6 +150,11 @@ class Controller_User{
         // Kiểm tra mật khẩu
         if (strtolower(trim($password)) == "") {
             $errorPR = "Mật Khẩu Không Được Để Trống";
+            $this->showErrorPR($errorPR);
+            return;
+        }
+        if (preg_match('/[^a-zA-Z0-9]/', $password)) { // Kiểm tra ký tự đặc biệt
+            $errorPR = "Mật Khẩu Không Được Chứa Ký Tự Đặc Biệt";
             $this->showErrorPR($errorPR);
             return;
         }
