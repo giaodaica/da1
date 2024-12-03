@@ -55,5 +55,11 @@ class products extends database {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function recomment(){
+        $sql = "SELECT * from products order by views desc limit 10";
+        $stmt = $this->conn->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
     
 }
