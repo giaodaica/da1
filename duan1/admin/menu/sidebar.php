@@ -113,8 +113,8 @@
                 </div>
               </li>
               <li>
-                <a href="#">
-                  <span class="sub-item">Quản lý</span>
+                <a href="?act=list_comment">
+                  <span class="sub-item">Quản lý comment</span>
                 </a>
               </li>
             </ul>

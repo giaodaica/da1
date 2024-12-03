@@ -24,6 +24,7 @@ match ($act) {
     'add_variant' => $products->add_variant(),
     'post_insert_variant' => $products->post_insert_variant(),
     'hidden_variant' => $products->hidden_variant(),
+    'list_comment' => $products->list_comment(),
     // phần danh mục 
     'list_category' => $category->render_List_Category(),
     'delete_category' => $category->delete_Category(),
@@ -44,7 +45,7 @@ match ($act) {
     'detail_order' => $Order->render_detail_shoping_cart(),
     'update_info' => $Order->update_info(),
     'post_update' => $Order->post_update(),
-    'revenue' => $admin ->home_Admin()
+    'revenue' => $admin ->home_Admin(),
     // doanh thu 
     
 

@@ -12,6 +12,7 @@ class controller_Customers
     public $order_item_detail;
     public $categories;
     public $product;
+    public $user;
     public function __construct()
     {
         $this->info = new customers_models();
@@ -20,21 +21,26 @@ class controller_Customers
         $this->order_item_detail = new order_detail();
         $this->categories = new Categories_models();
         $this->product = new products();
+        $this->user = new User_model();
     }
     public function renderInfo()
     {
         session_start();
-        $d = $this->categories->select_giao();
+        if (isset($_SESSION['user'])) {
+            $d = $this->categories->select_giao();
 
-        if (isset($_SESSION['id'])) {
-            $id = $_SESSION['id'];
-            $data_Custm = $this->info->renderInfo($id);
-            $premium = $this->order_item->premium_user($id);
+            if (isset($_SESSION['id'])) {
+                $id = $_SESSION['id'];
+                $data_Custm = $this->info->renderInfo($id);
+                $premium = $this->order_item->premium_user($id);
+            }
+            if (isset($_SESSION['id'])) {
+                $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
+            }
+            require_once "customers/info.php";
+        } else {
+            require_once "error.php";
         }
-        if (isset($_SESSION['id'])) {
-            $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
-        }
-        require_once "customers/info.php";
     }
     public function render_Infodetail()
     {
@@ -173,20 +179,20 @@ class controller_Customers
 
         session_start();
 
-        if(isset($_SESSION['user'])){
+        if (isset($_SESSION['user'])) {
             $limit = 5;
-        $page = $_GET['page'] ?? 1;
-        $offset = ($page - 1) * 5;
-        $d = $this->categories->select_giao();
+            $page = $_GET['page'] ?? 1;
+            $offset = ($page - 1) * 5;
+            $d = $this->categories->select_giao();
 
-        if (isset($_SESSION['id'])) {
-            $id = $_SESSION['id'];
-            $data_Custm = $this->info->renderInfo($id);
-            $premium = $this->order_item->premium_user($id);
-        }
+            if (isset($_SESSION['id'])) {
+                $id = $_SESSION['id'];
+                $data_Custm = $this->info->renderInfo($id);
+                $premium = $this->order_item->premium_user($id);
+            }
 
-        $data_cart_item_edit = $this->order_item->select_order($id, $limit, $offset);
-        require_once "./customers/history_buy_product.php";
+            $data_cart_item_edit = $this->order_item->select_order($id, $limit, $offset);
+            require_once "./customers/history_buy_product.php";
         }
     }
     public function detail_shoping_cart()
@@ -238,7 +244,6 @@ class controller_Customers
             echo "window.location.href = '?act=history_shop';";
             echo "</script>";
         }
-       
     }
     public function sendOtp()
     {
@@ -316,6 +321,148 @@ class controller_Customers
         $data_cart_item_edit = $this->order_item->action_history($action, $id, $limit, $offset);
         require_once "customers/action_history_buy_products.php";
     }
+    public function change_password()
+    {
+        session_start();
+
+        if (isset($_SESSION['user'])) {
+            $d = $this->categories->select_giao();
+
+            if (isset($_SESSION['id'])) {
+                $id = $_SESSION['id'];
+                $data_Custm = $this->info->renderInfo($id);
+                $premium = $this->order_item->premium_user($id);
+            }
+            if (isset($_SESSION['id'])) {
+                $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
+            }
+            require_once "customers/change_password.php";
+        }
+    }
+    public function post_change()
+    {
+        session_start();
+        $error = "";
+        $user_id = $_SESSION['id'];
+        $password_old = trim($_POST['password_old']);
+        $password_new = trim($_POST['password_new']);
+        $email = trim($_POST['email']);
+        $data_info = $this->info->renderInfo($user_id);
+        $password_db = $this->user->select_UserID($user_id);
+        if (empty($password_old)) {
+            $error = "Vui lòng nhập mật khẩu cũ";
+            $this->showErrorC($error);
+            return;
+        }
+        if (empty($password_new)) {
+            $error = "Vui lòng nhập mật khẩu mới";
+            $this->showErrorC($error);
+            return;
+        }
+        if (empty($email)) {
+            $error = "Vui lòng nhập email";
+            $this->showErrorC($error);
+            return;
+        }
+        // print_r($_POST);
+        // die;
+        if ($email != $data_info['email']) {
+            $error = "Email không chính xác vui lòng nhập email bạn đã xác thực với hệ thống";
+            $this->showErrorC($error);
+            return;
+        }
+        if (password_verify($password_new, $password_db['password'])) {
+            $error = "Mật khẩu mới không được trùng với mật khẩu cũ";
+            $this->showErrorC($error);
+            return;
+        }
+        if (password_verify($password_old, $password_db['password'])) {
+           
+        }else{
+            $error = "Bạn Nhập Sai Mật Khẩu Cũ";
+            $this->showErrorC($error);
+            return;
+        }
+        $password_sha = password_hash(strtolower($password_new), PASSWORD_DEFAULT);
+        $this->user->change_password($password_new, $user_id);
+        session_destroy();
+        echo "<script>";
+        echo "alert('Đổi Mật Khẩu Thành Công Vui Lòng Đăng Nhập Lại');";
+        echo "window.location.href = '?act=login';";
+        echo "</script>";
+    }
+    public function showErrorC($error)
+    {
+        if (isset($_SESSION['user'])) {
+            $d = $this->categories->select_giao();
+
+            if (isset($_SESSION['id'])) {
+                $id = $_SESSION['id'];
+                $data_Custm = $this->info->renderInfo($id);
+                $premium = $this->order_item->premium_user($id);
+            }
+            if (isset($_SESSION['id'])) {
+                $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
+            }
+            require_once "customers/change_password.php";
+        }
+    }
+    public function forgot_password()
+    {
+        $error = "";
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            $data = $this->info->select_email($email);
+            if (!$data) {
+                $error = "Email không trùng khớp vui lòng kiểm tra lại";
+                require_once "customers/reset_password.php";
+                return;
+            }
+        }
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            $data = $this->info->select_email($email);
+            $user_id = $data['user_id'];
+            $mail = new PHPMailer(true);
+            $password_new = $this->random_password(7);
+            $password_sha = password_hash(strtolower($password_new), PASSWORD_DEFAULT);
+            $this->user->change_password($password_sha, $user_id);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = BASE_MAIL;
+                $mail->Password = BASE_PASS;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+
+                $mail->setFrom(BASE_MAIL, 'OTP MAIL');
+                $mail->addAddress($email);
+
+                $mail->isHTML(true);
+                $mail->Subject = 'Mật Khẩu Mới';
+                $mail->Body = "Mật khẩu mới của bạn là: <strong>$password_new</strong><br>
+                           Vui Lòng Đăng Nhập Và Đổi Mật Khẩu Mới.";
+
+                $mail->send();
+                $error = "Mật Khẩu Mới Đã Được Gửi Tới Email Của Bạn";
+            } catch (Exception $e) {
+            }
+        } else {
+        }
+        require_once "customers/reset_password.php";
+    }
+    public function random_password($length)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $password = '';
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $password;
+    }
+
+
     public function showError($error)
     {
         require_once "customers/info_detail.php";

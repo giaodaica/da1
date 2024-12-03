@@ -3,6 +3,12 @@
 // phpinfo();
 // print_r($_SESSION['order_info']);
 // print_r($_SESSION);
+// $pass = "0ebcf3l";
+// if(password_verify($pass,"$2y$10$6kzZrA6iXXlco3MUtU7jaeEdI7lUfGP9hQmXehp0SvkGNU8terFOC")){
+//     echo "trùng";
+// }else{
+//     echo "k trungf";
+// }
 if (isset($_SESSION['user'])) {
     $username = $_SESSION['user'];
 } else {
@@ -219,7 +225,7 @@ if (isset($_SESSION['user'])) {
 
            <?php foreach($d as $List_category) { ?>
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                <a class="text-decoration-none" href="?act=">
+                <a class="text-decoration-none" href="?act=s&s=<?= $List_category['name'] ?>">
                     <div class="cat-item d-flex align-items-center mb-4">
                         <div class="overflow-hidden" style="width: 100px; height: 100px;">
                                 <img src="<?= "./admin".$List_category['image'] ?>" alt="">

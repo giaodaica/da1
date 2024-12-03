@@ -4,11 +4,13 @@ class products {
     public $product;
     public $category;
     public $variant;
+    public $comment;
     public function __construct()
     {
         $this->category = new categories();
         $this->product = new product();
         $this->variant = new variant_products();
+        $this->comment = new comments();
     }
     public function render_list_products(){
         $limit = 5;
@@ -257,6 +259,13 @@ class products {
     public function showError($error){
        $data_category =  $this->category->render_categories();
         require_once "./products/add_products.php";
+    }
+    public function list_comment(){
+        $limit = 10;
+        $page = $_GET['page'] ?? 1;
+        $offset = ($page - 1) * 10;
+        $data_comment = $this->comment->render_comment($limit,$offset);
+        require_once "./products/comment.php";
     }
 
 }

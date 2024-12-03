@@ -238,6 +238,9 @@ if (isset($_GET['act']) && $_GET['act'] == "products_detail" && isset($_GET['pro
                                                 </div>
                                                 <p><?= $render['comments'] ?></p>
                                             </div>
+                                            <?php if(isset($_SESSION['role_admin'])){ ?>
+                                            <p><a class="text-danger" href="?act=delete_rating&rating_id=<?= $render['ratings_id'] ?>&products_id=<?= $_GET['product_id'] ?>">Xóa</a></p>
+                                           <?php } ?>
                                         </div>
                                        <?php } ?>
                                         

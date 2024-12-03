@@ -17,4 +17,8 @@ class comment_users extends database {
         VALUES ('$user_id', '$products_id', '$comment', CURRENT_TIMESTAMP, '1')";
         $this->conn->exec($sql);
     }
+    public function delete_comment_bad($id){
+        $sql = "DELETE FROM `ratings` WHERE `ratings`.`ratings_id` = $id;";
+        $this->conn->exec($sql);
+    }
 }

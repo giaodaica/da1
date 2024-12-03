@@ -72,7 +72,6 @@
                                                                                                                         } else {
                                                                                                                             echo "success='fale'";
                                                                                                                         } ?>>Tài khoản của bạn</a>
-                <a href="?act=change_password" class="history_shop list-group-item list-group-item-action">Đổi Mật Khẩu</a>
                 </div>
             </div>
             <div class="Ctotal" id="">
@@ -84,7 +83,25 @@
                     <button type="button" class="btn-custom" style="background-color: #D0F2ff;">Cập nhật thông tin cá nhân và địa chỉ để có trải nghiệm đặt hàng nhanh và thuận tiện hơn<a class="hander_if" href="?act=info_detail">Cập Nhật</a></button>
                 <?php } ?>
                 <?php require_once "premium.php" ?>
-
+                        <div class="container" style="padding-top: 50px;">
+                            <h4>Đổi Mật Khẩu</h4>
+                           <form action="?act=post_change" method="post">
+                            <div class="form-group">
+                              <label for="">Nhập Mật Khẩu Cũ</label>
+                              <input type="password" name="password_old" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                            </div>
+                            <div class="form-group">
+                              <label for="">Nhập email xác thực của bạn</label>
+                              <input type="email" name="email" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                            </div>
+                            <div class="form-group">
+                              <label for="">Nhập Mật Khẩu Mới</label>
+                              <input type="password" name="password_new" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                            </div>
+                            <button class="btn btn-success">Cập Nhật</button>
+                            <?php if(isset($error)){echo $error;} ?>
+                           </form>
+                        </div>
             </div>
 
         </div>

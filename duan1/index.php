@@ -34,6 +34,10 @@ match($act){
     'send-otp' => $customers->sendOtp(),
     'confirm_email' => $customers->confirm_email(),
     'action_history' => $customers->action_history(),
+    'change_password' => $customers->change_password(),
+    'post_change' => $customers->post_change(),
+    'forgot_password' => $customers->forgot_password(),
+
     // phần sản phẩm
     'products_detail' => $shop->products_detail(),
     'add-to-cart' => $shop->Add_to_Cart(),
@@ -52,6 +56,7 @@ match($act){
     'returnUrl' => $shop->returnUrl(),
     'check_stock'=>$shop->check_stock(),
     'fill_products' => $shop->fill_products(),
+    'delete_rating' => $shop->delete_rating(),
     default => "Vui Lòng Kiểm Tra lại"
 };
 

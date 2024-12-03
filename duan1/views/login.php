@@ -243,6 +243,9 @@ a:hover {
                                                     echo $errorPL;
                                                 } ?></span>
                     <span class="tag tag-danger"><a href="?act=register">Chưa Có Tài Khoản Đăng Ký Ngay</a></span> 
+                    
+                    <span class="tag tag-danger"><a class="text-danger" href="?act=forgot_password">Quên Mật Khẩu</a></span> 
+
                     <hr />
 					<button class="btn btn-lg btn-outline-primary btn-block" type="submit"><i class="fa fa-sign-in"></i> Login</button>
           

@@ -598,7 +598,15 @@ public function detail_shoping(){
                 echo "<script>window.location.href = '" . BASE_URL . "';</script>";
         
     }
-
+    public function delete_rating(){
+        $rating_id = $_GET['rating_id'];
+        // echo $rating_id;
+        $products_id = $_GET['products_id'];
+        $this->comment->delete_comment_bad($rating_id);
+        echo "<script>alert('thành công');</script>";
+        echo "<script>window.location.href = '?act=products_detail&product_id=$products_id';</script>";
+    }
+    
    
 }
 $shop = new Shop_Control;
