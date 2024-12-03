@@ -24,7 +24,7 @@ class controller_Customers
     public function renderInfo()
     {
         session_start();
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
 
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
@@ -44,7 +44,7 @@ class controller_Customers
             $data_Custm = $this->info->renderInfo($id);
             $premium = $this->order_item->premium_user($id);
 
-            $d = $this->categories->select();
+            $d = $this->categories->select_giao();
         }
         if (isset($_SESSION['id'])) {
             $data_Gift = $this->gift->select_Gift_byUserID($_SESSION['id']);
@@ -177,7 +177,7 @@ class controller_Customers
             $limit = 5;
         $page = $_GET['page'] ?? 1;
         $offset = ($page - 1) * 5;
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
 
         if (isset($_SESSION['id'])) {
             $id = $_SESSION['id'];
@@ -312,7 +312,7 @@ class controller_Customers
             $data_Custm = $this->info->renderInfo($id);
             $premium = $this->order_item->premium_user($id);
         }
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
         $data_cart_item_edit = $this->order_item->action_history($action, $id, $limit, $offset);
         require_once "customers/action_history_buy_products.php";
     }

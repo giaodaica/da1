@@ -219,7 +219,7 @@ if (isset($_SESSION['user'])) {
 
            <?php foreach($d as $List_category) { ?>
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                <a class="text-decoration-none" href="">
+                <a class="text-decoration-none" href="?act=">
                     <div class="cat-item d-flex align-items-center mb-4">
                         <div class="overflow-hidden" style="width: 100px; height: 100px;">
                                 <img src="<?= "./admin".$List_category['image'] ?>" alt="">

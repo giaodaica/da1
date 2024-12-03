@@ -119,8 +119,8 @@
                             <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
                                 <?php
                                 foreach ($d as $categories) { ?>
-                                    <?php if ($categories->only == 0) { ?>
-                                        <a href="?act=s&s=<?= $categories->name ?>" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php if ($categories['only'] == 0) { ?>
+                                        <a href="?act=s&s=<?= $categories['name'] ?>" class="dropdown-item"><?= $categories['name'] ?></a>
                                     <?php } ?>
                                 <?php }
                                 ?>
@@ -133,8 +133,8 @@
                             <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
                                 <?php
                                 foreach ($d as $categories) { ?>
-                                    <?php if ($categories->only == 1) { ?>
-                                        <a href="?act=s&s=<?= $categories->name ?>" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php if ($categories['only'] == 1) { ?>
+                                        <a href="?act=s&s=<?= $categories['name'] ?>" class="dropdown-item"><?= $categories['name'] ?></a>
                                     <?php } ?>
                                 <?php }
                                 ?>
@@ -147,8 +147,8 @@
                             <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
                                 <?php
                                 foreach ($d as $categories) { ?>
-                                    <?php if ($categories->only == 2) { ?>
-                                        <a href="?act=s&s=<?= $categories->name ?>" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php if ($categories['only'] == 2) { ?>
+                                        <a href="?act=s&s=<?= $categories['name'] ?>" class="dropdown-item"><?= $categories['name'] ?></a>
                                     <?php } ?>
                                 <?php }
                                 ?>
@@ -161,8 +161,8 @@
                             <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
                                 <?php
                                 foreach ($d as $categories) { ?>
-                                    <?php if ($categories->only == 5 || $categories->only == 4) { ?>
-                                        <a href="?act=s&s=<?= $categories->name ?>" class="dropdown-item"><?= $categories->name ?></a>
+                                    <?php if ($categories['only'] == 5 || $categories['only'] == 4) { ?>
+                                        <a href="?act=s&s=<?= $categories['name'] ?>" class="dropdown-item"><?= $categories['name'] ?></a>
                                     <?php } ?>
                                 <?php }
                                 ?>

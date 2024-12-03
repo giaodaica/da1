@@ -41,7 +41,7 @@ class Shop_Control
         $offset = ($page - 1) * 12;
         $price_below = 0;
         $price_above = 5000000;
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
         $data_products = $this->products->render_product($price_below,$price_above,$limit,$offset);
         require_once "./views/shop.php";
     }
@@ -60,7 +60,7 @@ class Shop_Control
             $id = $_GET['product_id'];
         }
         $rating = $this->comment->render_Comment($id);
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
         $data_products = $this->products->render_product_by_id($id);
         $data_variants_black = $this->variant->renderVariants("đen", $id);
         $data_variants_blue = $this->variant->renderVariants("xanh", $id);
@@ -165,7 +165,7 @@ class Shop_Control
     {
         session_start();
         $id = $_SESSION['id'] ?? 0;
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
         $data_voucher = $this->voucher_By_User->select_Gift_byUserID($id);
         if(!isset($_SESSION['user'])){
             $data_cart = $_SESSION['cart'] ?? [];
@@ -181,7 +181,7 @@ class Shop_Control
             // die;
         session_start();
        if(isset($_SESSION['user']) || isset($_SESSION['cart'])){
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
         $id = $_SESSION['id'] ?? 0;
         $data_customer = $this->customer->renderInfo($id);
         if(isset($_SESSION['user']) && empty($data_customer)){
@@ -364,12 +364,12 @@ public function returnUrl(){
 }
 public function detail_shoping(){
     session_start();
-    $d = $this->categories->select();
+    $d = $this->categories->select_giao();
     require_once "./views/detail_shoping.php";
 }
     public function search(){
         session_start();
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
         $price_below = 0;
         $price_above = 500000;
         $limit = 12;
@@ -531,7 +531,7 @@ public function detail_shoping(){
         if(isset($_GET['s'])){
             $key = $_GET['s'];
         }
-        $d = $this->categories->select();
+        $d = $this->categories->select_giao();
         $data_products = $this->products->search_by_cate($key);
         require_once "./views/s.php";
     }
