@@ -24,6 +24,11 @@ if (isset($_SESSION['user'])) {
 button.btn.btn-sm.btn-primary.btn-minus {
     height: 30px;
 }
+input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
+    flex: none; 
+    width: 34;
+    text-align: center;
+}
 </style>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,8 +108,10 @@ button.btn.btn-sm.btn-primary.btn-minus {
                         <thead class="thead-dark">
                             <tr>
                                 <th>Sản Phẩm</th>
-                                <th>Giá</th>
-                                <th>Số lượng</th>
+                                <th>Màu Sắc</th>
+                                <th>Kích Thước</th>
+                                <th style="padding-left: 20px;">Giá</th>
+                                <th style="padding-left: 30px;">Số lượng</th>
                                 <th>Tổng</th>
                                 <th>Thao tác</th>
                             </tr>
@@ -116,7 +123,9 @@ button.btn.btn-sm.btn-primary.btn-minus {
                                 $total += $render_cart['quantity'] * $render_cart['price'];
                             ?>
                                 <tr>
-                                    <td class="align-middle"><img src="<?php echo "./admin". $render_cart['image'] ?>" alt="" style="width: 50px;"><?= $render_cart['name'] . " " . $render_cart['color'] ?></td>
+                                    <td class="align-middle"><img src="<?php echo "./admin". $render_cart['image'] ?>" alt="" style="width: 50px;"><?= $render_cart['name']  ?></td>
+                                    <td class="align-middle" style="text-align: center;"><?= $render_cart['color'] ?></td>
+                                    <td class="align-middle" style="text-align: center;"><?= $render_cart['size'] ?></td>
                                     <td class="align-middle"><?= $render_cart['price'] ?></td>
                                     <td class="align-middle">
                                         <form action="?act=update_quantity&cart_item_id=<?php if (isset($render_cart['cart_item_id'])) {
@@ -130,7 +139,7 @@ button.btn.btn-sm.btn-primary.btn-minus {
                                                         <i class="fa fa-minus"></i>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="<?= $render_cart['quantity'] ?>" name="quantity" readonly>
+                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center inp-custom" value="<?= $render_cart['quantity'] ?>" name="quantity" readonly>
                                                 <div class="input-group-btn">
                                                     <button class="btn btn-sm btn-primary btn-plus">
                                                         <i class="fa fa-plus"></i>
@@ -140,7 +149,7 @@ button.btn.btn-sm.btn-primary.btn-minus {
                                         </form>
                                     </td>
                                     <td class="align-middle"><?= number_format($render_cart['quantity'] * $render_cart['price']) ?></td>
-                                    <td class="align-middle"><a href="?act=delete_item_cart&id_cart=<?= isset($render_cart['cart_item_id']) ? $render_cart['cart_item_id'] : $render_cart['id']; ?>"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></a></td>
+                                    <td class="align-middle" style="padding-left: 30px;"><a href="?act=delete_item_cart&id_cart=<?= isset($render_cart['cart_item_id']) ? $render_cart['cart_item_id'] : $render_cart['id']; ?>"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></a></td>
                                 </tr>
                             <?php }
                             ?>
