@@ -373,7 +373,7 @@
 
                                             break;
                                     } ?>
-                                    <th><a href="?act=detail_order&order_id=<?= $render_action['order_id'] ?>">Xem</a></th>
+                                    <th><a href="?act=detail_order&id_order=<?= $render_action['order_id'] ?>">Xem</a></th>
                                 </tr>
 
                             <?php }
