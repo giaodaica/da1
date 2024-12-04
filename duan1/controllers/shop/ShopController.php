@@ -328,7 +328,7 @@ public function dathang()
                 if (isset($_SESSION['user'])) {
                     $this->cart->delete_cart($cart_id);
                 }
-                $this->voucher_By_User->deleta_Gift_after_oder_success($user_id, $voucher_id);
+                $this->voucher_By_User->deleta_Gift_after_oder_success($voucher_id,$user_id);
             }
             if (isset($_SESSION['cart'])) {
                 unset($_SESSION['cart']);

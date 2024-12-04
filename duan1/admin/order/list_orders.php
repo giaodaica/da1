@@ -239,7 +239,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="detail"><a href="?act=detail&order_id=<?= $data_cart_item['order_id'] ?>" class="text-danger">Chi tiết</a></div>
+                                        <div class="detail"><a href="?act=detail_order&id_order=<?= $data_cart_item['order_id'] ?>" class="text-danger">Chi tiết</a></div>
 
                                     </div>
                                 <?php } ?>

@@ -19,13 +19,12 @@ class Voucher_model extends database
         $stmt->execute();
         return $stmt->fetchAll();
     }
-    public function deleta_Gift_after_oder_success($user_id,$voucher_id){
-        $sql = "DELETE FROM `user_vouchers` WHERE user_vouchers.user_id = $user_id AND user_vouchers.voucher_id = $voucher_id";
+    public function deleta_Gift_after_oder_success($voucher_id,$user_id){
+        $sql = "UPDATE `user_vouchers` SET `is_used` = '1' WHERE user_vouchers.voucher_id = $voucher_id and user_id = $user_id";
         $this->conn->exec($sql);
     }
     public function add_voucher_if_delete_order_true_voucher($user_id,$voucher_id){
-        $sql = "INSERT INTO `user_vouchers` ( `user_id`, `voucher_id`, `is_used`, `issued_date`) 
-        VALUES ( '$user_id', '$voucher_id', '0', CURRENT_TIMESTAMP)";
+        $sql = "UPDATE `user_vouchers` SET `is_used` = '0' WHERE user_vouchers.voucher_id = $voucher_id and user_id = $user_id";
         $this->conn->exec($sql);
     }
     public function check_voucher($user_id,$voucher_id){

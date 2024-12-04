@@ -198,7 +198,7 @@ class Controller_User{
             $size = $cart_item['size'];
             $color = $cart_item['color'];
             $id = $cart_id;
-            $product_id = $cart_item['products_id'];
+            $product_id = $cart_item['product_id'];
             $this->cart->insert_Cart_items_of_user($id, $product_id, $size, $color,$image,$price);
         }
        }

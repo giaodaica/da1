@@ -81,20 +81,17 @@
                 </div>
             </div>
             <div class="Ctotal" id="">
-                <div class="info">
-                    <b><?= empty($data_Custm['full_name']) ? "Chào bạn" : $data_Custm['full_name'] ?></b>
-                    <p><?= empty($data_Custm['phone']) ? "" : $data_Custm['phone'] ?></p>
-                </div>
                 <?php if (empty($data_Custm)) { ?>
                     <button type="button" class="btn-custom" style="background-color: #D0F2ff;">Cập nhật thông tin cá nhân và địa chỉ để có trải nghiệm đặt hàng nhanh và thuận tiện hơn<a class="hander_if" href="?act=info_detail">Cập Nhật</a></button>
                 <?php } ?>
-                <?php require_once "premium.php" ?>
                 <div class="">
                     <ul class="menu-list">
                         <li><a class="menu-links" href="?act=history_shop">Tất cả</a></li>
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Chờ Xử Lý "; ?>">Chờ xác nhận</a></li>
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã Xác Nhận"; ?>">Đã xác nhận</a></li>
+                        <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đang giao hàng"; ?>">Đang giao hàng</a></li>
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã Hoàn Tất"; ?>">Đã giao hàng</a></li>
+                        <li><a class="menu-links" href="?act=action_history&action=<?php echo "Giao hàng thất bại"; ?>">Giao hàng thất bại</a></li>
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã hủy"; ?>">Đã hủy</a></li>
                     </ul>
                 </div>
@@ -116,22 +113,30 @@
                                                                 <?php 
                                                                   if($data_cart_item['hello']==1){ ?>
                                                                     <b class="text-success">Đã Thanh Toán</b>
-                                                           <?php }?>
+                                                           <?php } else {?>
+                                                                    <b class="text-default">Chưa thanh toán</b>
+                                                          <?php  }?>
                                 <div class="status">
                                     <p
                                         <?php switch ($data_cart_item['status']) {
-                                           case "Chờ xử lý":
-                                            echo "class='text-warning'";
-                                            break;
-                                        case "Đã hoàn tất":
-                                            echo "class='text-success'";
-                                            break;
-                                        case "Đã hủy":
-                                            echo "class='text-danger'";
-                                            break;
-                                            case "Đã Xác Nhận":
-                                                echo "class='text-info'";
+                                            case "Chờ xử lý":
+                                                echo "class='text-warning'";
                                                 break;
+                                            case "Đã hoàn tất":
+                                                echo "class='text-success'";
+                                                break;
+                                                case "Đang giao hàng":
+                                                    echo "class='text-info'";
+                                                    break;
+                                                    case "Giao hàng thất bại":
+                                                        echo "class='text-danger'";
+                                                        break;
+                                            case "Đã hủy":
+                                                echo "class='text-danger'";
+                                                break;
+                                                case "Đã Xác Nhận":
+                                                    echo "class='text-info'";
+                                                    break;  
                                         } ?>><?php echo $data_cart_item['status'] ?></p>
                                 </div>
                             </div>

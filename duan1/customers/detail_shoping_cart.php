@@ -65,17 +65,14 @@
                 </div>
             </div>
             <div class="Ctotal" id="">
-                <div class="info">
-                    <b><?= empty($data_Custm['full_name']) ? "Chào bạn" : $data_Custm['full_name'] ?></b>
-                    <p><?= empty($data_Custm['phone']) ? "" : $data_Custm['phone'] ?></p>
-                </div>
-                <?php require_once "premium.php" ?>
                 <div class="">
                 <ul class="menu-list">
-                        <li><a class="menu-links" href="?act=history_shop">Tất cả</a></li>
+                <li><a class="menu-links" href="?act=history_shop">Tất cả</a></li>
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Chờ Xử Lý "; ?>">Chờ xác nhận</a></li>
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã Xác Nhận"; ?>">Đã xác nhận</a></li>
+                        <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đang giao hàng"; ?>">Đang giao hàng</a></li>
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã Hoàn Tất"; ?>">Đã giao hàng</a></li>
+                        <li><a class="menu-links" href="?act=action_history&action=<?php echo "Giao hàng thất bại"; ?>">Giao hàng thất bại</a></li>
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã hủy"; ?>">Đã hủy</a></li>
                     </ul>
                 </div>
