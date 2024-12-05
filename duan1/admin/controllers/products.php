@@ -21,6 +21,9 @@ class products {
         }else{
             $comment = 0;
         }
+        if(isset($_GET['category_id'])){
+            $limit = 50;
+        }
         $page = $_GET['page'] ?? 1;
         $offset = ($page - 1) * 5;
         $data_products = $this->product->render_prd($comment,$limit,$offset);

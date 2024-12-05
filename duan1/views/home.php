@@ -258,7 +258,7 @@ if (isset($_SESSION['user'])) {
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="?act=products_detail&product_id=<?= $data_products['product_id']?>"><?= $data_products['name'] ?></a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5><?= $data_products['price']." "?>Đ</h5><h6 class="text-muted ml-2"><del><?= number_format($data_products['price']*1.2)." Đ" ?></del>
+                            <h5><?= number_format($data_products['price'])." "?>Đ</h5><h6 class="text-muted ml-2"><del><?= number_format($data_products['price']*1.2)." Đ" ?></del>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>

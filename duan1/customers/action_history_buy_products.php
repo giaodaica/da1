@@ -116,7 +116,9 @@
                                                                 <?php 
                                                                 if($data_cart_item['hello']==1){ ?>
                                                                         <b class="text-success">Đã Thanh Toán</b>
-                                                               <?php }?>
+                                                               <?php }else {?>
+                                                                    <b class="text-default">Chưa thanh toán</b>
+                                                          <?php  }?>
                                 <div class="status">
                                     <p
                                         <?php switch ($data_cart_item['status']) {

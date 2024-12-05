@@ -71,17 +71,6 @@ class orders
                         <td>{$color}</td>
                         <td>" . number_format($price, 0, ',', '.') . " VND</td>
                     </tr>";
-                    if($color != "Trắng"){
-                        $data_min = $this->variant->cancel_if_min1($color,$size);
-                        if(($data_min['stock_quantity'] - $quantity) < 0 ){
-                            echo "<script>";
-                            echo "alert('Số lượng tồn kho không đủ vui lòng kiểm tra lại');";
-                            echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
-                            echo "</script>";
-                            die;
-                        }
-                    }
-                 
                 }
             
                 $data_cart = $this->orderModel->select_orderAll($order_id);
@@ -188,17 +177,6 @@ class orders
                 <td>{$color}</td>
                 <td>" . number_format($price, 0, ',', '.') . " VND</td>
             </tr>";
-            if($color != "Trắng"){
-                $data_min = $this->variant->cancel_if_min1($color,$size);
-                if(($data_min['stock_quantity'] - $quantity) < 0 ){
-                    echo "<script>";
-                    echo "alert('Số lượng tồn kho không đủ vui lòng kiểm tra lại');";
-                    echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
-                    echo "</script>";
-                    die;
-                }
-            }
-                   
             }
             $emailContent = "
             <h2>Đơn hàng của bạn đã được đặt thành công!</h2>

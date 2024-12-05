@@ -194,7 +194,8 @@
                                   <?php } ?>
                                 <?php } ?>
                               <?php }else { ?>
-                                <?php foreach ($data_products as $list_products => $index) { ?>
+                                <?php foreach ($data_products as $list_products => $index) {
+                                     ?>
                                     <?php if($index['comment'] == "1" && $index['category_id'] == $_GET['category_id']){ ?>    
                                         <tr>
                                         <td><?= $index['name'] ?></td>

@@ -230,7 +230,9 @@ if (isset($_SESSION['user'])) {
                                             <del><?php echo (isset($_POST['voucher'])) ? number_format(($total - $total * $_POST['voucher']), 0) . "Đ" : number_format($total) . "Đ"; ?></del>
                                         <?php } else { ?>
                                             <?php
-                                            echo (isset($_POST['voucher'])) ? number_format(($total - $total * (float)('0.' . explode('.', $_POST['voucher'])[1])), 0) . "Đ" : number_format($total) . "Đ";
+                                            echo (isset($_POST['voucher']) && is_numeric($_POST['voucher']) && strpos($_POST['voucher'], '.') !== false) 
+                                            ? number_format(($total - $total * (float)('0.' . explode('.', $_POST['voucher'])[1])), 0) . "Đ"
+                                            : number_format($total) . "Đ";
                                             ?>
                                         <?php  } ?>
                                     </h5>
