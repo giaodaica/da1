@@ -6,3 +6,4 @@ require_once "variant.php";
 require_once "user.php";
 require_once "order.php";
 require_once "comment.php";
+require_once "voucher.php";

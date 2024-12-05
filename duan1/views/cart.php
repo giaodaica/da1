@@ -17,18 +17,21 @@ if (isset($_SESSION['user'])) {
         font-size: large;
         color: black;
     }
+
     button.btn.btn-sm.btn-primary.btn-plus {
-    height: 30px;
-    
-}
-button.btn.btn-sm.btn-primary.btn-minus {
-    height: 30px;
-}
-input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
-    flex: none; 
-    width: 34;
-    text-align: center;
-}
+        height: 30px;
+
+    }
+
+    button.btn.btn-sm.btn-primary.btn-minus {
+        height: 30px;
+    }
+
+    input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom {
+        flex: none;
+        width: 34;
+        text-align: center;
+    }
 </style>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +82,7 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
 </head>
 
 <body>
-<?php require_once "menu/header.php"; ?>
+    <?php require_once "menu/header.php"; ?>
 
 
     <!-- Breadcrumb Start -->
@@ -96,6 +99,7 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
     </div>
     <!-- Breadcrumb End -->
     <!-- Cart Start -->
+
     <?php if (empty($data_cart)) { ?>
         <div class="container"><?php echo "Giỏ hàng trống" ?></div>
     <?php } else { ?>
@@ -123,7 +127,7 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
                                 $total += $render_cart['quantity'] * $render_cart['price'];
                             ?>
                                 <tr>
-                                    <td class="align-middle"><img src="<?php echo "./admin". $render_cart['image'] ?>" alt="" style="width: 50px;"><?= $render_cart['name']  ?></td>
+                                    <td class="align-middle"><img src="<?php echo "./admin" . $render_cart['image'] ?>" alt="" style="width: 50px;"><?= $render_cart['name']  ?></td>
                                     <td class="align-middle" style="text-align: center;"><?= $render_cart['color'] ?></td>
                                     <td class="align-middle" style="text-align: center;"><?= $render_cart['size'] ?></td>
                                     <td class="align-middle"><?= $render_cart['price'] ?></td>
@@ -162,34 +166,29 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
                         <form class="mb-30" action="" method="post">
                             <div class="input-group">
                                 <?php
-                                foreach($data_voucher as $voucher){}
                                 if (empty($data_voucher)) { ?>
-                                 
                                 <?php } else { ?>
                                     <select name="voucher" id="">
                                         <?php foreach ($data_voucher as $render_voucher) { ?>
-                                            <?php if($render_voucher['is_used'] == 0){ ?>
-                                                <option value="<?php echo $render_voucher['discount_percent'] ?>"><?php echo $render_voucher['code'] . " Giảm " . $render_voucher['discount_percent'] * 100; ?>%</option>
-                                                <?php } ?>
-                                           <?php } ?>
+                                            <?php if ($render_voucher['is_used'] == 0) { ?>
+                                                <option value="<?php if ($total >= $render_voucher['minimum']) {
+                                                                    echo $render_voucher['voucher_id'] . $render_voucher['discount_percent'];
+                                                                } else {
+                                                                    echo 0;
+                                                                } ?>"><?php echo " Giảm " . ($render_voucher['discount_percent'] * 100) . "%" . "(Đơn tối thiểu " . number_format($render_voucher['minimum']) . ")"; ?></option>
+                                            <?php } ?>
+                                        <?php } ?>
                                     </select>
                                 <?php } ?>
                                 <div class="input-group-append">
-                                    <input type="hidden" name="voucher_id" value="<?php foreach($data_voucher as $data_her){
-                                        if(isset($_POST['voucher'])){
-                                            $voucher = $_POST['voucher'];
-                                        }else{
-                                            $voucher = "";
-                                        }
-                                        if($data_her['discount_percent'] == $voucher){
-                                            echo $data_her['voucher_id'];
-                                        }
-                                    }?>">
-                                    <?php if(!empty($data_voucher)){ ?>
+                                    <?php if (!empty($data_voucher)) { ?>
                                         <button class="btn btn-primary">Áp dụng voucher</button>
-                                    <?php }else{ ?>
-                                  <?php  } ?>
+                                    <?php } else { ?>
+                                    <?php  } ?>
                                 </div>
+                                <?php if (isset($_POST['voucher']) && $_POST['voucher'] == 0) { ?>
+                                    <p class="text-danger">Đơn hàng chưa đủ điều kiện để áp dụng giảm giá</p>
+                                <?php } ?>
                             </div>
                         </form>
                     <?php  }
@@ -206,7 +205,10 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
                                     <h6 class="font-weight-medium">Ưu đãi</h6>
                                     <h6 class="font-weight-medium"><?php
                                                                     if (isset($_POST['voucher'])) {
-                                                                        echo ($_POST['voucher'] * 100) . "%";
+                                                                        $voucher = $_POST['voucher'];
+                                                                        if (preg_match('/0\.\d+$/', $voucher, $matches)) {
+                                                                            echo ($matches[0] * 100) . "%";
+                                                                        }
                                                                     } else {
                                                                         echo "0";
                                                                     } ?></h6>
@@ -215,7 +217,7 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
                                 <div class="d-flex justify-content-between">
                                     <?php if (!isset($_SESSION['user'])) { ?>
                                         <h6 class="font-weight-medium">Ưu đãi</h6>
-                                        <h6 class="font-weight-medium">Giảm 50% khi đăng ký tài khoản</h6>
+                                        <h6 class="font-weight-medium">Giảm 50% khi đăng ký tài khoản(Đơn tối thiểu 5.000.000 VND)</h6>
                                     <?php } ?>
                                 </div>
                             <?php } ?>
@@ -224,19 +226,29 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
                             <form action="?act=shop-Pay" method="post">
                                 <div class="d-flex justify-content-between mt-2">
                                     <h5>Thanh toán</h5>
-                                    <h5><?php if (!isset($_SESSION['user'])) { ?>
+                                    <h5><?php if (!isset($_SESSION['user']) && $total >= 5000000) { ?>
                                             <del><?php echo (isset($_POST['voucher'])) ? number_format(($total - $total * $_POST['voucher']), 0) . "Đ" : number_format($total) . "Đ"; ?></del>
                                         <?php } else { ?>
-                                            <?php echo (isset($_POST['voucher'])) ? number_format(($total - $total * $_POST['voucher']), 0) . "Đ" : number_format($total) . "Đ"; ?>
+                                            <?php
+                                            echo (isset($_POST['voucher'])) ? number_format(($total - $total * (float)('0.' . explode('.', $_POST['voucher'])[1])), 0) . "Đ" : number_format($total) . "Đ";
+                                            ?>
                                         <?php  } ?>
                                     </h5>
                                 </div>
-                                <?php if (!isset($_SESSION['user'])) { ?>
+                                <?php if (!isset($_SESSION['user']) && $total >= 5000000) { ?>
                                     <div class="hello_g" style="padding-left: 290px;"><b><?= number_format($total - ($total * 0.5)) . "Đ" ?></b></div>
                                 <?php } ?>
-                                    <input type="hidden" name="voucher" value="<?php if(isset($_POST['voucher'])){echo $_POST['voucher'];} ?>">
-                                    <input type="hidden" name="voucher_id" value="<?php if(isset($_POST['voucher_id'])){echo $_POST['voucher_id'];} ?>">
-                                    <input type="hidden" name="total" value="<?php if(isset($_POST['voucher'])){ echo ($total); }else{echo $total;} ?>">
+                                <input type="hidden" name="voucher" value="<?php if (isset($_POST['voucher'])) {
+                                                                                echo $_POST['voucher'];
+                                                                            } ?>">
+                                <input type="hidden" name="voucher_id" value="<?php if (isset($_POST['voucher_id'])) {
+                                                                                    echo $_POST['voucher_id'];
+                                                                                } ?>">
+                                <input type="hidden" name="total" value="<?php if (isset($_POST['voucher'])) {
+                                                                                echo ($total);
+                                                                            } else {
+                                                                                echo $total;
+                                                                            } ?>">
                                 <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" <?php if (!isset($_SESSION['user'])) {
                                                                                                             echo "id='guest_submit'";
                                                                                                         } ?>>Thanh Toán</button>
@@ -249,7 +261,16 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
 
     <?php } ?>
     <!-- Cart End -->
-
+    <div class="container">
+        <?php if (isset($_SESSION['error'])) { ?>
+            <p class="text-danger">Số lượng sản phẩm đã đạt đến mức tối đa </p>
+            <p class="text-danger">Đơn hàng của Quý khách sẽ được phòng bán hàng doanh nghiệp tiếp nhận và hỗ trợ.</p>
+            <p class="text-danger"> Liên hệ nhanh:</p>
+            <p class="text-danger">Mr. Hiếu: 0775713230</p>
+            <p class="text-danger"> Email: trunghieu042000@gmail.com</p>
+            <?php unset($_SESSION['error']) ?>
+        <?php } ?>
+    </div>
 
     <?php require_once "menu/footer.php"; ?>
 </body>
@@ -268,7 +289,7 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
             // Nếu người dùng chọn OK, chuyển đến trang a.php
             if (userConfirmed) {
                 window.location.href = "?act=register";
-            event.preventDefault();
+                event.preventDefault();
             } else {
                 // Nếu người dùng chọn Cancel, chuyển đến trang b.php
                 window.location.href = "?act=shop-Pay";
@@ -280,5 +301,4 @@ input.form-control.form-control-sm.bg-secondary.border-0.text-center.inp-custom{
 
     // Gọi hàm để gắn sự kiện cho nút
     confirm_hieu();
-    
 </script>

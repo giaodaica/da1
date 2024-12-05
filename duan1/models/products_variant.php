@@ -20,6 +20,14 @@ class products_variant extends database {
     return $stmt->fetch();
     
    }
+   public function update_stock_quantity_variant($count,$color,$size,$product_id){
+    $sql = "UPDATE `product_variants` SET `stock_quantity` = stock_quantity - $count WHERE `product_variants`.`color` = '$color' and size = '$size' and product_id = $product_id";
+    $this->conn->exec($sql);
+}
+public function update_stock_quantity_where_users_cancel_shoping_variant($count,$color,$size,$product_id){
+    $sql = "UPDATE `product_variants` SET `stock_quantity` = stock_quantity + $count WHERE `product_variants`.`color` = '$color' and size = '$size' and product_id = $product_id";
+    $this->conn->exec($sql);
+}
     
     
 }

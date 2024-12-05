@@ -47,7 +47,12 @@ match ($act) {
     'post_update' => $Order->post_update(),
     'revenue' => $admin ->home_Admin(),
     // doanh thu 
-    
+    // voucher
+    'list_voucher'=> $products->list_voucher(),
+    'add_voucher' => $products->add_voucher(),
+    'post_insert_voucher'=>$products->post_insert_voucher(),
+        'update_voucher'=> $products->update_voucher(),
+        'post_update_voucher' => $products->post_update_voucher(),
 
 
 

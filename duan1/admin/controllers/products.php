@@ -5,13 +5,15 @@ class products {
     public $category;
     public $variant;
     public $comment;
+    public $voucher;
     public function __construct()
     {
         $this->category = new categories();
         $this->product = new product();
         $this->variant = new variant_products();
         $this->comment = new comments();
-    }
+        $this->voucher = new voucher;
+    }   
     public function render_list_products(){
         $limit = 5;
         if(isset($_GET['comment']) && $_GET['comment'] == "presently"){
@@ -266,6 +268,41 @@ class products {
         $offset = ($page - 1) * 10;
         $data_comment = $this->comment->render_comment($limit,$offset);
         require_once "./products/comment.php";
+    }
+    public function list_voucher(){
+        $data_voucher = $this->voucher->select();
+        require_once "products/list_voucher.php";
+    }
+    public function add_voucher(){
+        require_once "products/add_voucher.php";
+    }
+    public function post_insert_voucher(){
+        $code = trim($_POST['code']) ?? "";
+        $discprs = trim($_POST['discount_percent']/100) ?? "";
+        $quantity = trim($_POST['quantity']) ?? "";
+        $minimum = trim($_POST['minimum']) ?? "";
+        $this->voucher->add_voucher($code,$discprs,$quantity,$minimum);
+        echo "<script>";
+        echo "alert('Thêm Mới Thành Công');";
+        echo "window.location = '?act=list_voucher';";
+        echo "</script>";
+    }
+    public function update_voucher(){
+        $id = $_GET['id'] ?? "";
+        $data = $this->voucher->select_byID($id);
+        require_once "products/update_voucher.php";
+    }
+    public function post_update_voucher(){
+        $id = $_GET['id'] ?? "";
+        $code = trim($_POST['code']) ?? "";
+        $discprs = trim($_POST['discount_percent']/100) ?? "";
+        $quantity = trim($_POST['quantity']) ?? "";
+        $minimum = trim($_POST['minimum']) ?? "";
+        $this->voucher->update_voucher($code,$discprs,$quantity,$minimum,$id);
+        echo "<script>";
+        echo "alert('Thành Công');";
+        echo "window.location = '?act=list_voucher';";
+        echo "</script>";
     }
 
 }

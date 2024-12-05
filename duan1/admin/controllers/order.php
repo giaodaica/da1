@@ -79,8 +79,6 @@ class orders
                             echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
                             echo "</script>";
                             die;
-                        }else{
-                            $this->variant->update_stock_quantity($quantity,$color,$size);
                         }
                     }
                  
@@ -198,8 +196,6 @@ class orders
                     echo "window.location.href='?act=list_orders&action=Chờ Xử Lý';";
                     echo "</script>";
                     die;
-                }else{
-                    $this->variant->update_stock_quantity($quantity,$color,$size);
                 }
             }
                    

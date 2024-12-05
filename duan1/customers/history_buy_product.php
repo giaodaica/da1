@@ -95,7 +95,8 @@
                         <li><a class="menu-links" href="?act=action_history&action=<?php echo "Đã hủy"; ?>">Đã hủy</a></li>
                     </ul>
                 </div>
-                <?php foreach ($data_cart_item_edit as $data_cart_item) { ?>
+                <?php foreach ($data_cart_item_edit as $data_cart_item) {
+                    ?>
                     <div class="total-1">
 
                         <div class="time">
@@ -141,7 +142,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="detail"><a href="?act=detail&order_id=<?= $data_cart_item['order_id'] ?>" class="text-danger">Chi tiết</a></div>
+                        <div class="giao" style="padding-left: 20px;">
+                        Họ tên người nhận: <?= $data_cart_item['recipient_name'] ?> <br>
+                        Địa chỉ: <?= $data_cart_item['recipient_address'] ?> <br>
+                        Số điện thoại: <?= $data_cart_item['recipient_phone'] ?>
+                        <?php if($data_cart_item['discount_percent'] > 0){
+                            echo "Giảm ".($data_cart_item['discount_percent']*100)."%";
+                        } ?>
+                        </div>
+                        <div class="detail">
+                            <a href="?act=detail&order_id=<?= $data_cart_item['order_id'] ?>" class="text-danger">Chi tiết</a></div>
+
 
                     </div>
                 <?php } ?>

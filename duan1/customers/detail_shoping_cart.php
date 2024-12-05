@@ -106,12 +106,10 @@
                 </div>
                 <?php
                 $action_printed = false;
-                
                     if ($data_cart_item_edit['status'] == "Chờ xử lý"){ ?>
                         <div class="action" style="padding-left:500px"><a href="?act=cancel_shoping&id_order=<?php if(isset($_GET['order_id'])){echo $_GET['order_id'];} ?>">Hủy đơn</a></div>
                      
                   <?php  } else if($data_cart_item_edit['status'] == "Đã hủy"){?>
-                    <div class="action-retun" style="padding-left:500px"><a href="">Đặt lại</a></div>
                   <?php }
               
                 ?>

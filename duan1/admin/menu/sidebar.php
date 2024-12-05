@@ -117,6 +117,11 @@
                   <span class="sub-item">Quản lý comment</span>
                 </a>
               </li>
+              <li>
+                <a href="?act=list_voucher">
+                  <span class="sub-item">Quản lý Voucher</span>
+                </a>
+              </li>
             </ul>
           </div>
         </li>

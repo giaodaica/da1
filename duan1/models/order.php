@@ -12,23 +12,24 @@ class order extends database {
 
     }
     public function select_order_by_order_id($order_id){
-        $sql = "SELECT orders.*,payments.status as status_pay FROM orders JOIN payments ON orders.order_id=payments.order_id WHERE orders.order_id = $order_id;";
+        $sql = "SELECT orders.*,payments.status as status_pay FROM orders left JOIN payments ON orders.order_id=payments.order_id WHERE orders.order_id = $order_id;";
         $stmt =  $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetch();
     }
     public function select_order($id,$limit,$offset){
-        $sql = "SELECT orders.*,payments.status as hello from orders join payments on orders.order_id = payments.order_id WHERE user_id = $id ORDER BY order_date DESC LIMIT $limit OFFSET $offset;";
+        $sql = "SELECT orders.*,vouchers.discount_percent,payments.status as hello from orders left join payments on orders.order_id = payments.order_id JOIN vouchers ON orders.voucher_id = vouchers.voucher_id WHERE user_id = $id ORDER BY order_date DESC LIMIT $limit OFFSET $offset;";
         $stmt =  $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    
     public function cancel($order_id){
         $sql = "UPDATE `orders` SET `status` = 'Đã hủy' WHERE `orders`.`order_id` = $order_id";
         $this->conn->exec($sql);
     }
     public function action_history($action,$user_id,$limit,$offset){
-        $sql = "SELECT orders.*,payments.status as hello from orders join payments on orders.order_id = payments.order_id WHERE orders.status = '$action' and `user_id` = $user_id ORDER BY order_date DESC LIMIT $limit OFFSET $offset";
+        $sql = "SELECT orders.*,vouchers.discount_percent,payments.status as hello from orders join payments on orders.order_id = payments.order_id JOIN vouchers ON orders.voucher_id = vouchers.voucher_id WHERE orders.status = '$action' and `user_id` = $user_id ORDER BY order_date DESC LIMIT $limit OFFSET $offset";
         $stmt = $this->conn->query($sql);
         $stmt->execute();
         return $stmt->fetchAll();

@@ -13,6 +13,7 @@ class controller_Customers
     public $categories;
     public $product;
     public $user;
+    public $variant;
     public function __construct()
     {
         $this->info = new customers_models();
@@ -22,6 +23,7 @@ class controller_Customers
         $this->categories = new Categories_models();
         $this->product = new products();
         $this->user = new User_model();
+        $this->variant = new products_variant();
     }
     public function renderInfo()
     {
@@ -212,7 +214,15 @@ class controller_Customers
     public function cancel_shoping()
     {
         session_start();
-
+        $order_id = $_GET['id_order'];
+        $check_cancel = $this->order_item->select_order_by_order_id($order_id);
+        if($check_cancel['status'] != "Chờ xử lý"){
+            echo "<script>";
+            echo "alert('Thao tác thất bại');";
+            echo "window.location.href = '?act=history_shop';";
+            echo "</script>";
+            exit;
+        }
         if (isset($_GET['id_order'])) {
             $order_id = $_GET['id_order'];
         }
@@ -222,11 +232,21 @@ class controller_Customers
         }
         // $this->order_item->cancel($order_id);
         $data_item = $this->order_item_detail->select_items_cart($order_id);
+        // echo "<pre>";
+        // print_r($data_item);
+        // die;
         $check_voucher_in_order = $this->order_item->select_order_by_order_id($order_id);
         foreach ($data_item as $item) {
             $quantity = $item['quantity'];
             $this->product->update_quantity_sold_where_users_cancel_shoping($quantity, $item['product_id']);
             $this->product->update_stock_quantity_where_users_cancel_shoping($quantity, $item['product_id']);
+            if($item['color'] != "Trắng"){
+                $count = $item['quantity'];
+                $color = $item['color'];
+                $size = $item['size'];
+                $product_id = $item['product_id'];
+                $this->variant->update_stock_quantity_where_users_cancel_shoping_variant($count,$color,$size,$product_id);
+            }
         }
         if ($check_voucher_in_order['voucher_id']) {
             $voucher_id = $check_voucher_in_order['voucher_id'];

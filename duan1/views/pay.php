@@ -16,10 +16,10 @@ if (isset($_SESSION['user'])) {
 ?>
 <style>
     #phuongthuc img {
-    width: 300px; 
-    height: auto; 
-    margin-left: 300px;
-}
+        width: 300px;
+        height: auto;
+        margin-left: 300px;
+    }
 </style>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +70,7 @@ if (isset($_SESSION['user'])) {
 </head>
 
 <body>
-<?php require_once "menu/header.php"; ?>
+    <?php require_once "menu/header.php"; ?>
 
 
 
@@ -100,30 +100,38 @@ if (isset($_SESSION['user'])) {
                         <div class="row">
                             <div class="col-md-9 form-group">
                                 <label>Họ và tên</label>
-                                <input class="form-control" type="text" placeholder="" name="fullname" value="<?php if(isset($data_customer['full_name'])){echo $data_customer['full_name'];} ?>">
+                                <input class="form-control" type="text" placeholder="" name="fullname" value="<?php if (isset($data_customer['full_name'])) {
+                                                                                                                    echo $data_customer['full_name'];
+                                                                                                                } ?>">
                             </div>
                             <div class="col-md-9 form-group">
                                 <label>Địa chỉ</label>
-                                <input class="form-control" type="text" placeholder="" name="address" value="<?php if(isset($data_customer['full_name'])){echo $data_customer['address'];} ?>">
+                                <input class="form-control" type="text" placeholder="" name="address" value="<?php if (isset($data_customer['full_name'])) {
+                                                                                                                    echo $data_customer['address'];
+                                                                                                                } ?>">
                                 <span></span>
 
                             </div>
                             <div class="col-md-9 form-group">
                                 <label>Số điện thoại</label>
-                                <input class="form-control" type="text" placeholder="" name="phone" value="<?php if(isset($data_customer['full_name'])){echo $data_customer['phone'];} ?>">
+                                <input class="form-control" type="text" placeholder="" name="phone" value="<?php if (isset($data_customer['full_name'])) {
+                                                                                                                echo $data_customer['phone'];
+                                                                                                            } ?>">
                                 <span></span>
 
                             </div>
                             <div class="col-md-9 form-group">
                                 <label>Email</label>
-                                <input class="form-control" type="email" placeholder="" name="email" value="<?php if(isset($data_customer['email'])){echo $data_customer['email'];} ?>">
+                                <input class="form-control" type="email" placeholder="" name="email" value="<?php if (isset($data_customer['email'])) {
+                                                                                                                echo $data_customer['email'];
+                                                                                                            } ?>">
                                 <span></span>
 
                             </div>
                         </div>
-                        <span><?php if(isset($error)){
-                            echo $error;
-                        } ?></span>
+                        <span><?php if (isset($error)) {
+                                    echo $error;
+                                } ?></span>
 
                     </div>
                     <div id="phuongthuc"></div>
@@ -133,61 +141,67 @@ if (isset($_SESSION['user'])) {
                     <div class="bg-light p-30 mb-5">
                         <div class="border-bottom">
                             <h6 class="mb-3">Sản Phẩm</h6>
-
-                           <?php if(empty($data_cart_of_user) && !empty($_SESSION['cart'])){
-                            $data_cart_of_user = $_SESSION['cart'];
-                           } ?>
-                                <?php foreach($data_cart_of_user as $render){ ?>
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <h6><?= $render['name'] ?></h6>
-                                        <h6><?= "x".$render['quantity'] ?></h6>
-                                        <h6><?php echo number_format($render['price'] * $render['quantity'])?></h6>
-                                    </div>
-                               <?php } ?>
-                                <div class="border-bottom pt-3 pb-2">
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <h6>Tổng đơn</h6>
-                                        <h6><?php echo number_format($_POST['total']) ?? 0?></h6>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="font-weight-medium">Giảm Giá</h6>
-                                        <h6 class="font-weight-medium">
-                                            
-                                          <?php
-                                                if(!empty($_POST['voucher'])){
-                                                    $vocher = $_POST['voucher'];
-                                                    echo ($vocher * 100)."%";
-                                                }else{
-                                                    echo 0;
-                                                }
-                                        
-                                        ?></h6>
-                                    </div>
+                                
+                            <?php if (empty($data_cart_of_user) && !empty($_SESSION['cart'])) {
+                                $data_cart_of_user = $_SESSION['cart'];
+                            } ?>
+                            <?php foreach ($data_cart_of_user as $render) { ?>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h6><?= $render['name'] ?></h6>
+                                    <h6><?= $render['color'] ?></h6>
+                                    <h6><?= $render['size'] ?></h6>
+                                    <h6><?= "x" . $render['quantity'] ?></h6>
+                                    <h6><?php echo number_format($render['price'] * $render['quantity']) ?></h6>
                                 </div>
-                                <div class="pt-2">
-                                    <div class="d-flex justify-content-between mt-2">
-                                        <h5>Tổng</h5>
-                                        <h5>
-                                            <h5>
-                                            <?php 
-                                            if(isset($_POST['total'])){
-                                            $total = $_POST['total'];
-                                                }
-                                                if(empty($_POST['voucher'])){
-                                                    $vocher = 0 ;
-                                                }else{
-                                                    $vocher = $_POST['voucher'];
-                                                }
-                                                echo number_format($total -($total * $vocher));
-                                        ?>
+                            <?php } ?>
+                            <div class="border-bottom pt-3 pb-2">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h6>Tổng đơn</h6>
+                                    <h6><?php echo number_format($_POST['total']) ?? 0 ?></h6>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="font-weight-medium">Giảm Giá</h6>
+                                    <h6 class="font-weight-medium">
 
-                                            </h5>
+                                        <?php
+                                        if (!empty($_POST['voucher'])) {
+                                           
+                                            $voucher = $_POST['voucher'];
+                                            $voucher_decimal = '0.' . substr(strrchr($voucher, '.'), 1);
+                                            echo (float)$voucher_decimal * 100 . "%";  
+                                        } else {
+                                            echo 0;  
+                                        }
+                                        ?>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="pt-2">
+                                <div class="d-flex justify-content-between mt-2">
+                                    <h5>Tổng</h5>
+                                    <h5>
+                                        <h5>
+                                            <?php
+                                            if (isset($_POST['total'])) {
+                                                $total = $_POST['total'];
+                                            }
+                                            if (empty($_POST['voucher'])) {
+                                                $voucher = 0;
+                                            } else {
+
+                                                $voucher = (float)('0.' . substr(strrchr($_POST['voucher'], '.'), 1));
+                                            }
+                                            echo number_format($total - ($total * $voucher));
+                                            ?>
+
 
                                         </h5>
-                                    </div>
-                                </div>
 
-                       
+                                    </h5>
+                                </div>
+                            </div>
+
+
 
                         </div>
 
@@ -195,10 +209,13 @@ if (isset($_SESSION['user'])) {
                     <div class="mb-5">
                         <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
                         <div class="bg-light p-30">
-                          
-                          
-                            <input type="hidden" name="voucher" value="<?php if(!empty($_POST['voucher'])){echo $_POST['voucher'];} ?>">
-                            <input type="hidden" name="total" value="<?= ($total - ($total * (empty($_POST['voucher']) ? 0 : $_POST['voucher']))) ?>">
+
+
+                            <input type="hidden" name="voucher" value="<?php if (!empty($_POST['voucher'])) {
+                                                                            echo $_POST['voucher'];
+                                                                        } ?>">
+                            <input type="hidden" name="total" value="<?= ($total - ($total * (empty($_POST['voucher']) ? 0 : (float)('0.' . substr(strrchr($_POST['voucher'], '.'), 1))))) ?>">
+
                             <button class="btn btn-block btn-primary font-weight-bold py-3" id="btnsubmit">Đặt hàng</button>
                         </div>
                     </div>
@@ -238,7 +255,7 @@ if (isset($_SESSION['user'])) {
             // Tạo ảnh mới dựa trên phương thức thanh toán được chọn
             const img = document.createElement("img");
             switch (method.value) {
-              
+
                 case "momo":
                     img.src = "pay/img/momo.jpg"; // Đường dẫn ảnh cho Ví điện tử
                     img.alt = "Ví điện tử";
@@ -253,8 +270,6 @@ if (isset($_SESSION['user'])) {
             phuongThucDiv.appendChild(img);
         });
     });
-    
-    
 </script>
 
 </html>
