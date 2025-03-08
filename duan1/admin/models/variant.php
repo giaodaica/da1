@@ -17,8 +17,8 @@ class variant_products extends database {
     public function update_variant($size,$color,$stock_quantity,$image,$status,$variant_id){
         $sql = "UPDATE `product_variants` SET `size` = '$size', `color` = '$color', `stock_quantity` = '$stock_quantity',
          `image` = '$image',`status` = '$status' WHERE `product_variants`.`variant_id` = $variant_id";
-        //  echo $sql;
-        //  die;
+         echo $sql;
+         die;
          $this->conn->exec($sql);
     }
     public function add_variant($product_id,$size,$color,$stock_quantity,$image){

@@ -254,7 +254,9 @@ class Shop_Control
         header("Location: ?act=shoping-Cart");
     }
 
-    public function showErrorCart() {}
+    public function showErrorCart() {
+        
+    }
     public function delete_select()
     {
         $cart_item_id = $_GET['id_cart'];

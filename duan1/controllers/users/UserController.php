@@ -108,7 +108,7 @@ class Controller_User{
                         // $id = 23;
                         // $data_Gift = $this->gift->select_Gift_byUserID($id);
                         header("location:".BASE_URL);
-                        exit;
+                      
                             break;
 
         }

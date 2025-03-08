@@ -33,3 +33,4 @@
         </div>
     </div>
 </form>
+<input type="checkbox" name="" id="">

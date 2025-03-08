@@ -146,7 +146,7 @@
             <div class="form-group">
               <label for="">Trạng Thái</label>
               <select class="form-control" name="status" id="">
-                  <option value="<?= $data_variant?>"> <?= $data_variant['status']==1 ? "Hiển Thị" : "Ẩn" ?> </option>
+                  <option value="<?= $data_variant['status'] ?>"> <?= $data_variant['status'] == 1 ? "Hiển Thị" : "Ẩn" ?> </option>
                   <?php if($data_variant['status'] == 1){ ?>
                   <option value="0">Ẩn</option>
                  <?php }else{ ?>
