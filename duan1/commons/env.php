@@ -7,8 +7,8 @@ define('BASE_NAME','db_duan1');
 define('BASE_USERNAME','root');
 define('BASE_PASSWORD','');
 define('BASE_HOST', 'localhost');
-define('BASE_MAIL','giaodaica04@gmail.com');
-define('BASE_PASS','aheizkqrjhvzrbaf');
+define('BASE_MAIL','hieutestmail911@gmail.com');
+define('BASE_PASS','piqdncwghlguwxdo');
 
 
 
